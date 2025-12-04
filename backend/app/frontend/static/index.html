@@ -1,0 +1,22 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Hangman Game</title>
+</head>
+<body>
+  <div id="app">
+    <h1>Hangman Game</h1>
+    <p>Open developer console and try the API endpoints under /api.</p>
+  </div>
+  <script>
+    async function ping() {
+      const res = await fetch('/api/games/new', {method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({})});
+      console.log('new game', await res.json());
+    }
+    // ping();
+  </script>
+</body>
+</html>
+

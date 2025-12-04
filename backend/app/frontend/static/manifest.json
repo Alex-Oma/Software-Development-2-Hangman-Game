@@ -1,0 +1,7 @@
+{
+  "name": "Hangman Game",
+  "short_name": "Hangman",
+  "start_url": "/static/index.html",
+  "display": "standalone"
+}
+
