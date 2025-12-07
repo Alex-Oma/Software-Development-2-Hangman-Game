@@ -48,8 +48,8 @@ app = FastAPI(title="Hangman Game Backend API", lifespan=lifespan)
 # mount the frontend static folder using a resolved filesystem path
 static_dir = Path(__file__).resolve().parent / "frontend" / "static"
 if static_dir.exists():
-    # mount static files
-    app.mount("/", StaticFiles(directory=str(static_dir), html=True), name="static")
+    # mount static files at a subpath so API routes are not intercepted
+    app.mount("/frontend/static", StaticFiles(directory=str(static_dir), html=True), name="static")
 
 # include API routers
 app.include_router(auth.router, prefix="/api/auth", tags=["auth"])
