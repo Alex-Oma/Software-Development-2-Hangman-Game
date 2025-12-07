@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlmodel import Session
+from typing import Optional
 from .. import schemas, crud, models
 from ..deps import get_session
 
@@ -13,7 +14,7 @@ def new_game(payload: schemas.GameCreate, session: Session = Depends(get_session
     if not word:
         raise HTTPException(status_code=404, detail="No words available")
     # temporary anonymous user (id=1) support for skeleton
-    user = session.get(models.User, 1)
+    user: Optional[models.User] = session.get(models.User, 1)
     if not user:
         raise HTTPException(status_code=404, detail="User not found. Register a user first.")
     game = crud.create_game(session, user, word)
