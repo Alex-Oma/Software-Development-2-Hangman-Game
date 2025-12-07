@@ -250,3 +250,11 @@ PowerShell helper: `run_local.ps1` is provided which runs uvicorn for convenienc
 
 Unit tests can be run with:
 python -m pytest -q
+
+
+Branch strategy on GitHub:
+- `main` branch: Stable production-ready code.
+- `new_stuff` branch: Development branch for new features and experiments.
+- Feature branches: Created from `new_stuff` for specific features or bug fixes, then merged back into `new_stuff` after review and testing.
+- Merging `new_stuff` into `main` only after thorough testing and validation to ensure stability.
+- Regular commits and pull requests to maintain code quality.
