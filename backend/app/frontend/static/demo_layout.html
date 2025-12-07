@@ -19,7 +19,7 @@
       <div class="controls">
         <button class="btn" id="newGame">New Game</button>
         <button class="btn secondary" id="settings">Settings</button>
-        <button class="btn secondary" id="toggleTheme">Toggle Theme</button>
+        <button class="btn secondary" id="toggleTheme" type="button" aria-label="Toggle theme"></button>
       </div>
     </div>
 
@@ -114,18 +114,6 @@
       keyboard.appendChild(btn);
     });
 
-    // Toggle theme between light and dark
-    const toggle = document.getElementById('toggleTheme');
-    toggle.addEventListener('click', ()=>{
-      if(app.classList.contains('theme-light')){
-        app.classList.remove('theme-light');
-        app.classList.add('theme-dark');
-      } else {
-        app.classList.remove('theme-dark');
-        app.classList.add('theme-light');
-      }
-    });
-
     // New game button functionality
     document.getElementById('newGame').addEventListener('click', ()=>{
       // reset keys
@@ -137,5 +125,6 @@
       stage = 0; attemptsLeft = 6; gallows.className = 'gallows stage-0'; attemptsEl.textContent = attemptsLeft;
     });
   </script>
+  <script src="./javascript/theme.js"></script>
 </body>
 </html>

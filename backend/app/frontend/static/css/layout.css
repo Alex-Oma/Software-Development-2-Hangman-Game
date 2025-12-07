@@ -220,3 +220,37 @@ body{
 /* utility */
 .center{display:flex;align-items:center;justify-content:center}
 .margin-top{margin-top:14px}
+
+/* Theme toggle icon styles */
+.toggle-icon-wrapper{display:inline-flex;align-items:center;gap:8px}
+.theme-toggle-icon{width:20px;height:20px;display:inline-block;position:relative}
+.theme-toggle-icon svg{width:20px;height:20px;display:block;position:absolute;top:0;left:0;transition:opacity 260ms ease, transform 260ms ease}
+
+/* Hide both icons by default to avoid a flash where both are visible; JavaScript will set theme classes on <html> or #app */
+.theme-toggle-icon .sun{opacity:0;transform:scale(0.8) rotate(0deg);visibility:hidden;pointer-events:none}
+.theme-toggle-icon .moon{opacity:0;transform:scale(0.8) rotate(-10deg);visibility:hidden;pointer-events:none}
+
+/* When dark theme is active, show moon and hide sun (use html.class to be specific) */
+html.theme-dark .theme-toggle-icon .sun{opacity:0 !important;transform:scale(0.8) rotate(10deg);visibility:hidden !important;pointer-events:none}
+html.theme-dark .theme-toggle-icon .moon{opacity:1 !important;transform:scale(1) rotate(0deg);visibility:visible !important;pointer-events:auto}
+
+/* When light theme is active, ensure sun visible, moon hidden explicitly */
+html.theme-light .theme-toggle-icon .sun{opacity:1 !important;transform:scale(1) rotate(0deg);visibility:visible !important;pointer-events:auto}
+html.theme-light .theme-toggle-icon .moon{opacity:0 !important;transform:scale(0.8) rotate(-10deg);visibility:hidden !important;pointer-events:none}
+
+/* Also support when theme classes are applied to an ancestor (e.g., #app) before html is updated */
+.theme-dark .theme-toggle-icon .sun{opacity:0 !important;transform:scale(0.8) rotate(10deg) !important;visibility:hidden !important;pointer-events:none !important}
+.theme-dark .theme-toggle-icon .moon{opacity:1 !important;transform:scale(1) rotate(0deg) !important;visibility:visible !important;pointer-events:auto !important}
+
+.theme-light .theme-toggle-icon .sun{opacity:1 !important;transform:scale(1) rotate(0deg) !important;visibility:visible !important;pointer-events:auto !important}
+.theme-light .theme-toggle-icon .moon{opacity:0 !important;transform:scale(0.8) rotate(-10deg) !important;visibility:hidden !important;pointer-events:none !important}
+
+/* Toggle button text styling */
+.theme-toggle-text{font-weight:700;font-size:13px;color:var(--muted)}
+
+/* Focus/pressed styles for accessibility */
+#toggleTheme:focus{outline:none;box-shadow:0 0 0 4px color-mix(in srgb,var(--accent) 14%, transparent);border-radius:10px}
+#toggleTheme[aria-pressed="true"]{background: color-mix(in srgb,var(--accent) 8%, transparent);}
+
+/* Ensure toggle button has nice rounded padding */
+#toggleTheme{padding:8px 10px;display:inline-flex;align-items:center;gap:8px}
