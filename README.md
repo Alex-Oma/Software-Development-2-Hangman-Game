@@ -223,6 +223,24 @@ During the brainstorming session, we identified the following potential risks to
 
 ---
 
+
+# Activity 3 – Coding
+
+## Code Repository
+
+The code for this project is hosted on GitHub at:
+https://github.com/Alex-Oma/Software-Development-2-Hangman-Game
+
+## Git Branching Strategy
+
+I've decied to go with the following branch strategy on GitHub:
+- `main` branch: Stable production-ready code.
+- `new_stuff` branch: Development branch for new features and experiments.
+- Feature branches: Created from `new_stuff` for specific features or bug fixes, then merged back into `new_stuff` after review and testing.
+- Merging `new_stuff` into `main` only after thorough testing and validation to ensure stability.
+- Regular commits and pull requests to maintain code quality.
+
+
 ## Developer notes — Backend (FastAPI) + PWA skeleton
 To start with, I've created a simple FastAPI backend with a minimal PWA front-end skeleton. 
 
@@ -243,18 +261,91 @@ Running the backend on Windows:
 
 4. Open the PWA in the browser:
 
-   http://127.0.0.1:8000/static/index.html
+   http://127.0.0.1:8000/index.html
 
 PowerShell helper: `run_local.ps1` is provided which runs uvicorn for convenience.
-
 
 Unit tests can be run with:
 python -m pytest -q
 
 
-Branch strategy on GitHub:
-- `main` branch: Stable production-ready code.
-- `new_stuff` branch: Development branch for new features and experiments.
-- Feature branches: Created from `new_stuff` for specific features or bug fixes, then merged back into `new_stuff` after review and testing.
-- Merging `new_stuff` into `main` only after thorough testing and validation to ensure stability.
-- Regular commits and pull requests to maintain code quality.
+
+
+
+# Activity 4 – Testing
+
+## Testing Strategy
+
+For frontend testing, I've adopted a combination of manual and automated testing strategies to ensure comprehensive coverage of the application's functionality and user experience.
+For manual testing, I've focused on exploratory testing to identify any usability issues or unexpected behaviors that automated tests might miss.
+This involves navigating through the application, interacting with various UI elements, and verifying that the application behaves as expected.
+For automated testing, I am going to implement unit tests for individual components using a testing framework Jest.
+These tests focus on verifying the functionality of specific components, ensuring that they render correctly and handle user interactions as intended.
+Additionally, I will try setting up end-to-end (E2E) tests using a tool called Cypress to simulate real user scenarios and validate the overall workflow of the application from start to finish.
+This includes testing critical paths such as user login, gameplay interactions, and score tracking.
+
+For the backend testing, I've utilized pytest to create unit tests for the FastAPI endpoints.
+
+This way, I can ensure that both the frontend and backend components of the application are thoroughly tested, providing confidence in the application's reliability and user experience.
+
+## Frontend Testing
+
+### Manual Testing Plan and Test Cases
+
+Provided below is the manual testing plan and test cases for the frontend of the Hangman game:
+
+| Test Case ID | Test Description                        | Steps to Reproduce                                                                 | Expected Result                                               | Actual Result | Pass/Fail |
+|--------------|-----------------------------------------|-----------------------------------------------------------------------------------|---------------------------------------------------------------|---------------|-----------|
+| TC001        | Verify main menu loads correctly        | 1. Open the app<br>2. Observe the main menu screen                                      | Main menu displays with "Play" and "How to play" options visible | Main menu displays correctly |       |
+| TC002        | Start a new game                       | 1. Click "Play" on the main menu<br>2. Observe the game screen                                      | Game screen loads with blank word display and letter input options | Game screen loads correctly |       |
+| TC003        | Guess a correct letter                 | 1. Start a new game<br>2. Input a correct letter<br>3. Observe the word display                     | The letter appears in the word display at the correct positions | Letter appears correctly |       |
+| TC004        | Guess an incorrect letter              | 1. Start a new game<br>2. Input an incorrect letter<br>3. Observe the hangman graphic and remaining attempts | Hangman graphic updates and remaining attempts decrease by one | Hangman graphic updates correctly |       |
+| TC005        | Use a hint                             | 1. Start a new game<br>2. Click the "Hint" button<br>3. Observe the word display and score | A letter is revealed in the word display and score decreases | Hint functionality works correctly |       |
+
+### Automated Testing Plan and Test Cases
+
+Provided below is the automated testing plan and test cases for the frontend of the Hangman game:
+
+| Test Case ID | Test Description                        | Steps to Reproduce                                                                 | Expected Result                                               | Actual Result | Pass/Fail |
+|--------------|-----------------------------------------|-----------------------------------------------------------------------------------|---------------------------------------------------------------|---------------|-----------|
+| ATC001       | Verify main menu component renders      | 1. Render MainMenu component<br>2. Check for presence of "Play" and "How to play" buttons | | Both buttons are present in the DOM | Buttons render correctly |       |
+| ATC002       | Test letter input functionality         | 1. Render Game component<br>2. Simulate letter input<br>3. Check if letter appears in word display | | Letter appears in the word display | Letter input works correctly |       |
+| ATC003       | Test hint functionality                 | | 1. Render Game component<br>2. Simulate clicking "Hint" button<br>3. Check if a letter is revealed and score decreases | | Letter is revealed and score updates | | Hint functionality works correctly |       |
+
+
+## Backend Testing
+
+### Unit Testing Plan and Test Cases
+
+Provided below is the unit testing plan and test cases for the backend of the Hangman game:
+
+| Test Case ID | Test Description                        | Steps to Reproduce                                                                 | Expected Result                                               | Actual Result | Pass/Fail |
+|--------------|-----------------------------------------|-----------------------------------------------------------------------------------|---------------------------------------------------------------|---------------|-----------|
+| BTC001       | Test user registration endpoint         | 1. Send POST request to /register with valid user data<br>2. Check response status and body | | Response status is 201 and user data is returned | User registration works correctly |       |
+| BTC002       | Test user login endpoint                | 1. Send POST request to /login with valid credentials<br> 2. Check response status and body | | Response status is 200 and token is returned | User login works correctly |       |       |
+| BTC003       | Test start new game endpoint            | 1. Send POST request to /start_game with valid user token<br>2. Check response status and body | | Response status is 200 and game data is returned | Start new game works correctly |       |
+| BTC004       | Test submit guess endpoint              | 1. Send POST request to /submit_guess with valid game ID and letter<br>2. Check response status and body | | Response status is 200 and updated game state is returned | Submit guess works correctly |       |
+| BTC005       | Test get game state endpoint            | 1. Send GET request to /game_state with valid game ID<br>2. Check response status and body | | Response status is 200 and current game state is returned | Get game state works correctly |       |
+| BTC006       | Test scoring system                     | 1. Simulate correct and incorrect guesses<br>2. Check if score updates correctly | | Score updates as expected after each guess | Scoring system works correctly |       |
+| BTC007       | Test hint functionality                 | 1. Send POST request to /use_hint with valid game ID<br>2. Check response status and body | | Response status is 200 and a letter is revealed with score deduction | Hint functionality works correctly |       |
+| BTC008       | Test full word guess functionality      | 1. Send POST request to /guess_word with valid game ID and word<br>2. Check response status and body | | Response status is 200 and game state updates accordingly | Full word guess works correctly |       |
+| BTC009       | Test user authentication middleware     | 1. Send requests with and without valid tokens<br>2. Check if access is granted or denied appropriately | | Requests with valid tokens are granted access; invalid tokens are denied | Authentication middleware works correctly |       |
+| BTC010       | Test error handling                     | 1. Send invalid requests to various endpoints<br>2. Check if appropriate error responses are returned | | Appropriate error messages and status codes are returned for invalid requests | Error handling works correctly |       |
+| BTC011       | Test data persistence                   | 1. Create a new user and start a game<br>2. Restart the server and retrieve user/game data<br>3. Check if data persists correctly | | User and game data persist correctly after server restart | Data persistence works correctly |       |
+| BTC012       | Test performance under load             | 1. Simulate multiple concurrent requests to key endpoints<br>2. Measure response times and server stability | | Server handles load without significant performance degradation | Performance under load is acceptable |       |
+
+
+## Test Results
+
+### Frontend Test Results
+
+
+CSS layout smoke test: Pass
+
+Very first basic smoke test to ensure that the CSS layout is loading correctly without any major issues.
+
+Light mode screenshot:
+[<img alt="image" src="img/testing/frontend/initial_ui_layout_test_light.png" />](img/testing/frontend/initial_ui_layout_test_light.png)
+
+Dark mode screenshot:
+[<img alt="image" src="img/testing/frontend/initial_ui_layout_test_dark.png" />](img/testing/frontend/initial_ui_layout_test_dark.png)
