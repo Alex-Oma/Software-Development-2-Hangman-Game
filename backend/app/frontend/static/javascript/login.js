@@ -50,7 +50,7 @@ form.addEventListener('submit', async (e)=>{
         console.warn('Failed to store token', err);
       }
       // Redirect to game UI
-      window.location.href = '/frontend/static/index.html';
+      window.location.href = '/frontend/static/game.html';
     } else {
       showNotice('No token received', 'error');
     }
@@ -62,4 +62,3 @@ form.addEventListener('submit', async (e)=>{
     submitBtn.textContent = 'Sign in';
   }
 });
-
