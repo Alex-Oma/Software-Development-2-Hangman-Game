@@ -52,13 +52,6 @@
           </div>
 
           <div class="controls-row" style="margin-top:12px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
-            <label for="topic">Topic</label>
-            <select id="topic">
-              <option value="food">Food</option>
-              <option value="transport">Transport</option>
-              <option value="tech">Tech</option>
-              <option value="general">General</option>
-            </select>
             <label for="difficulty">Difficulty</label>
             <select id="difficulty">
               <option value="easy">Easy</option>
@@ -72,6 +65,12 @@
 
           <div class="word-box" id="wordBox" style="margin-top:18px">
             <!-- letter slots will be rendered here -->
+          </div>
+
+          <!-- Word metadata (clue/topic); hidden when not available -->
+          <div id="wordMeta" class="word-meta" style="display:none;margin-top:12px;padding:10px;border-radius:10px;background:var(--glass);">
+            <div id="wordClue" style="font-weight:700;color:var(--accent);">Clue: </div>
+            <div id="wordTopic" style="font-size:13px;color:var(--muted);margin-top:6px">Topic: </div>
           </div>
 
           <div class="keyboard" id="keyboard" style="margin-top:18px">

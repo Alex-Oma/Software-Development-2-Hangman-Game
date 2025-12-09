@@ -57,9 +57,9 @@ def get_random_word(session: Session, topic: str = None, difficulty: str = None)
     '''
 
     # Adding logging for debugging
-    logging.basicConfig(level=logging.DEBUG)
+    logging.basicConfig(level=logging.INFO)
     logger = logging.getLogger(__name__)
-    logger.debug(f"Fetching random word with topic={topic} and difficulty={difficulty}")
+    logger.info(f"Fetching random word with topic={topic} and difficulty={difficulty}")
 
     q = select(models.Word)
     if topic:
@@ -69,7 +69,18 @@ def get_random_word(session: Session, topic: str = None, difficulty: str = None)
 
     # Order randomly and limit to 1 to fetch a random matching word
     q = q.order_by(func.random()).limit(1)
-    return session.exec(q).first()
+    # Execute the query
+    word = session.exec(q).first()
+
+    # Log the result
+    if not word:
+        logger.warning("No matching word found")
+        return None
+    else:
+        logger.info(f"Found word: {word.text} (topic={word.topic}, difficulty={word.difficulty})")
+
+    # Return the found word
+    return word
 
 def get_count_of_words(session: Session, topic: str = None, difficulty: str = None):
     '''

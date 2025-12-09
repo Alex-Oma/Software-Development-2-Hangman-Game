@@ -46,13 +46,13 @@ def seed(session):
     from sqlalchemy import func
 
     # Adding logging for debugging
-    logging.basicConfig(level=logging.DEBUG)
+    logging.basicConfig(level=logging.INFO)
     logger = logging.getLogger(__name__)
 
     # Logging the count of WORDS to be added
-    logger.debug(f"Number of words to seed: {len(WORDS)}")
+    logger.info(f"Number of words to seed: {len(WORDS)}")
 
-    logger.debug("Seeding words into the database.")
+    logger.info("Seeding words into the database.")
 
     # Iterate over the WORDS list and add each word to the database
     countWordsAdded = 0
@@ -65,7 +65,7 @@ def seed(session):
             countWordsAdded += 1
 
     # Log the number of words added
-    logger.debug(f"Added {countWordsAdded} new words to the database.")
+    logger.info(f"Added {countWordsAdded} new words to the database.")
 
     # Commit the session to save changes
     session.commit()
@@ -76,5 +76,6 @@ def seed(session):
     except Exception:
         # fallback: load all words and count
         total_count = len(session.exec(select(Word)).all())
-    logger.debug(f"Total words in database after seeding: {total_count}")
+
+    logger.info(f"Total words in database after seeding: {total_count}")
     return total_count

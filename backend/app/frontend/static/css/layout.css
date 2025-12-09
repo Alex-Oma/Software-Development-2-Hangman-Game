@@ -213,17 +213,17 @@ body{
 .gallows.stage-1 .gallow-base{opacity:1;transform:none}
 .gallows.stage-2 .gallow-post{opacity:1;transform:none}
 .gallows.stage-3 .gallow-beam{opacity:1;transform:none}
-.gallows.stage-3 .gallow-support{opacity:1;transform:none}
-.gallows.stage-4 .gallow-rope{opacity:1;transform:none}
-.gallows.stage-5 .head{opacity:1;transform:none}
-.gallows.stage-6 .body{opacity:1;transform:none}
-.gallows.stage-7 .arm-left{opacity:1;transform:none}
-.gallows.stage-7 .arm-right{opacity:1;transform:none}
-.gallows.stage-8 .leg-left{opacity:1;transform:none}
-.gallows.stage-8 .leg-right{opacity:1;transform:none}
+.gallows.stage-4 .gallow-support{opacity:1;transform:none}
+.gallows.stage-5 .gallow-rope{opacity:1;transform:none}
+.gallows.stage-6 .head{opacity:1;transform:none}
+.gallows.stage-7 .body{opacity:1;transform:none}
+.gallows.stage-8 .arm-left{opacity:1;transform:none}
+.gallows.stage-8 .arm-right{opacity:1;transform:none}
+.gallows.stage-9 .leg-left{opacity:1;transform:none}
+.gallows.stage-9 .leg-right{opacity:1;transform:none}
 
 /* small decorative shadow for finished hangman */
-.gallows.stage-8 .head{box-shadow:0 8px 24px rgba(0,0,0,0.22)}
+.gallows.stage-9 .head{box-shadow:0 8px 24px rgba(0,0,0,0.22)}
 
 /* Accessibility: focus outline for interactive elements within gallows controls */
 .gallows [tabindex]{outline:none}
@@ -304,3 +304,58 @@ h1, h2, h3, h4 {
 .modal-footer{display:flex;gap:8px;justify-content:flex-end;margin-top:16px}
 .modal-footer .btn{min-width:88px}
 .modal-panel:focus{outline:none}
+
+/* Word metadata panel (clue + topic) */
+.word-meta, #wordMeta{
+  position:relative;
+  display:block; /* JS controls visibility via inline style */
+  padding:12px 14px 12px 18px;
+  border-radius:10px;
+  background: linear-gradient(180deg, color-mix(in srgb, var(--card) 96%, #0000), var(--card));
+  border: 1px solid color-mix(in srgb, var(--muted) 10%, var(--card));
+  box-shadow: 0 8px 20px rgba(2,6,23,0.06);
+  color: var(--text-primary);
+  transition: transform 160ms ease, opacity 160ms ease;
+  overflow:hidden;
+}
+
+/* Decorative accent stripe on the left */
+.word-meta::before, #wordMeta::before{
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 6px;
+  border-top-left-radius:10px;
+  border-bottom-left-radius:10px;
+  background: linear-gradient(180deg, var(--accent), var(--accent-2));
+  box-shadow: 0 4px 10px rgba(0,0,0,0.06);
+}
+
+/* Space content to the right of the accent */
+.word-meta > div, #wordMeta > div{margin-left:12px}
+
+/* Clue style */
+.word-meta #wordClue, #wordMeta #wordClue{
+  font-weight:700;
+  color: var(--accent-contrast);
+  font-size:15px;
+  line-height:1.2;
+}
+
+/* Topic style */
+.word-meta #wordTopic, #wordMeta #wordTopic{
+  margin-top:6px;
+  color: var(--text-secondary);
+  font-size:13px;
+}
+
+/* Make sure it looks good on small screens */
+@media (max-width:640px){
+  .word-meta, #wordMeta{
+    padding:10px 12px 10px 14px;
+  }
+  .word-meta #wordClue, #wordMeta #wordClue{font-size:14px}
+  .word-meta #wordTopic, #wordMeta #wordTopic{font-size:12px}
+}

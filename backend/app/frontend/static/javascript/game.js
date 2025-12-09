@@ -75,14 +75,19 @@ document.addEventListener('DOMContentLoaded', ()=>{
       }
       return;
     }
-    const topic = document.getElementById('topic').value;
-    const difficulty = document.getElementById('difficulty').value;
+    // read difficulty safely; if the element is missing, log and fall back to 'easy'
+    const diffEl = document.getElementById('difficulty');
+    if(!diffEl){
+      console.error('Start New Game: difficulty selector (#difficulty) not found in DOM — falling back to "easy"');
+    }
+    const difficulty = diffEl ? diffEl.value : 'easy';
     newGameBtn.disabled = true; newGameBtn.textContent = 'Starting...';
     try{
       const resp = await fetch(API_BASE + '/new', {
         method: 'POST',
         headers: authHeaders(),
-        body: JSON.stringify({ topic, difficulty })
+        // Only send difficulty level to backend
+        body: JSON.stringify({ difficulty })
       });
       if(!resp.ok){
         const err = await resp.json().catch(()=>({detail:resp.statusText}));
@@ -143,7 +148,15 @@ document.addEventListener('DOMContentLoaded', ()=>{
       const btn = document.createElement('button');
       btn.className = 'key';
       btn.textContent = letter;
-      if(guessedLetters.includes(letter.toLowerCase())) btn.classList.add('disabled');
+      // disable button if already guessed (use both attribute and class for accessibility)
+      if((guessedLetters || []).includes(letter.toLowerCase())){
+        btn.classList.add('disabled');
+        btn.disabled = true;
+        btn.setAttribute('aria-pressed', 'true');
+      } else {
+        btn.disabled = false;
+        btn.setAttribute('aria-pressed', 'false');
+      }
       btn.addEventListener('click', ()=> onLetter(letter));
       keyboard.appendChild(btn);
     });
@@ -177,20 +190,25 @@ document.addEventListener('DOMContentLoaded', ()=>{
   }
 
   function updateGallows(attemptsLeft){
-    // map attemptsLeft to stage 0..8 (assume initial attempts 8)
-    const maxStage = 8;
-    const stage = Math.max(0, Math.min(maxStage, maxStage - attemptsLeft));
+    // Map attemptsLeft to a stage between 0..9 (0 = nothing, 9 = full hangman with legs).
+    // We don't always know the initial attempts value from the server, but the Game model uses 6 by default.
+    const MAX_STAGE = 9;
+    const INITIAL_ATTEMPTS = 6; // matches backend default in models.Game
+    const attempts = Number.isFinite(attemptsLeft) ? attemptsLeft : INITIAL_ATTEMPTS;
+    const wrong = Math.max(0, INITIAL_ATTEMPTS - attempts);
+    // scale wrong guesses proportionally to the available stages
+    const stage = Math.max(0, Math.min(MAX_STAGE, Math.round((wrong / INITIAL_ATTEMPTS) * MAX_STAGE)));
     gallows.className = 'gallows stage-' + stage;
   }
 
   function loadGame(game){
     currentGame = game;
-    // revealed might be present, or build from word length
-    const revealed = game.revealed || (game.word && game.word.text ? '_'.repeat(game.word.text.length) : '_'.repeat(6));
+    // revealed should be provided by the backend; if not, fallback to a safe default
+    const revealed = game.revealed || '_'.repeat(6);
     renderWordSlots(revealed);
     // collect guessed letters from revealed and from game.guessed if present
     let guessed = [];
-    if(game.guessed) guessed = game.guessed;
+    if(game.guessed) guessed = (typeof game.guessed === 'string' ? game.guessed.split('') : game.guessed);
     // try to infer guessed from revealed + word
     renderKeyboard(guessed);
     attemptsEl.textContent = game.attempts_left ?? '?';
@@ -198,9 +216,29 @@ document.addEventListener('DOMContentLoaded', ()=>{
     hintsEl.textContent = game.hints ?? 0;
     updateGallows(game.attempts_left ?? 0);
 
+    // populate word metadata (clue and topic) if present
+    const wordMetaEl = document.getElementById('wordMeta');
+    const wordClueEl = document.getElementById('wordClue');
+    const wordTopicEl = document.getElementById('wordTopic');
+    if(game.word){
+      if(wordClueEl) wordClueEl.textContent = 'Clue: ' + (game.word.clue || '—');
+      if(wordTopicEl) wordTopicEl.textContent = 'Topic: ' + (game.word.topic || '—');
+      if(wordMetaEl) wordMetaEl.style.display = 'block';
+    } else {
+      if(wordMetaEl) wordMetaEl.style.display = 'none';
+    }
+
     // show state
     if(game.state === 'lost'){
-      alert('Game over — you lost. The word was: ' + (game.word ? game.word.text : ''));
+      // do NOT reveal the word text in the UI or in the console to avoid cheating
+      let msg = 'Game over — you lost.';
+      if(game.word && (game.word.clue || game.word.topic)){
+        const parts = [];
+        if(game.word.clue) parts.push(game.word.clue);
+        if(game.word.topic) parts.push('topic: ' + game.word.topic);
+        msg += ' Hint: ' + parts.join(' | ');
+      }
+      alert(msg);
     } else if(game.state === 'won'){
       alert('Congratulations — you won!');
     }
@@ -210,6 +248,8 @@ document.addEventListener('DOMContentLoaded', ()=>{
   newGameBtn.addEventListener('click', (e)=>{ e.preventDefault(); startNewGame(); });
   saveBtn.addEventListener('click', ()=>{ // just clear from localstorage and hide
     if(currentGame) localStorage.setItem('current_game_id', currentGame.id);
+    // hide metadata when saved (we don't want to cache UI state separately)
+    const wordMetaEl = document.getElementById('wordMeta'); if(wordMetaEl) wordMetaEl.style.display = 'none';
     alert('Game saved. You can resume later from this device.');
   });
 
