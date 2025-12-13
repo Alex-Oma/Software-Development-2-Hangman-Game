@@ -329,6 +329,40 @@ document.addEventListener('DOMContentLoaded', ()=>{
   }
 
   function showNewGameModal() {
+    if (currentGame && currentGame.state !== 'won' && currentGame.state !== 'lost') {
+      const confirmModal = document.getElementById('confirmNewGameModal');
+      confirmModal.setAttribute('aria-hidden', 'false');
+
+      const yesBtn = document.getElementById('confirmNewGameYes');
+      const noBtn = document.getElementById('confirmNewGameNo');
+
+      function cleanup() {
+        yesBtn.removeEventListener('click', onYes);
+        noBtn.removeEventListener('click', onNo);
+        confirmModal.querySelector('.modal-backdrop').removeEventListener('click', onNo);
+      }
+
+      function onYes() {
+        cleanup();
+        confirmModal.setAttribute('aria-hidden', 'true');
+        _showDifficultyModal();
+      }
+
+      function onNo() {
+        cleanup();
+        confirmModal.setAttribute('aria-hidden', 'true');
+      }
+
+      yesBtn.addEventListener('click', onYes);
+      noBtn.addEventListener('click', onNo);
+      confirmModal.querySelector('.modal-backdrop').addEventListener('click', onNo);
+
+    } else {
+      _showDifficultyModal();
+    }
+  }
+
+  function _showDifficultyModal() {
     const modal = document.getElementById('newGameModal');
     modal.setAttribute('aria-hidden', 'false');
 
