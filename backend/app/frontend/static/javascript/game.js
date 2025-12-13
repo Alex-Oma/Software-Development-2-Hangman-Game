@@ -65,7 +65,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
   }
   */
 
-  async function startNewGame(){
+  async function startNewGame(difficulty = 'easy'){
     // Require authentication for starting a new game
     if(!localStorage.getItem('access_token')){
       // prompt user to sign in and redirect to login page
@@ -74,12 +74,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
       }
       return;
     }
-    // read difficulty safely; if the element is missing, log and fall back to 'easy'
-    const diffEl = document.getElementById('difficulty');
-    if(!diffEl){
-      console.error('Start New Game: difficulty selector (#difficulty) not found in DOM — falling back to "easy"');
-    }
-    const difficulty = diffEl ? diffEl.value : 'easy';
+
     newGameBtn.disabled = true; newGameBtn.textContent = 'Starting...';
     try{
       const resp = await fetch(API_BASE + '/new', {
@@ -244,7 +239,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
   }
 
   // wire up new/resume/save
-  newGameBtn.addEventListener('click', (e)=>{ e.preventDefault(); startNewGame(); });
+  newGameBtn.addEventListener('click', (e)=>{ e.preventDefault(); showNewGameModal(); });
   /*
   saveBtn.addEventListener('click', ()=>{ // just clear from localstorage and hide
     if(currentGame) localStorage.setItem('current_game_id', currentGame.id);
@@ -353,4 +348,39 @@ document.addEventListener('DOMContentLoaded', ()=>{
     });
   }
 
+  function showNewGameModal() {
+    const modal = document.getElementById('newGameModal');
+    modal.setAttribute('aria-hidden', 'false');
+
+    const difficultyButtons = document.getElementById('newGameDifficultyButtons');
+    const cancelBtn = document.getElementById('newGameCancel');
+
+    function cleanup() {
+      difficultyButtons.removeEventListener('click', onDifficultySelect);
+      cancelBtn.removeEventListener('click', onCancel);
+      modal.querySelector('.modal-backdrop').removeEventListener('click', onCancel);
+    }
+
+    function onDifficultySelect(e) {
+      if (e.target.tagName === 'BUTTON' && e.target.dataset.difficulty) {
+        const difficulty = e.target.dataset.difficulty;
+        hideModal();
+        startNewGame(difficulty);
+      }
+    }
+
+    function onCancel(e) {
+      e.preventDefault();
+      hideModal();
+    }
+
+    function hideModal() {
+      cleanup();
+      modal.setAttribute('aria-hidden', 'true');
+    }
+
+    difficultyButtons.addEventListener('click', onDifficultySelect);
+    cancelBtn.addEventListener('click', onCancel);
+    modal.querySelector('.modal-backdrop').addEventListener('click', onCancel);
+  }
 });

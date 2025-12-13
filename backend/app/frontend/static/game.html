@@ -19,18 +19,7 @@
 
       <div class="controls">
         <button id="toggleTheme" class="btn secondary" type="button" aria-label="Toggle theme"></button>
-
-        <label for="difficulty">Difficulty</label>
-        <select id="difficulty">
-          <option value="easy">Easy</option>
-          <option value="medium">Medium</option>
-          <option value="hard">Hard</option>
-          <option value="insane">Insane</option>
-        </select>
-
         <button id="newGameBtn" class="btn">Start New Game</button>
-        <!--<button id="saveBtn" class="btn secondary" style="display:none">Save & Exit</button>-->
-        <!--<a id="resumeBtn" href="#" class="btn secondary" style="display:none">Resume</a>-->
       </div>
     </div>
 
@@ -61,17 +50,6 @@
           </div>
 
           <div class="controls-row" style="margin-top:12px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
-              <!--
-            <label for="difficulty">Difficulty</label>
-            <select id="difficulty">
-              <option value="easy">Easy</option>
-              <option value="medium">Medium</option>
-              <option value="hard">Hard</option>
-              <option value="insane">Insane</option>
-            </select>
-            -->
-            <!--<button id="newGameBtn" class="btn">Start New Game</button>-->
-            <!--<button id="saveBtn" class="btn secondary" style="display:none">Save & Exit</button>-->
           </div>
 
           <div class="word-box" id="wordBox" style="margin-top:18px">
@@ -181,6 +159,25 @@
         <button id="resumeModalResume" class="btn">Resume</button>
         <button id="resumeModalNew" class="btn secondary">Start new</button>
         <button id="resumeModalCancel" class="btn secondary">Cancel</button>
+      </footer>
+    </div>
+  </div>
+
+  <!-- New Game Modal -->
+  <div id="newGameModal" class="modal" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="newGameModalTitle">
+    <div class="modal-backdrop" data-dismiss="modal"></div>
+    <div class="modal-panel" role="document">
+      <header class="modal-header">
+        <h2 id="newGameModalTitle">Choose a difficulty</h2>
+      </header>
+      <div class="modal-body" id="newGameDifficultyButtons" style="display: flex; flex-direction: column; gap: 10px; padding: 10px 0;">
+        <button class="btn" data-difficulty="easy">Easy</button>
+        <button class="btn" data-difficulty="medium">Medium</button>
+        <button class="btn" data-difficulty="hard">Hard</button>
+        <button class="btn" data-difficulty="insane">Insane</button>
+      </div>
+      <footer class="modal-footer">
+        <button id="newGameCancel" class="btn secondary">Cancel</button>
       </footer>
     </div>
   </div>
