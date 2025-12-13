@@ -240,28 +240,12 @@ document.addEventListener('DOMContentLoaded', ()=>{
 
   // wire up new/resume/save
   newGameBtn.addEventListener('click', (e)=>{ e.preventDefault(); showNewGameModal(); });
-  /*
-  saveBtn.addEventListener('click', ()=>{ // just clear from localstorage and hide
-    if(currentGame) localStorage.setItem('current_game_id', currentGame.id);
-    // hide metadata when saved (we don't want to cache UI state separately)
-    const wordMetaEl = document.getElementById('wordMeta'); if(wordMetaEl) wordMetaEl.style.display = 'none';
-    alert('Game saved. You can resume later from this device.');
-  });
-  */
 
   // on load, show resume if present
   // First, if user is logged in, check backend for an unfinished game and prompt to resume
   checkForUnfinished()
-  /*
-  checkForUnfinished().then(()=>{
-    // after checking with the backend, also present any local saved resume option
-    showResumeIfSaved();
-  });
-    */
   // build empty keyboard until a game is loaded
   renderKeyboard([]);
-
-  // if there is a saved id and user clicks resume, resumeGame will be called via showResumeIfSaved wiring
 
   // expose simple logout
   if(localStorage.getItem('access_token')){
@@ -293,7 +277,6 @@ document.addEventListener('DOMContentLoaded', ()=>{
     return new Promise((resolve)=>{
       const modal = document.getElementById('resumeModal');
       const resumeBtn = document.getElementById('resumeModalResume');
-      const newBtn = document.getElementById('resumeModalNew');
       const cancelBtn = document.getElementById('resumeModalCancel');
 
       // helper to find focusable elements inside modal
@@ -304,14 +287,12 @@ document.addEventListener('DOMContentLoaded', ()=>{
 
       function cleanup(){
         resumeBtn.removeEventListener('click', onResume);
-        newBtn.removeEventListener('click', onNew);
         cancelBtn.removeEventListener('click', onCancel);
         modal.querySelector('.modal-backdrop').removeEventListener('click', onCancel);
         document.removeEventListener('keydown', trapKeydown);
       }
 
       function onResume(e){ e.preventDefault(); hideModalElement(); cleanup(); resolve('resume'); }
-      function onNew(e){ e.preventDefault(); hideModalElement(); cleanup(); resolve('new'); }
       function onCancel(e){ e.preventDefault(); hideModalElement(); cleanup(); resolve('cancel'); }
 
       // Keydown handler to trap focus and handle Escape
@@ -338,7 +319,6 @@ document.addEventListener('DOMContentLoaded', ()=>{
       }
 
       resumeBtn.addEventListener('click', onResume);
-      newBtn.addEventListener('click', onNew);
       cancelBtn.addEventListener('click', onCancel);
       modal.querySelector('.modal-backdrop').addEventListener('click', onCancel);
 
