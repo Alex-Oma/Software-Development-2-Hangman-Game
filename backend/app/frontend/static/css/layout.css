@@ -185,7 +185,9 @@ body{
   display:flex;align-items:center;justify-content:center;padding:12px;
 }
 .gallows{
-  width:260px;height:300px;position:relative;/* background: rgba(0,0,0,0.02); */
+  width:260px;height:300px;position:relative;
+  top: 80px;
+  left: -100px;
 }
 .gallows .part{
   position:absolute;left:50%;transform:translateX(-50%);background:var(--muted);border-radius:4px;opacity:0;transition:all 220ms ease, opacity 220ms ease;box-shadow:0 6px 14px rgba(2,6,23,0.12);
@@ -210,17 +212,62 @@ body{
 .gallows .gallow-base, .gallows .gallow-post, .gallows .gallow-beam, .gallows .gallow-support, .gallows .gallow-rope, .gallows .head, .gallows .body, .gallows .arm-left, .gallows .arm-right, .gallows .leg-left, .gallows .leg-right{opacity:0;transform:translateY(-8px) scale(0.98)}
 
 /* Stage progression selectors */
-.gallows.stage-1 .gallow-base{opacity:1;transform:none}
-.gallows.stage-2 .gallow-post{opacity:1;transform:none}
-.gallows.stage-3 .gallow-beam{opacity:1;transform:none}
-.gallows.stage-4 .gallow-support{opacity:1;transform:none}
-.gallows.stage-5 .gallow-rope{opacity:1;transform:none}
-.gallows.stage-6 .head{opacity:1;transform:none}
-.gallows.stage-7 .body{opacity:1;transform:none}
-.gallows.stage-8 .arm-left{opacity:1;transform:none}
-.gallows.stage-8 .arm-right{opacity:1;transform:none}
-.gallows.stage-9 .leg-left{opacity:1;transform:none}
-.gallows.stage-9 .leg-right{opacity:1;transform:none}
+.gallows.stage-1 .gallow-base { opacity: 1; transform: none; }
+
+.gallows.stage-2 .gallow-base,
+.gallows.stage-2 .gallow-post { opacity: 1; transform: none; }
+
+.gallows.stage-3 .gallow-base,
+.gallows.stage-3 .gallow-post,
+.gallows.stage-3 .gallow-beam { opacity: 1; transform: none; }
+
+.gallows.stage-4 .gallow-base,
+.gallows.stage-4 .gallow-post,
+.gallows.stage-4 .gallow-beam,
+.gallows.stage-4 .gallow-support { opacity: 1; transform: none; }
+
+.gallows.stage-5 .gallow-base,
+.gallows.stage-5 .gallow-post,
+.gallows.stage-5 .gallow-beam,
+.gallows.stage-5 .gallow-support,
+.gallows.stage-5 .gallow-rope { opacity: 1; transform: none; }
+
+.gallows.stage-6 .gallow-base,
+.gallows.stage-6 .gallow-post,
+.gallows.stage-6 .gallow-beam,
+.gallows.stage-6 .gallow-support,
+.gallows.stage-6 .gallow-rope,
+.gallows.stage-6 .head { opacity: 1; transform: none; }
+
+.gallows.stage-7 .gallow-base,
+.gallows.stage-7 .gallow-post,
+.gallows.stage-7 .gallow-beam,
+.gallows.stage-7 .gallow-support,
+.gallows.stage-7 .gallow-rope,
+.gallows.stage-7 .head,
+.gallows.stage-7 .body { opacity: 1; transform: none; }
+
+.gallows.stage-8 .gallow-base,
+.gallows.stage-8 .gallow-post,
+.gallows.stage-8 .gallow-beam,
+.gallows.stage-8 .gallow-support,
+.gallows.stage-8 .gallow-rope,
+.gallows.stage-8 .head,
+.gallows.stage-8 .body,
+.gallows.stage-8 .arm-left,
+.gallows.stage-8 .arm-right { opacity: 1; transform: none; }
+
+.gallows.stage-9 .gallow-base,
+.gallows.stage-9 .gallow-post,
+.gallows.stage-9 .gallow-beam,
+.gallows.stage-9 .gallow-support,
+.gallows.stage-9 .gallow-rope,
+.gallows.stage-9 .head,
+.gallows.stage-9 .body,
+.gallows.stage-9 .arm-left,
+.gallows.stage-9 .arm-right,
+.gallows.stage-9 .leg-left,
+.gallows.stage-9 .leg-right { opacity: 1; transform: none; }
 
 /* small decorative shadow for finished hangman */
 .gallows.stage-9 .head{box-shadow:0 8px 24px rgba(0,0,0,0.22)}
