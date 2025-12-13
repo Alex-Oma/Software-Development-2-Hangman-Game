@@ -6,10 +6,8 @@ document.addEventListener('DOMContentLoaded', ()=>{
   const tokenType = localStorage.getItem('token_type') || 'Bearer';
 
   const newGameBtn = document.getElementById('newGameBtn');
-  const resumeBtn = document.getElementById('resumeBtn');
-  const loginBtn = document.getElementById('loginBtn');
-  const registerBtn = document.getElementById('registerBtn');
-  const saveBtn = document.getElementById('saveBtn');
+  // const resumeBtn = document.getElementById('resumeBtn');
+  // const saveBtn = document.getElementById('saveBtn');
 
   const wordBox = document.getElementById('wordBox');
   const keyboard = document.getElementById('keyboard');
@@ -43,7 +41,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
           if(choice === 'resume'){
             localStorage.setItem('current_game_id', game.id);
             loadGame(game);
-            saveBtn.style.display = 'inline-block';
+            // saveBtn.style.display = 'inline-block';
           } else if(choice === 'new'){
             // start fresh (do nothing here; user may press Start New Game)
           }
@@ -54,7 +52,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
       console.warn('Failed to check unfinished game', err);
     }
   }
-
+  /*
   function showResumeIfSaved(){
     const id = localStorage.getItem('current_game_id');
     if(id){
@@ -65,6 +63,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
       resumeBtn.style.display = 'none';
     }
   }
+  */
 
   async function startNewGame(){
     // Require authentication for starting a new game
@@ -102,8 +101,8 @@ document.addEventListener('DOMContentLoaded', ()=>{
       alert('Network error starting game');
     } finally{
       newGameBtn.disabled = false; newGameBtn.textContent = 'Start New Game';
-      showResumeIfSaved();
-      saveBtn.style.display = 'inline-block';
+      // showResumeIfSaved();
+      // saveBtn.style.display = 'inline-block';
     }
   }
 
@@ -246,20 +245,24 @@ document.addEventListener('DOMContentLoaded', ()=>{
 
   // wire up new/resume/save
   newGameBtn.addEventListener('click', (e)=>{ e.preventDefault(); startNewGame(); });
+  /*
   saveBtn.addEventListener('click', ()=>{ // just clear from localstorage and hide
     if(currentGame) localStorage.setItem('current_game_id', currentGame.id);
     // hide metadata when saved (we don't want to cache UI state separately)
     const wordMetaEl = document.getElementById('wordMeta'); if(wordMetaEl) wordMetaEl.style.display = 'none';
     alert('Game saved. You can resume later from this device.');
   });
+  */
 
   // on load, show resume if present
   // First, if user is logged in, check backend for an unfinished game and prompt to resume
+  checkForUnfinished()
+  /*
   checkForUnfinished().then(()=>{
     // after checking with the backend, also present any local saved resume option
     showResumeIfSaved();
   });
-
+    */
   // build empty keyboard until a game is loaded
   renderKeyboard([]);
 
@@ -267,8 +270,8 @@ document.addEventListener('DOMContentLoaded', ()=>{
 
   // expose simple logout
   if(localStorage.getItem('access_token')){
-    loginBtn.style.display = 'none';
-    registerBtn.style.display = 'none';
+    // loginBtn.style.display = 'none';
+    // registerBtn.style.display = 'none';
     const out = document.createElement('button'); out.className = 'btn secondary'; out.textContent = 'Sign out';
     out.addEventListener('click', ()=>{ localStorage.removeItem('access_token'); localStorage.removeItem('current_game_id'); location.href = '/frontend/static/index.html'; });
     document.querySelector('.controls').appendChild(out);
