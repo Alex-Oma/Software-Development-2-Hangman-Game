@@ -44,17 +44,20 @@
               </svg>
             </div>
 
-            <div>
-              <h2 style="margin:0 0 8px 0">Play Hangman — sharpen your vocabulary</h2>
-              <p style="margin:0;color:var(--muted)">Pick a category, choose difficulty, and guess letters to reveal the hidden word before the hangman drawing completes.</p>
-            </div>
+
+            <section class="margin-top card" style="margin-top:20px">
+                <div>
+                  <h2 style="margin:0 0 8px 0">Play Hangman — sharpen your vocabulary</h2>
+                  <p style="margin:0;color:var(--muted)">Pick a category, choose difficulty, and guess letters to reveal the hidden word before the hangman drawing completes.</p>
+                </div>
+            </section>
+
           </div>
 
-          <div style="margin-top:18px;display:flex;gap:10px;align-items:center">
-            <a id="playBtn" href="/frontend/static/demo_layout.html" class="btn">Play Now</a>
-            <a href="/frontend/static/register.html" class="btn secondary">Register</a>
-            <a href="/frontend/static/login.html" class="btn secondary">Login</a>
-          </div>
+          <section class="margin-top card" style="margin-top:20px">
+            <h3 style="margin-top:0">Game description</h3>
+            <p style="color:var(--muted)">Hangman is a classic word-guessing game. Words span multiple topics and difficulty levels. This game is implemented as Progressive Web App (PWA) so that it can work on mobile devices and supports offline caching, dark mode, and user accounts to store progress.</p>
+          </section>
 
         </div>
 
@@ -62,7 +65,7 @@
           <div class="card">
             <h3 style="margin-top:0">How to play</h3>
             <ol style="color:var(--muted);padding-left:18px">
-              <li>Choose a topic and difficulty.</li>
+              <li>Choose a difficulty.</li>
               <li>Guess letters one at a time.</li>
               <li>Each wrong guess adds a part to the gallows.</li>
               <li>Find the word before the hangman is fully drawn.</li>
@@ -77,10 +80,6 @@
         </aside>
       </div>
 
-      <section class="margin-top card" style="margin-top:20px">
-        <h3 style="margin-top:0">Game description</h3>
-        <p style="color:var(--muted)">Hangman is a classic word-guessing game. Words span multiple topics and difficulty levels. This PWA version supports offline caching, dark mode, and user accounts to store progress.</p>
-      </section>
     </main>
 
     <div class="footer" style="margin-top:18px">
@@ -90,27 +89,6 @@
   </div>
 
   <script src="./javascript/theme.js"></script>
-  <script>
-    // Small helper: update header to show account if logged in
-    (function(){
-      try{
-        const token = localStorage.getItem('access_token');
-        const controls = document.querySelector('.controls');
-        if(token && controls){
-          // replace sign-in/register with account quick info
-          const account = document.createElement('div');
-          account.style.display = 'flex'; account.style.gap = '8px'; account.style.alignItems = 'center';
-          const btn = document.createElement('a'); btn.className = 'btn'; btn.href = '/frontend/static/demo_layout.html'; btn.textContent = 'Resume Game';
-          const out = document.createElement('button'); out.className = 'btn secondary'; out.textContent = 'Sign out';
-          out.addEventListener('click', ()=>{ localStorage.removeItem('access_token'); location.reload(); });
-          account.appendChild(btn); account.appendChild(out);
-          // insert before the last two controls
-          const links = Array.from(controls.querySelectorAll('a, button'));
-          controls.innerHTML = ''; controls.appendChild(document.getElementById('toggleTheme'));
-          controls.appendChild(account);
-        }
-      } catch(e){/* ignore */}
-    })();
-  </script>
+  <script src="./javascript/index.js"></script>
 </body>
 </html>
