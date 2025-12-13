@@ -35,6 +35,8 @@ class Game(SQLModel, table=True):
     user_id: Optional[int] = Field(foreign_key="user.id")
     word_id: Optional[int] = Field(foreign_key="word.id")
     revealed: Optional[str] = Field(default=None)
+    # guessed letters stored as a compact lowercase string (e.g. 'aei')
+    guessed: Optional[str] = Field(default='')
     attempts_left: int = Field(default=6)
     score: int = Field(default=0)
     state: str = Field(default="active")  # active/won/lost
@@ -42,4 +44,3 @@ class Game(SQLModel, table=True):
 
     user: Optional[User] = Relationship(back_populates="games")
     word: Optional[Word] = Relationship()
-

@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Sign In — Hangman</title>
+  <link rel="stylesheet" href="./css/layout.css" />
+  <style>
+    .form-row{display:flex;flex-direction:column;gap:8px;margin-bottom:12px}
+    label{font-weight:700;color:var(--muted);font-size:13px}
+    input[type="text"], input[type="email"], input[type="password"]{
+      padding:10px 12px;border-radius:10px;border:1px solid color-mix(in srgb,var(--muted) 18%, var(--card));background:transparent;outline:none;color:inherit;font-size:15px
+    }
+    input:focus{box-shadow:0 6px 20px rgba(37,99,235,0.12);border-color:var(--accent)}
+    .notice{padding:10px;border-radius:10px;margin-bottom:12px;display:none}
+    .notice.success{background:color-mix(in srgb,var(--accent) 8%, transparent);color:var(--card)}
+    .notice.error{background:color-mix(in srgb,var(--danger) 8%, transparent);color:var(--card)}
+    .meta{color:var(--muted);font-size:13px}
+  </style>
+</head>
+<body>
+  <div class="app-shell theme-light center" id="app" style="min-height:100vh;padding:32px">
+    <div style="width:100%;max-width:920px">
+      <div class="header">
+        <div class="brand">
+          <div class="logo">H</div>
+          <div>
+            <h1>Hangman</h1>
+            <div style="font-size:12px;color:var(--muted)">Sign in to continue</div>
+          </div>
+        </div>
+        <div class="controls">
+          <a href="/frontend/static/index.html" class="btn secondary">Home</a>
+          <button id="toggleTheme" class="btn secondary" type="button" aria-label="Toggle theme"></button>
+        </div>
+      </div>
+
+      <div class="card margin-top" style="display:flex;gap:18px;align-items:flex-start;flex-wrap:wrap">
+        <div style="flex:1;min-width:320px;max-width:520px">
+          <h2 style="margin:0 0 8px 0">Sign in</h2>
+          <div class="notice" id="notice"></div>
+
+          <form id="loginForm">
+            <div class="form-row">
+              <label for="username">Username</label>
+              <input id="username" name="username" type="text" autocomplete="username" required />
+            </div>
+
+            <div class="form-row">
+              <label for="password">Password</label>
+              <input id="password" name="password" type="password" autocomplete="current-password" required />
+            </div>
+
+            <div style="display:flex;align-items:center;gap:12px;margin-top:8px">
+              <button class="btn" type="submit" id="submitBtn">Sign in</button>
+              <a href="/frontend/static/register.html" class="btn secondary">Create account</a>
+            </div>
+          </form>
+
+          <div style="margin-top:12px" class="meta">Don't have an account? <a href="/frontend/static/register.html">Register</a></div>
+        </div>
+
+        <div style="width:320px;min-width:240px">
+          <h3 style="margin-top:0">Play instantly</h3>
+          <p class="meta">Signing in lets you save games, sync progress across devices and access hints.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="./javascript/theme.js"></script>
+  <script src="./javascript/login.js"></script>
+</body>
+</html>

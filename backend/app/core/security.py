@@ -8,7 +8,10 @@ SECRET_KEY = "9fH3bVqX7wZ2LpA9s8RkYt1mN4uJ6eC0oS-3vGzQ5xT_cW8yF2hM7nP0aL1bR6sE9u
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24 * 7  # one week
 
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+# Use a PBKDF2-based scheme by default to avoid system bcrypt dependency issues
+# pbkdf2_sha256 is widely supported and avoids bcrypt's 72-byte limit and binary build
+# Keep bcrypt_sha256 and bcrypt as fallbacks if a bcrypt backend is available and desired.
+pwd_context = CryptContext(schemes=["pbkdf2_sha256", "bcrypt_sha256", "bcrypt"], deprecated="auto")
 
 # Function to create a JWT access token
 def create_access_token(subject: str, expires_delta: Optional[timedelta] = None) -> str:
@@ -42,10 +45,11 @@ def verify_password(plain_password, hashed_password) -> bool:
 # Function to hash a plain password
 def get_password_hash(password) -> str:
     '''
-    This function hashes the provided password using bcrypt algorithm.
+    This function hashes the provided password using a secure PBKDF2/SHA-256 based algorithm
+    by default to avoid bcrypt binary dependency issues. If you prefer bcrypt, install and configure
+    a compatible bcrypt backend and adjust the CryptContext schemes order.
     :param password: Plain text password to be hashed
     :return: Hashed password string
     '''
 
     return pwd_context.hash(password)
-

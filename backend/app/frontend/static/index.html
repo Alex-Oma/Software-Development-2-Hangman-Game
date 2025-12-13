@@ -1,22 +1,94 @@
 <!doctype html>
-<html>
+<html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Hangman Game</title>
+  <title>Hangman — Play & Learn</title>
+  <link rel="stylesheet" href="./css/layout.css" />
 </head>
 <body>
-  <div id="app">
-    <h1>Hangman Game</h1>
-    <p>Open developer console and try the API endpoints under /api.</p>
+  <div class="app-shell theme-light" id="app" style="max-width:980px;margin:24px auto;padding:18px">
+    <div class="header">
+      <div class="brand">
+        <div class="logo">H</div>
+        <div>
+          <h1 style="margin:0">Hangman</h1>
+          <div style="font-size:12px;color:var(--muted)">Guess the word — save your score</div>
+        </div>
+      </div>
+
+      <div class="controls">
+        <button id="toggleTheme" class="btn secondary" type="button" aria-label="Toggle theme"></button>
+        <a href="/frontend/static/login.html" class="btn secondary">Sign in</a>
+        <a href="/frontend/static/register.html" class="btn">Create account</a>
+      </div>
+    </div>
+
+    <main class="margin-top">
+      <div style="display:flex;gap:20px;align-items:center;flex-wrap:wrap">
+        <div style="flex:1;min-width:280px;max-width:520px">
+          <!-- Hero -->
+          <div style="display:flex;gap:14px;align-items:center">
+            <div style="width:120px;height:120px;border-radius:16px;background:linear-gradient(135deg,var(--accent),var(--accent-2));display:flex;align-items:center;justify-content:center;color:white;box-shadow:var(--shadow)">
+              <!-- simple inline hangman SVG icon -->
+              <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <rect x="4" y="56" width="42" height="4" rx="2" fill="white"/>
+                <rect x="12" y="8" width="4" height="48" rx="2" fill="white"/>
+                <rect x="12" y="8" width="28" height="4" rx="2" fill="white"/>
+                <rect x="36" y="8" width="2" height="12" fill="white"/>
+                <circle cx="37" cy="24" r="4" stroke="white" stroke-width="2" fill="transparent"/>
+                <rect x="36" y="28" width="2" height="12" fill="white"/>
+                <rect x="33" y="35" width="14" height="2" transform="rotate(-20 30 44)" fill="white"/>
+                <rect x="35" y="40" width="10" height="2" transform="rotate(40 38 44)" fill="white"/>
+                <rect x="30" y="38" width="10" height="2" transform="rotate(-40 38 44)" fill="white"/>
+              </svg>
+            </div>
+
+
+            <section class="margin-top card" style="margin-top:20px">
+                <div>
+                  <h2 style="margin:0 0 8px 0">Play Hangman — sharpen your vocabulary</h2>
+                  <p style="margin:0;color:var(--muted)">Pick a category, choose difficulty, and guess letters to reveal the hidden word before the hangman drawing completes.</p>
+                </div>
+            </section>
+
+          </div>
+
+          <section class="margin-top card" style="margin-top:20px">
+            <h3 style="margin-top:0">Game description</h3>
+            <p style="color:var(--muted)">Hangman is a classic word-guessing game. Words span multiple topics and difficulty levels. This game is implemented as Progressive Web App (PWA) so that it can work on mobile devices and supports offline caching, dark mode, and user accounts to store progress.</p>
+          </section>
+
+        </div>
+
+        <aside style="flex:0 0 340px;min-width:240px">
+          <div class="card">
+            <h3 style="margin-top:0">How to play</h3>
+            <ol style="color:var(--muted);padding-left:18px">
+              <li>Choose a difficulty.</li>
+              <li>Guess letters one at a time.</li>
+              <li>Each wrong guess adds a part to the gallows.</li>
+              <li>Find the word before the hangman is fully drawn.</li>
+            </ol>
+            <h4 style="margin-top:8px">Rules</h4>
+            <ul style="color:var(--muted);padding-left:18px">
+              <li>You have limited attempts depending on difficulty.</li>
+              <li>Hints cost points, use them wisely.</li>
+              <li>Registered users can save scores and resume games.</li>
+            </ul>
+          </div>
+        </aside>
+      </div>
+
+    </main>
+
+    <div class="footer" style="margin-top:18px">
+      <div>Made by Alex O</div>
+      <div>Version 0.1</div>
+    </div>
   </div>
-  <script>
-    async function ping() {
-      const res = await fetch('/api/games/new', {method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({})});
-      console.log('new game', await res.json());
-    }
-    // ping();
-  </script>
+
+  <script src="./javascript/theme.js"></script>
+  <script src="./javascript/index.js"></script>
 </body>
 </html>
-

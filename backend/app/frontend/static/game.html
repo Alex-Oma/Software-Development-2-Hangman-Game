@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Hangman — Game</title>
+  <link rel="stylesheet" href="./css/layout.css" />
+</head>
+<body>
+  <div class="app-shell theme-light" id="app">
+    <div class="header">
+      <div class="brand">
+        <div class="logo">H</div>
+        <div>
+          <h1>Hangman</h1>
+          <div style="font-size:12px;color:var(--muted)">Play the game</div>
+        </div>
+      </div>
+
+      <div class="controls">
+        <button id="toggleTheme" class="btn secondary" type="button" aria-label="Toggle theme"></button>
+        <a id="resumeBtn" href="#" class="btn secondary" style="display:none">Resume</a>
+        <a id="loginBtn" href="/frontend/static/login.html" class="btn secondary">Login</a>
+        <a id="registerBtn" href="/frontend/static/register.html" class="btn">Register</a>
+      </div>
+    </div>
+
+    <div class="game-grid margin-top">
+      <div class="gallows-column">
+        <div class="gallows stage-0" id="gallows">
+          <div class="gallow-base part"></div>
+          <div class="gallow-post part"></div>
+          <div class="gallow-beam part"></div>
+          <div class="gallow-support part"></div>
+          <div class="gallow-rope part"></div>
+
+          <div class="head part"></div>
+          <div class="body part"></div>
+          <div class="arm-left part"></div>
+          <div class="arm-right part"></div>
+          <div class="leg-left part"></div>
+          <div class="leg-right part"></div>
+        </div>
+      </div>
+
+      <div>
+        <div class="card">
+          <div class="hud">
+            <div class="stat">Score: <strong id="score">0</strong></div>
+            <div class="stat">Attempts left: <strong id="attempts">0</strong></div>
+            <div class="stat hint-badge">Hints: <span id="hints">0</span></div>
+          </div>
+
+          <div class="controls-row" style="margin-top:12px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+            <label for="difficulty">Difficulty</label>
+            <select id="difficulty">
+              <option value="easy">Easy</option>
+              <option value="medium">Medium</option>
+              <option value="hard">Hard</option>
+              <option value="insane">Insane</option>
+            </select>
+            <button id="newGameBtn" class="btn">Start New Game</button>
+            <button id="saveBtn" class="btn secondary" style="display:none">Save & Exit</button>
+          </div>
+
+          <div class="word-box" id="wordBox" style="margin-top:18px">
+            <!-- letter slots will be rendered here -->
+          </div>
+
+          <!-- Word metadata (clue/topic); hidden when not available -->
+          <div id="wordMeta" class="word-meta" style="display:none;margin-top:12px;padding:10px;border-radius:10px;background:var(--glass);">
+            <div id="wordClue" style="font-weight:700;color:var(--accent);">Clue: </div>
+            <div id="wordTopic" style="font-size:13px;color:var(--muted);margin-top:6px">Topic: </div>
+          </div>
+
+          <div class="keyboard" id="keyboard" style="margin-top:18px">
+            <!-- alphabet buttons injected -->
+          </div>
+
+          <div style="margin-top:14px;display:flex;gap:8px;justify-content:center;align-items:center">
+            <button class="btn" id="hintBtn">Use Hint</button>
+            <button class="btn secondary" id="guessWord">Guess Word</button>
+          </div>
+        </div>
+
+        <div class="footer" style="margin-top:12px">
+          <div>Good luck!</div>
+          <div>Version 0.1</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="./javascript/theme.js"></script>
+  <script src="./javascript/game.js"></script>
+
+  <!-- Resume modal (hidden by default) -->
+  <div id="resumeModal" class="modal" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="resumeModalTitle">
+    <div class="modal-backdrop" data-dismiss="modal"></div>
+    <div class="modal-panel" role="document">
+      <header class="modal-header">
+        <h2 id="resumeModalTitle">Resume previous game?</h2>
+      </header>
+      <div class="modal-body">
+        <p id="resumeModalMessage">You have an unfinished game. Would you like to resume it?</p>
+      </div>
+      <footer class="modal-footer">
+        <button id="resumeModalResume" class="btn">Resume</button>
+        <button id="resumeModalNew" class="btn secondary">Start new</button>
+        <button id="resumeModalCancel" class="btn secondary">Cancel</button>
+      </footer>
+    </div>
+  </div>
+</body>
+</html>

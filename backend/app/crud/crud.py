@@ -2,6 +2,7 @@ from sqlmodel import Session, select
 from .. import models
 from ..core import security
 from sqlalchemy import func
+import logging
 
 
 def get_user_by_username(session: Session, username: str):
@@ -54,6 +55,12 @@ def get_random_word(session: Session, topic: str = None, difficulty: str = None)
     :param difficulty: str
     :return: models.Word or None
     '''
+
+    # Adding logging for debugging
+    logging.basicConfig(level=logging.INFO)
+    logger = logging.getLogger(__name__)
+    logger.info(f"Fetching random word with topic={topic} and difficulty={difficulty}")
+
     q = select(models.Word)
     if topic:
         q = q.where(models.Word.topic == topic)
@@ -62,5 +69,33 @@ def get_random_word(session: Session, topic: str = None, difficulty: str = None)
 
     # Order randomly and limit to 1 to fetch a random matching word
     q = q.order_by(func.random()).limit(1)
-    return session.exec(q).first()
+    # Execute the query
+    word = session.exec(q).first()
 
+    # Log the result
+    if not word:
+        logger.warning("No matching word found")
+        return None
+    else:
+        logger.info(f"Found word: {word.text} (topic={word.topic}, difficulty={word.difficulty})")
+
+    # Return the found word
+    return word
+
+def get_count_of_words(session: Session, topic: str = None, difficulty: str = None):
+    '''
+    Get the count of words, optionally filtered by topic and difficulty.
+    :param session: Session
+    :param topic: str
+    :param difficulty: str
+    :return: int
+    '''
+
+    q = select(func.count(models.Word.id))
+    if topic:
+        q = q.where(models.Word.topic == topic)
+    if difficulty:
+        q = q.where(models.Word.difficulty == difficulty)
+
+    count = session.exec(q).one()
+    return count

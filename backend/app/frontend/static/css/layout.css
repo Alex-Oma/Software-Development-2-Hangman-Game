@@ -11,12 +11,16 @@
   --card: #ffffff;
   --muted: #6b7280;
   --accent: #2563eb; /* blue */
+  --accent-contrast: var(--accent); /* darker variant for high-contrast filled elements; defaults to accent */
   --accent-2: #10b981; /* green */
   --danger: #ef4444;
   --glass: rgba(255,255,255,0.6);
   --shadow: 0 6px 18px rgba(16,24,40,0.08);
   --radius: 12px;
   --font-sans: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  /* primary text color for good contrast in light theme */
+  --text-primary: #0f1724; /* dark slate for headings and important text */
+  --text-secondary: #6b7280; /* muted text */
 }
 
 /* dark overrides */
@@ -25,17 +29,21 @@
     --bg: #0b1220;
     --card: #0f1724;
     --muted: #9ca3af;
-    --accent: #60a5fa;
+    --accent: #60a5fa; /* bright accent used for decorative accents in dark theme */
+    --accent-contrast: #1f4ea3; /* darker variant for filled elements (white text) */
     --accent-2: #34d399;
     --danger: #f87171;
     --glass: rgba(255,255,255,0.04);
     --shadow: 0 6px 18px rgba(2,6,23,0.6);
+    /* lighter primary text for dark theme */
+    --text-primary: #e6edf3; /* light text for headings */
+    --text-secondary: #9ca3af;
   }
 }
 
 /* Theme classes for toggling in JS if needed */
-.theme-light{ --bg: #f6f7fb; --card:#ffffff; --muted:#6b7280; --accent:#2563eb; --accent-2:#10b981; --glass: rgba(255,255,255,0.6); --shadow: 0 6px 18px rgba(16,24,40,0.08); }
-.theme-dark{  --bg: #071025; --card:#071828; --muted:#9ca3af; --accent:#60a5fa; --accent-2:#34d399; --glass: rgba(255,255,255,0.04); --shadow:0 6px 18px rgba(2,6,23,0.6);}
+.theme-light{ --bg: #f6f7fb; --card:#ffffff; --muted:#6b7280; --accent:#2563eb; --accent-2:#10b981; --glass: rgba(255,255,255,0.6); --shadow: 0 6px 18px rgba(16,24,40,0.08); --text-primary: #0f1724; --text-secondary: #6b7280; --accent-contrast: var(--accent); }
+.theme-dark{  --bg: #071025; --card:#071828; --muted:#9ca3af; --accent:#60a5fa; --accent-2:#34d399; --glass: rgba(255,255,255,0.04); --shadow:0 6px 18px rgba(2,6,23,0.6); --text-primary: #e6edf3; --text-secondary: #9ca3af; --accent-contrast: #1f4ea3;}
 
 /* Page base */
 html,body{height:100%;}
@@ -43,7 +51,7 @@ body{
   margin:0;
   font-family:var(--font-sans);
   background: linear-gradient(180deg, var(--bg), color-mix(in srgb, var(--bg) 80%, #0000 ));
-  color: #e6edf3;
+  color: var(--text-primary);
   -webkit-font-smoothing:antialiased;
   -moz-osx-font-smoothing:grayscale;
   display:flex;
@@ -76,7 +84,7 @@ body{
 .brand .logo{
   width:48px;height:48px;border-radius:10px;background:linear-gradient(135deg,var(--accent),var(--accent-2));display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:18px;box-shadow:0 6px 14px rgba(16,24,40,0.12);
 }
-.brand h1{margin:0;font-size:18px;color:var(--bg);}
+.brand h1{margin:0;font-size:18px;color:var(--text-primary);} /* increased contrast for brand/title */
 
 .controls{display:flex;gap:8px;align-items:center}
 
@@ -131,14 +139,32 @@ body{
   opacity:0.28;cursor:not-allowed;transform:none;box-shadow:none;text-shadow:none
 }
 
-/* Primary button */
+/* Primary button - neutral by default; highlight (filled) on hover/focus */
 .btn{
-  display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border-radius:12px;background:var(--accent);color:white;border:none;cursor:pointer;font-weight:700;transition:all 170ms ease;box-shadow:0 8px 24px rgba(37,99,235,0.18)
+  display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border-radius:12px;background:transparent;color:var(--accent);border:1px solid color-mix(in srgb,var(--accent) 24%, var(--card));cursor:pointer;font-weight:700;transition:all 170ms ease;box-shadow:none
 }
-.btn:hover{filter:brightness(1.03);transform:translateY(-3px);box-shadow:0 14px 36px rgba(37,99,235,0.26)}
 
+/* Apply filled accent and elevation when hovered or focused (keyboard accessible via focus-visible) */
+.btn:hover,
+.btn:focus-visible{
+  background:var(--accent-contrast);
+  color:white;
+  transform:translateY(-3px);
+  box-shadow:0 14px 36px rgba(37,99,235,0.26);
+  border-color: transparent;
+}
+
+/* Keep secondary buttons visually subtle; they get a light tint on hover/focus */
 .btn.secondary{background:transparent;color:var(--accent);border:1px solid color-mix(in srgb,var(--accent) 24%, var(--card));box-shadow:none}
-.btn.secondary:hover{background:color-mix(in srgb,var(--accent) 6%, transparent);color:var(--card);box-shadow:0 10px 30px rgba(16,24,40,0.06)}
+/* Make secondary buttons highlight like primary on hover/focus */
+.btn.secondary:hover,
+.btn.secondary:focus-visible{
+  background:var(--accent-contrast);
+  color:white;
+  transform:translateY(-3px);
+  box-shadow:0 14px 36px rgba(37,99,235,0.26);
+  border-color: transparent;
+}
 
 /* Hint badge */
 .hint-badge{background:var(--accent-2);color:white;padding:6px 8px;border-radius:999px;font-weight:700}
@@ -187,17 +213,17 @@ body{
 .gallows.stage-1 .gallow-base{opacity:1;transform:none}
 .gallows.stage-2 .gallow-post{opacity:1;transform:none}
 .gallows.stage-3 .gallow-beam{opacity:1;transform:none}
-.gallows.stage-3 .gallow-support{opacity:1;transform:none}
-.gallows.stage-4 .gallow-rope{opacity:1;transform:none}
-.gallows.stage-5 .head{opacity:1;transform:none}
-.gallows.stage-6 .body{opacity:1;transform:none}
-.gallows.stage-7 .arm-left{opacity:1;transform:none}
-.gallows.stage-7 .arm-right{opacity:1;transform:none}
-.gallows.stage-8 .leg-left{opacity:1;transform:none}
-.gallows.stage-8 .leg-right{opacity:1;transform:none}
+.gallows.stage-4 .gallow-support{opacity:1;transform:none}
+.gallows.stage-5 .gallow-rope{opacity:1;transform:none}
+.gallows.stage-6 .head{opacity:1;transform:none}
+.gallows.stage-7 .body{opacity:1;transform:none}
+.gallows.stage-8 .arm-left{opacity:1;transform:none}
+.gallows.stage-8 .arm-right{opacity:1;transform:none}
+.gallows.stage-9 .leg-left{opacity:1;transform:none}
+.gallows.stage-9 .leg-right{opacity:1;transform:none}
 
 /* small decorative shadow for finished hangman */
-.gallows.stage-8 .head{box-shadow:0 8px 24px rgba(0,0,0,0.22)}
+.gallows.stage-9 .head{box-shadow:0 8px 24px rgba(0,0,0,0.22)}
 
 /* Accessibility: focus outline for interactive elements within gallows controls */
 .gallows [tabindex]{outline:none}
@@ -220,3 +246,116 @@ body{
 /* utility */
 .center{display:flex;align-items:center;justify-content:center}
 .margin-top{margin-top:14px}
+
+/* Theme toggle icon styles */
+.toggle-icon-wrapper{display:inline-flex;align-items:center;gap:8px}
+.theme-toggle-icon{width:20px;height:20px;display:inline-block;position:relative}
+.theme-toggle-icon svg{width:20px;height:20px;display:block;position:absolute;top:0;left:0;transition:opacity 260ms ease, transform 260ms ease}
+
+/* Hide both icons by default to avoid a flash where both are visible; JavaScript will set theme classes on <html> or #app */
+.theme-toggle-icon .sun{opacity:0;transform:scale(0.8) rotate(0deg);visibility:hidden;pointer-events:none}
+.theme-toggle-icon .moon{opacity:0;transform:scale(0.8) rotate(-10deg);visibility:hidden;pointer-events:none}
+
+/* When dark theme is active, show moon and hide sun (use html.class to be specific) */
+html.theme-dark .theme-toggle-icon .sun{opacity:0 !important;transform:scale(0.8) rotate(10deg);visibility:hidden !important;pointer-events:none}
+html.theme-dark .theme-toggle-icon .moon{opacity:1 !important;transform:scale(1) rotate(0deg);visibility:visible !important;pointer-events:auto}
+
+/* When light theme is active, ensure sun visible, moon hidden explicitly */
+html.theme-light .theme-toggle-icon .sun{opacity:1 !important;transform:scale(1) rotate(0deg);visibility:visible !important;pointer-events:auto}
+html.theme-light .theme-toggle-icon .moon{opacity:0 !important;transform:scale(0.8) rotate(-10deg);visibility:hidden !important;pointer-events:none}
+
+/* Also support when theme classes are applied to an ancestor (e.g., #app) before html is updated */
+.theme-dark .theme-toggle-icon .sun{opacity:0 !important;transform:scale(0.8) rotate(10deg) !important;visibility:hidden !important;pointer-events:none !important}
+.theme-dark .theme-toggle-icon .moon{opacity:1 !important;transform:scale(1) rotate(0deg) !important;visibility:visible !important;pointer-events:auto !important}
+
+.theme-light .theme-toggle-icon .sun{opacity:1 !important;transform:scale(1) rotate(0deg) !important;visibility:visible !important;pointer-events:auto !important}
+.theme-light .theme-toggle-icon .moon{opacity:0 !important;transform:scale(0.8) rotate(-10deg) !important;visibility:hidden !important;pointer-events:none !important}
+
+/* Toggle button text styling */
+.theme-toggle-text{font-weight:700;font-size:13px;color:var(--muted)}
+
+/* Focus/pressed styles for accessibility */
+#toggleTheme:focus{outline:none;box-shadow:0 0 0 4px color-mix(in srgb,var(--accent) 14%, transparent);border-radius:10px}
+#toggleTheme[aria-pressed="true"]{background: color-mix(in srgb,var(--accent) 8%, transparent);}
+
+/* Ensure toggle button has nice rounded padding */
+#toggleTheme{padding:8px 10px;display:inline-flex;align-items:center;gap:8px}
+
+/* Make headings more prominent and high-contrast */
+h1, h2, h3, h4 {
+  color: var(--text-primary);
+  -webkit-font-smoothing:antialiased;
+}
+
+/* Slightly stronger styling for section headings inside cards */
+.card h3, .card h4 {
+  color: var(--text-primary);
+  font-weight:700;
+}
+
+/* Modal styles (resume dialog) */
+.modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;z-index:1200}
+.modal[aria-hidden="false"]{display:flex}
+.modal-backdrop{position:absolute;inset:0;background:rgba(2,6,23,0.6);backdrop-filter:blur(4px)}
+.modal-panel{position:relative;background:var(--card);color:var(--text-primary);border-radius:12px;max-width:520px;width:calc(100% - 40px);padding:18px;box-shadow:0 20px 60px rgba(2,6,23,0.6);z-index:1201;transform:translateY(-8px);opacity:0;transition:all 180ms ease}
+.modal[aria-hidden="false"] .modal-panel{transform:none;opacity:1}
+.modal-header h2{margin:0;font-size:18px}
+.modal-body{margin-top:12px;color:var(--muted)}
+.modal-footer{display:flex;gap:8px;justify-content:flex-end;margin-top:16px}
+.modal-footer .btn{min-width:88px}
+.modal-panel:focus{outline:none}
+
+/* Word metadata panel (clue + topic) */
+.word-meta, #wordMeta{
+  position:relative;
+  display:block; /* JS controls visibility via inline style */
+  padding:12px 14px 12px 18px;
+  border-radius:10px;
+  background: linear-gradient(180deg, color-mix(in srgb, var(--card) 96%, #0000), var(--card));
+  border: 1px solid color-mix(in srgb, var(--muted) 10%, var(--card));
+  box-shadow: 0 8px 20px rgba(2,6,23,0.06);
+  color: var(--text-primary);
+  transition: transform 160ms ease, opacity 160ms ease;
+  overflow:hidden;
+}
+
+/* Decorative accent stripe on the left */
+.word-meta::before, #wordMeta::before{
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 6px;
+  border-top-left-radius:10px;
+  border-bottom-left-radius:10px;
+  background: linear-gradient(180deg, var(--accent), var(--accent-2));
+  box-shadow: 0 4px 10px rgba(0,0,0,0.06);
+}
+
+/* Space content to the right of the accent */
+.word-meta > div, #wordMeta > div{margin-left:12px}
+
+/* Clue style */
+.word-meta #wordClue, #wordMeta #wordClue{
+  font-weight:700;
+  color: var(--accent-contrast);
+  font-size:15px;
+  line-height:1.2;
+}
+
+/* Topic style */
+.word-meta #wordTopic, #wordMeta #wordTopic{
+  margin-top:6px;
+  color: var(--text-secondary);
+  font-size:13px;
+}
+
+/* Make sure it looks good on small screens */
+@media (max-width:640px){
+  .word-meta, #wordMeta{
+    padding:10px 12px 10px 14px;
+  }
+  .word-meta #wordClue, #wordMeta #wordClue{font-size:14px}
+  .word-meta #wordTopic, #wordMeta #wordTopic{font-size:12px}
+}

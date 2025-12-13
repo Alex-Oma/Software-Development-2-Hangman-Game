@@ -36,6 +36,17 @@ class GuessIn(BaseModel):
     letter: str
 
 
+class WordMeta(BaseModel):
+    """Metadata about a word exposed to clients (no actual word text included)."""
+    id: Optional[int]
+    clue: Optional[str]
+    topic: Optional[str]
+    difficulty: Optional[str]
+
+    class Config:
+        orm_mode = True
+
+
 class GameRead(BaseModel):
     # Game read schema
     id: int
@@ -43,8 +54,10 @@ class GameRead(BaseModel):
     attempts_left: int
     score: int
     state: str
+    guessed: Optional[str]
+    # include nested word metadata (no actual word text) so frontend can show clue/topic but not the answer
+    word: Optional[WordMeta] = None
 
     class Config:
         # Enable ORM mode for compatibility with SQLModel
         orm_mode = True
-

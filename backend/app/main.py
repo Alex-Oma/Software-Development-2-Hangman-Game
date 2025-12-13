@@ -2,28 +2,17 @@ from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from starlette.responses import RedirectResponse
 from pathlib import Path
+from contextlib import asynccontextmanager
+import logging
 
 from . import models
 from .database import engine
 from .routers import auth, games
 
-# create FastAPI app instance
-app = FastAPI(title="Hangman Game Backend API")
 
-# mount the frontend static folder using a resolved filesystem path
-static_dir = Path(__file__).resolve().parent / "frontend" / "static"
-if static_dir.exists():
-    # mount static files
-    app.mount("/", StaticFiles(directory=str(static_dir), html=True), name="static")
-
-# include API routers
-app.include_router(auth.router, prefix="/api/auth", tags=["auth"])
-app.include_router(games.router, prefix="/api/games", tags=["games"])
-
-# create database tables and seed data on startup
-@app.on_event("startup")
-def on_startup():
-    """Create database tables and seed initial data on startup."""
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    """Lifespan context: create DB tables and seed data before the app starts."""
     # create tables
     try:
         models.SQLModel.metadata.create_all(engine)
@@ -34,23 +23,46 @@ def on_startup():
     # seed demo data (words and a demo user)
     try:
         from .data.seed_words import seed
-        from sqlmodel import Session
-        from .core import security
+        from sqlmodel import Session, select
         from . import models as _models
 
-        # seed words
+        logging.basicConfig(level=logging.INFO)
+        logger = logging.getLogger(__name__)
+
         with Session(engine) as session:
-            seed(session)
-            # ensure demo user exists
-            demo = session.exec(__import__('sqlmodel').sqlmodel.sql.select(_models.User).where(_models.User.username == 'demo')).first()
-            if not demo:
-                # create demo user
-                demo_user = _models.User(username='demo', email='demo@example.com', hashed_password=security.get_password_hash('demo'))
-                session.add(demo_user)
-                session.commit()
+            try:
+                logger.info('Running DB seed from seed_words.seed(...)')
+                seeded = seed(session)
+                logger.info(f'Seed returned: {seeded} words in DB (seed function result)')
+                # verify seed: count words
+                try:
+                    cnt = session.exec(select(_models.Word)).all()
+                    logger.info(f'Verified words in DB after seeding: {len(cnt)}')
+                except Exception:
+                    logger.exception('Failed to query Word table after seeding')
+            except Exception:
+                logger.exception('Seed function raised an exception')
     except Exception:
-        # ignore seed failures in skeleton
-        pass
+        # ignore seed failures in skeleton but log
+        logging.exception('Failed to run seed on startup')
+
+    yield
+    # no explicit shutdown actions required for now
+
+
+# create FastAPI app instance with lifespan
+app = FastAPI(title="Hangman Game Backend API", lifespan=lifespan)
+
+# mount the frontend static folder using a resolved filesystem path
+static_dir = Path(__file__).resolve().parent / "frontend" / "static"
+if static_dir.exists():
+    # mount static files at a subpath so API routes are not intercepted
+    app.mount("/frontend/static", StaticFiles(directory=str(static_dir), html=True), name="static")
+
+# include API routers
+app.include_router(auth.router, prefix="/api/auth", tags=["auth"])
+app.include_router(games.router, prefix="/api/games", tags=["games"])
+
 
 # root endpoint to redirect to frontend
 @app.get("/")
