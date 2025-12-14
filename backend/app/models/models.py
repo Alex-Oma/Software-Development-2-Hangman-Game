@@ -37,6 +37,7 @@ class Game(SQLModel, table=True):
     revealed: Optional[str] = Field(default=None)
     # guessed letters stored as a compact lowercase string (e.g. 'aei')
     guessed: Optional[str] = Field(default='')
+    initial_attempts: int = Field(default=6)
     attempts_left: int = Field(default=6)
     score: int = Field(default=0)
     state: str = Field(default="active")  # active/won/lost

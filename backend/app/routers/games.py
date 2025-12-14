@@ -63,7 +63,34 @@ def get_unfinished_game(current_user: models.User = Depends(get_current_user), s
     if not game:
         # No unfinished game - return 204 No Content
         return Response(status_code=204)
-    return game
+
+    # Build explicit response that contains only word metadata (no word.text) so that user can't cheat
+    word_meta = None
+    try:
+        if getattr(game, 'word_id', None) is not None:
+            w = session.get(models.Word, game.word_id)
+            if w:
+                word_meta = {
+                    'id': w.id,
+                    'clue': w.clue,
+                    'topic': w.topic,
+                    'difficulty': w.difficulty,
+                }
+    except Exception:
+        # ignore failures to build metadata; return best-effort response below
+        word_meta = None
+
+    response = {
+        'id': game.id,
+        'revealed': game.revealed,
+        'initial_attempts': game.initial_attempts,
+        'attempts_left': game.attempts_left,
+        'score': game.score,
+        'state': game.state,
+        'guessed': game.guessed,
+        'word': word_meta,
+    }
+    return response
 
 
 # Endpoint to start a new game
@@ -74,8 +101,18 @@ def new_game(payload: schemas.GameCreate, session: Session = Depends(get_session
     if not word:
         raise HTTPException(status_code=404, detail="No words available")
 
+    # determine initial attempts based on difficulty
+    difficulty_attempts_map = {
+        'easy': 5,
+        'medium': 7,
+        'hard': 9,
+        'insane': 10,
+    }
+    # default to 6 attempts if difficulty not recognized
+    initial_attempts = difficulty_attempts_map.get(payload.difficulty, 6)
+
     # current_user is provided by get_current_user and will raise 401 if auth is missing/invalid
-    game = crud.create_game(session, current_user, word)
+    game = crud.create_game(session, current_user, word, initial_attempts=initial_attempts)
     # ensure the created game includes the selected word relationship so the response contains topic/clue
     try:
         game.word = word
@@ -96,6 +133,7 @@ def new_game(payload: schemas.GameCreate, session: Session = Depends(get_session
     response = {
         'id': game.id,
         'revealed': game.revealed,
+        'initial_attempts': game.initial_attempts,
         'attempts_left': game.attempts_left,
         'score': game.score,
         'state': game.state,
@@ -135,6 +173,7 @@ def get_game(game_id: int, session: Session = Depends(get_session), authorizatio
     response = {
         'id': game.id,
         'revealed': game.revealed,
+        'initial_attempts': game.initial_attempts,
         'attempts_left': game.attempts_left,
         'score': game.score,
         'state': game.state,
@@ -214,6 +253,7 @@ def guess(game_id: int, payload: schemas.GuessIn, session: Session = Depends(get
     response = {
         'id': game.id,
         'revealed': game.revealed,
+        'initial_attempts': game.initial_attempts,
         'attempts_left': game.attempts_left,
         'score': game.score,
         'state': game.state,

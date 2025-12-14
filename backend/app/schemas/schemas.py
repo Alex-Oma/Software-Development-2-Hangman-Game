@@ -51,6 +51,7 @@ class GameRead(BaseModel):
     # Game read schema
     id: int
     revealed: Optional[str]
+    initial_attempts: int
     attempts_left: int
     score: int
     state: str

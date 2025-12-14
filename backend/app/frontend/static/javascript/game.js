@@ -183,25 +183,20 @@ document.addEventListener('DOMContentLoaded', ()=>{
     }
   }
 
-  function updateGallows(attemptsLeft){
-    // Explicit mapping from wrong guesses to gallows stage for precise control.
-    // Assumes 6 initial attempts, allowing for 7 states (0-6 wrong guesses).
-    const stageMap = [
-      0, // 0 wrong
-      1, // 1 wrong (base)
-      2, // 2 wrong (post)
-      3, // 3 wrong (beam)
-      4, // 4 wrong (rope)
-      6, // 5 wrong (head, body)
-      9, // 6 wrong (full hangman with arms and legs)
-    ];
+  function updateGallows(attemptsLeft, initialAttempts = 6) {
+    // Dynamically map wrong guesses to the available gallows stages (0-9).
+    const MAX_STAGE = 9;
+    const wrongGuesses = Math.max(0, initialAttempts - attemptsLeft);
 
-    const INITIAL_ATTEMPTS = 6; // Corresponds to the length of stageMap - 1
-    const attempts = Number.isFinite(attemptsLeft) ? attemptsLeft : INITIAL_ATTEMPTS;
-    const wrong = Math.max(0, INITIAL_ATTEMPTS - attempts);
+    // If there are no attempts, show the full gallows.
+    if (initialAttempts === 0) {
+        gallows.className = 'gallows stage-' + MAX_STAGE;
+        return;
+    }
 
-    // Use the mapping, with a fallback for safety.
-    const stage = stageMap[wrong] ?? 9;
+    // Scale the number of wrong guesses to the available stages.
+    // This ensures that the final wrong guess always shows the full hangman.
+    const stage = Math.min(MAX_STAGE, Math.round((wrongGuesses / initialAttempts) * MAX_STAGE));
     gallows.className = 'gallows stage-' + stage;
   }
 
@@ -215,10 +210,10 @@ document.addEventListener('DOMContentLoaded', ()=>{
     if(game.guessed) guessed = (typeof game.guessed === 'string' ? game.guessed.split('') : game.guessed);
     // try to infer guessed from revealed + word
     renderKeyboard(guessed);
-    attemptsEl.textContent = game.attempts_left ?? '?';
+    attemptsEl.textContent = game.attempts_left ?? game.initial_attempts ?? '?';
     scoreEl.textContent = game.score ?? 0;
     hintsEl.textContent = game.hints ?? 0;
-    updateGallows(game.attempts_left ?? 0);
+    updateGallows(game.attempts_left ?? 0, game.initial_attempts ?? 6);
 
     // populate word metadata (clue and topic) if present
     const wordMetaEl = document.getElementById('wordMeta');

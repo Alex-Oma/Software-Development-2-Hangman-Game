@@ -32,15 +32,22 @@ def create_user(session: Session, username: str, email: str, password: str):
     return user
 
 
-def create_game(session: Session, user: models.User, word: models.Word):
+def create_game(session: Session, user: models.User, word: models.Word, initial_attempts: int = 6):
     '''
     Create a new game for the given user and word.
     :param session: Session
     :param user: models.User
     :param word: models.Word
+    :param initial_attempts: int
     :return: models.Game
     '''
-    game = models.Game(user_id=user.id, word_id=word.id, revealed="_" * len(word.text))
+    game = models.Game(
+        user_id=user.id,
+        word_id=word.id,
+        revealed="_" * len(word.text),
+        initial_attempts=initial_attempts,
+        attempts_left=initial_attempts
+    )
     session.add(game)
     session.commit()
     session.refresh(game)
