@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
         if(game){
           // Ask user with a styled accessible modal
           const choice = await showResumeModal();
-          // choice: 'resume' | 'new' | 'cancel'
+          // choice: 'resume' | 'cancel'
           if(choice === 'resume'){
             localStorage.setItem('current_game_id', game.id);
             loadGame(game);
@@ -52,18 +52,6 @@ document.addEventListener('DOMContentLoaded', ()=>{
       console.warn('Failed to check unfinished game', err);
     }
   }
-  /*
-  function showResumeIfSaved(){
-    const id = localStorage.getItem('current_game_id');
-    if(id){
-      resumeBtn.style.display = 'inline-block';
-      resumeBtn.href = '#';
-      resumeBtn.addEventListener('click', (e)=>{ e.preventDefault(); resumeGame(id); });
-    } else {
-      resumeBtn.style.display = 'none';
-    }
-  }
-  */
 
   async function startNewGame(difficulty = 'easy'){
     // Require authentication for starting a new game
@@ -96,8 +84,6 @@ document.addEventListener('DOMContentLoaded', ()=>{
       alert('Network error starting game');
     } finally{
       newGameBtn.disabled = false; newGameBtn.textContent = 'Start New Game';
-      // showResumeIfSaved();
-      // saveBtn.style.display = 'inline-block';
     }
   }
 
@@ -254,8 +240,6 @@ document.addEventListener('DOMContentLoaded', ()=>{
 
   // expose simple logout
   if(localStorage.getItem('access_token')){
-    // loginBtn.style.display = 'none';
-    // registerBtn.style.display = 'none';
     const out = document.createElement('button'); out.className = 'btn secondary'; out.textContent = 'Sign out';
     out.addEventListener('click', ()=>{ localStorage.removeItem('access_token'); localStorage.removeItem('current_game_id'); location.href = '/frontend/static/index.html'; });
     document.querySelector('.controls').appendChild(out);
