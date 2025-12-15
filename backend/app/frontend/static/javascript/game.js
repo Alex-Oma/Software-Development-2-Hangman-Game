@@ -157,7 +157,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
       });
       if(!resp.ok){
         const err = await resp.json().catch(()=>({detail:resp.statusText}));
-        alert('Guess failed: ' + (err.detail || resp.status));
+        showMessage('Guess failed: ' + (err.detail || resp.status));
         return;
       }
       const updated = await resp.json();
@@ -223,9 +223,9 @@ document.addEventListener('DOMContentLoaded', ()=>{
         if(game.word.topic) parts.push('topic: ' + game.word.topic);
         msg += ' Hint: ' + parts.join(' | ');
       }
-      alert(msg);
+      showMessage(msg, 'Game Over');
     } else if(game.state === 'won'){
-      alert('Congratulations — you won!');
+      showMessage('Congratulations — you won!', 'You Won!');
     }
   }
 
@@ -385,5 +385,34 @@ document.addEventListener('DOMContentLoaded', ()=>{
     difficultyButtons.addEventListener('click', onDifficultySelect);
     cancelBtn.addEventListener('click', onCancel);
     modal.querySelector('.modal-backdrop').addEventListener('click', onCancel);
+  }
+
+  function showMessage(message, title = 'Notification') {
+    const modal = document.getElementById('messageModal');
+    if (!modal) {
+      console.error('Message modal not found in DOM. Falling back to alert.');
+      alert(`${title}: ${message}`);
+      return;
+    }
+    const titleEl = document.getElementById('messageModalTitle');
+    const textEl = document.getElementById('messageModalText');
+    const okBtn = document.getElementById('messageModalOk');
+
+    if (titleEl) titleEl.textContent = title;
+    if (textEl) textEl.textContent = message;
+
+    modal.setAttribute('aria-hidden', 'false');
+    if (okBtn) okBtn.focus(); // For accessibility
+
+    function onOk() {
+      modal.setAttribute('aria-hidden', 'true');
+      if (okBtn) okBtn.removeEventListener('click', onOk);
+      const backdrop = modal.querySelector('.modal-backdrop');
+      if (backdrop) backdrop.removeEventListener('click', onOk);
+    }
+
+    if (okBtn) okBtn.addEventListener('click', onOk);
+    const backdrop = modal.querySelector('.modal-backdrop');
+    if (backdrop) backdrop.addEventListener('click', onOk);
   }
 });
