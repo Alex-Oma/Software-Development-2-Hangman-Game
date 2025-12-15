@@ -6,11 +6,15 @@ import logging
 # Let's load words from words.json. If loading fails, fall back to a small default list.
 _words_file = Path(__file__).resolve().parent / "words.json"
 try:
+    # Load words from the JSON file
     with _words_file.open("r", encoding="utf-8") as f:
+        # Load the JSON data
         data = json.load(f)
+        # Ensure it's a list of words
         if isinstance(data, list):
             WORDS = data
         else:
+            # If the data is not a list, log a warning and use default words
             logging.warning("%s does not contain a JSON list; using default WORDS.", _words_file)
             WORDS = [
                 {"text": "apple", "clue": "A fruit", "topic": "food", "difficulty": "easy"},
@@ -18,6 +22,7 @@ try:
                 {"text": "python", "clue": "A programming language or snake", "topic": "tech", "difficulty": "medium"},
             ]
 except FileNotFoundError:
+    # If the file is not found, log a warning and use default words
     logging.warning("words.json not found at %s; using default WORDS.", _words_file)
     WORDS = [
         {"text": "apple", "clue": "A fruit", "topic": "food", "difficulty": "easy"},
@@ -25,6 +30,7 @@ except FileNotFoundError:
         {"text": "python", "clue": "A programming language or snake", "topic": "tech", "difficulty": "medium"},
     ]
 except Exception as e:
+    # For any other exceptions, log the exception and use default words
     logging.exception("Failed to load words.json (%s); using default WORDS.", e)
     WORDS = [
         {"text": "apple", "clue": "A fruit", "topic": "food", "difficulty": "easy"},
@@ -51,11 +57,12 @@ def seed(session):
 
     # Logging the count of WORDS to be added
     logger.info(f"Number of words to seed: {len(WORDS)}")
-
+    # Start seeding process
     logger.info("Seeding words into the database.")
 
     # Iterate over the WORDS list and add each word to the database
     countWordsAdded = 0
+    # Loop through each word in the WORDS list
     for w in WORDS:
         # Check if the word already exists
         exists = session.exec(select(Word).where(Word.text == w['text'])).first()
@@ -72,10 +79,13 @@ def seed(session):
 
     # Getting total count of words after seeding
     try:
+        # Use a more efficient count query
         total_count = session.exec(select(func.count(Word.id))).scalar_one()
     except Exception:
         # fallback: load all words and count
         total_count = len(session.exec(select(Word)).all())
 
+    # Log the total count of words in the database
     logger.info(f"Total words in database after seeding: {total_count}")
+    # Return the total count of words
     return total_count

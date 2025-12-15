@@ -198,7 +198,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
     renderKeyboard(guessed);
     attemptsEl.textContent = game.attempts_left ?? game.initial_attempts ?? '?';
     scoreEl.textContent = game.score ?? 0;
-    hintsEl.textContent = game.hints ?? 0;
+    hintsEl.textContent = game.hints_used ?? 0;
     updateGallows(game.attempts_left ?? 0, game.initial_attempts ?? 6);
 
     // populate word metadata (clue and topic) if present
@@ -231,6 +231,39 @@ document.addEventListener('DOMContentLoaded', ()=>{
 
   // wire up new/resume/save
   newGameBtn.addEventListener('click', (e)=>{ e.preventDefault(); showNewGameModal(); });
+
+  const hintBtn = document.getElementById('hintBtn');
+  if (hintBtn) {
+    hintBtn.addEventListener('click', async () => {
+      if (!currentGame) {
+        showMessage('You must start a game to use a hint.');
+        return;
+      }
+      if (currentGame.state !== 'active') {
+        showMessage('You can only use hints in an active game.');
+        return;
+      }
+
+      try {
+        const resp = await fetch(`${API_BASE}/${currentGame.id}/hint`, {
+          method: 'POST',
+          headers: authHeaders(),
+        });
+
+        if (!resp.ok) {
+          const err = await resp.json().catch(() => ({ detail: resp.statusText }));
+          showMessage('Hint failed: ' + (err.detail || resp.status));
+          return;
+        }
+
+        const updatedGame = await resp.json();
+        loadGame(updatedGame);
+      } catch (err) {
+        console.error(err);
+        showMessage('Network error using hint.');
+      }
+    });
+  }
 
   // on load, show resume if present
   // First, if user is logged in, check backend for an unfinished game and prompt to resume

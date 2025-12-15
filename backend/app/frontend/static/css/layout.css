@@ -43,7 +43,7 @@
 
 /* Theme classes for toggling in JS if needed */
 .theme-light{ --bg: #f6f7fb; --card:#ffffff; --muted:#6b7280; --accent:#2563eb; --accent-2:#10b981; --glass: rgba(255,255,255,0.6); --shadow: 0 6px 18px rgba(16,24,40,0.08); --text-primary: #0f1724; --text-secondary: #6b7280; --accent-contrast: var(--accent); }
-.theme-dark{  --bg: #071025; --card:#071828; --muted:#9ca3af; --accent:#60a5fa; --accent-2:#34d399; --glass: rgba(255,255,255,0.04); --shadow:0 6px 18px rgba(2,6,23,0.6); --text-primary: #e6edf3; --text-secondary: #9ca3af; --accent-contrast: #1f4ea3;}
+.theme-dark{  --bg: #071025; --card:#071828; --muted:#9ca3af; --accent:#383838; --accent-2:#34d399; --glass: rgba(255,255,255,0.04); --shadow:0 6px 18px rgba(2,6,23,0.6); --text-primary: #e6edf3; --text-secondary: #9ca3af; --accent-contrast: #1f4ea3;}
 
 /* Page base */
 html,body{height:100%;}

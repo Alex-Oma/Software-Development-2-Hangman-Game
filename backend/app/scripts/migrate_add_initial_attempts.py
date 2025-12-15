@@ -1,7 +1,7 @@
 import sqlite3
 import os
 
-# This script adds the 'initial_attempts' column to the 'game' table.
+# This script adds the 'initial_attempts' column to the 'game' table by altering the table schema.
 
 # Construct the absolute path to the database file
 # The script is in backend/app/scripts, and the DB is in backend/app/database

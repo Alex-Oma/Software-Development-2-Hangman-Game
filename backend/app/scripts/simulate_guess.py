@@ -1,3 +1,4 @@
+# A script to simulate guessing a letter in a game for testing purposes.
 from sqlmodel import Session, select
 from backend.app.database import engine
 from backend.app import models

@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """Simple migration: add 'guessed' column to game table if missing."""
 import sqlite3
 from pathlib import Path

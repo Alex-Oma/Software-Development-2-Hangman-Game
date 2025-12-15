@@ -1,3 +1,4 @@
+# Script to check color contrast ratios in CSS variables for light and dark themes.
 import re
 import colorsys
 from pathlib import Path

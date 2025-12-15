@@ -1,3 +1,4 @@
+# A simple script to inspect the hangman database for debugging purposes.
 import sqlite3, pathlib, sys
 p = pathlib.Path('backend/app/database/hangman.db')
 print('db exists', p.exists(), p)
