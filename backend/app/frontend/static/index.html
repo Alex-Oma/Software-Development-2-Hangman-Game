@@ -1,15 +1,19 @@
 <!doctype html>
 <html lang="en">
+<!-- Head section with meta tags and title -->
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Hangman — Play & Learn</title>
   <link rel="stylesheet" href="./css/layout.css" />
 </head>
+<!-- Body section with main content -->
 <body>
   <div class="app-shell theme-light" id="app" style="max-width:980px;margin:24px auto;padding:18px">
+      <!-- Header with branding and navigation -->
     <div class="header">
       <div class="brand">
+          <!-- Simple logo with title and subtitle -->
         <div class="logo">H</div>
         <div>
           <h1 style="margin:0">Hangman</h1>
@@ -17,6 +21,7 @@
         </div>
       </div>
 
+        <!-- Navigation controls -->
       <div class="controls">
         <button id="toggleTheme" class="btn secondary" type="button" aria-label="Toggle theme"></button>
         <a href="/frontend/static/login.html" class="btn secondary">Sign in</a>
@@ -24,10 +29,11 @@
       </div>
     </div>
 
+      <!-- Main content area -->
     <main class="margin-top">
       <div style="display:flex;gap:20px;align-items:center;flex-wrap:wrap">
         <div style="flex:1;min-width:280px;max-width:520px">
-          <!-- Hero -->
+          <!-- Intro section with game title and description -->
           <div style="display:flex;gap:14px;align-items:center">
             <div style="width:120px;height:120px;border-radius:16px;background:linear-gradient(135deg,var(--accent),var(--accent-2));display:flex;align-items:center;justify-content:center;color:white;box-shadow:var(--shadow)">
               <!-- simple inline hangman SVG icon -->
@@ -44,7 +50,7 @@
               </svg>
             </div>
 
-
+            <!-- Game title and brief description -->
             <section class="margin-top card" style="margin-top:20px">
                 <div>
                   <h2 style="margin:0 0 8px 0">Play Hangman — sharpen your vocabulary</h2>
@@ -54,6 +60,7 @@
 
           </div>
 
+            <!-- Detailed game description section -->
           <section class="margin-top card" style="margin-top:20px">
             <h3 style="margin-top:0">Game description</h3>
             <p style="color:var(--muted)">Hangman is a classic word-guessing game. Words span multiple topics and difficulty levels. This game is implemented as Progressive Web App (PWA) so that it can work on mobile devices and supports offline caching, dark mode, and user accounts to store progress.</p>
@@ -61,7 +68,9 @@
 
         </div>
 
+          <!-- Sidebar with instructions -->
         <aside style="flex:0 0 340px;min-width:240px">
+            <!-- Instructions card -->
           <div class="card">
             <h3 style="margin-top:0">How to play</h3>
             <ol style="color:var(--muted);padding-left:18px">
@@ -82,12 +91,14 @@
 
     </main>
 
+      <!-- Footer section with credits and version -->
     <div class="footer" style="margin-top:18px">
       <div>Made by Alex O</div>
       <div>Version 0.1</div>
     </div>
   </div>
 
+  <!-- JavaScript files for theme toggling and main functionality -->
   <script src="./javascript/theme.js"></script>
   <script src="./javascript/index.js"></script>
 </body>

@@ -1,10 +1,12 @@
 <!doctype html>
 <html lang="en">
+<!-- Head section with meta tags and styles -->
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Sign In — Hangman</title>
   <link rel="stylesheet" href="./css/layout.css" />
+  <!-- Inline styles for the login form -->
   <style>
     .form-row{display:flex;flex-direction:column;gap:8px;margin-bottom:12px}
     label{font-weight:700;color:var(--muted);font-size:13px}
@@ -19,8 +21,10 @@
   </style>
 </head>
 <body>
+  <!-- Main application shell -->
   <div class="app-shell theme-light center" id="app" style="min-height:100vh;padding:32px">
     <div style="width:100%;max-width:920px">
+        <!-- Header section with branding and controls -->
       <div class="header">
         <div class="brand">
           <div class="logo">H</div>
@@ -29,17 +33,21 @@
             <div style="font-size:12px;color:var(--muted)">Sign in to continue</div>
           </div>
         </div>
+          <!-- Control buttons -->
         <div class="controls">
           <a href="/frontend/static/index.html" class="btn secondary">Home</a>
           <button id="toggleTheme" class="btn secondary" type="button" aria-label="Toggle theme"></button>
         </div>
       </div>
 
+      <!-- Login form card -->
       <div class="card margin-top" style="display:flex;gap:18px;align-items:flex-start;flex-wrap:wrap">
         <div style="flex:1;min-width:320px;max-width:520px">
+          <!-- Login form header and notice area -->
           <h2 style="margin:0 0 8px 0">Sign in</h2>
           <div class="notice" id="notice"></div>
 
+          <!-- Login form -->
           <form id="loginForm">
             <div class="form-row">
               <label for="username">Username</label>
@@ -57,9 +65,11 @@
             </div>
           </form>
 
+          <!-- Registration link -->
           <div style="margin-top:12px" class="meta">Don't have an account? <a href="/frontend/static/register.html">Register</a></div>
         </div>
 
+        <!-- Benefits of signing in section -->
         <div style="width:320px;min-width:240px">
           <h3 style="margin-top:0">Play instantly</h3>
           <p class="meta">Signing in lets you save games, sync progress across devices and access hints.</p>
@@ -69,6 +79,7 @@
     </div>
   </div>
 
+  <!-- JavaScript files for theme and login functionality -->
   <script src="./javascript/theme.js"></script>
   <script src="./javascript/login.js"></script>
 </body>

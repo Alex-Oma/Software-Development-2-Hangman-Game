@@ -1,10 +1,12 @@
 <!doctype html>
 <html lang="en">
+<!-- Head section with meta tags, title, and styles -->
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Register — Hangman</title>
   <link rel="stylesheet" href="./css/layout.css" />
+  <!-- Inline styles for the registration form -->
   <style>
     /* Small input styling to complement layout.css */
     .form-row{display:flex;flex-direction:column;gap:8px;margin-bottom:12px}
@@ -18,9 +20,11 @@
     .notice.error{background:color-mix(in srgb,var(--danger) 8%, transparent);color:var(--card)}
   </style>
 </head>
+<!-- Body section with registration form and scripts -->
 <body>
   <div class="app-shell theme-light center" id="app" style="min-height:100vh;padding:32px">
     <div style="width:100%;max-width:920px">
+      <!-- Header with branding and controls -->
       <div class="header">
         <div class="brand">
           <div class="logo">H</div>
@@ -29,17 +33,20 @@
             <div style="font-size:12px;color:var(--muted)">Create your account</div>
           </div>
         </div>
+        <!-- Controls: Home button and theme toggle -->
         <div class="controls">
           <a href="/frontend/static/index.html" class="btn secondary">Home</a>
           <button id="toggleTheme" class="btn secondary" type="button" aria-label="Toggle theme"></button>
         </div>
       </div>
 
+      <!-- Registration form card -->
       <div class="card margin-top" style="display:flex;gap:18px;align-items:flex-start;flex-wrap:wrap">
         <div style="flex:1;min-width:320px;max-width:520px">
           <h2 style="margin:0 0 8px 0">Register</h2>
           <div class="notice" id="notice"></div>
 
+          <!-- Registration form -->
           <form id="registerForm">
             <div class="form-row">
               <label for="username">Username</label>
@@ -58,6 +65,7 @@
               <input id="confirm" name="confirm" type="password" autocomplete="new-password" required />
             </div>
 
+            <!-- Form buttons -->
             <div style="display:flex;gap:8px;align-items:center;margin-top:8px">
               <button class="btn" type="submit" id="submitBtn">Create account</button>
               <button class="btn secondary" type="button" id="cancelBtn">Cancel</button>
@@ -65,14 +73,16 @@
           </form>
         </div>
 
+        <!-- Why create an account section -->
         <div style="width:320px;min-width:240px">
           <h3 style="margin-top:0">Why create an account?</h3>
           <ul style="color:var(--muted);padding-left:18px">
             <li>Save your games and scores</li>
             <li>Play across devices</li>
-            <li>Access hints and leaderboards</li>
+            <li>Access hints</li>
           </ul>
 
+          <!-- Sign in link -->
           <div style="margin-top:18px">
             <div style="font-size:13px;color:var(--muted)">Already have an account?</div>
             <a href="/frontend/static/login.html" class="btn secondary" style="margin-top:8px;display:inline-block">Sign in</a>
@@ -83,6 +93,7 @@
     </div>
   </div>
 
+  <!-- Scripts for theme toggling and registration logic -->
   <script src="./javascript/theme.js"></script>
   <script src="./javascript/register.js"></script>
 </body>

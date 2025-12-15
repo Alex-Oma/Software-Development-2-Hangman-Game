@@ -6,6 +6,7 @@
    - light and dark mode support via prefers-color-scheme and .theme-dark/.theme-light
    - responsive layout for mobile and tablet
 */
+/* CSS Variables for theming */
 :root{
   --bg: #f6f7fb;
   --card: #ffffff;
@@ -23,7 +24,7 @@
   --text-secondary: #6b7280; /* muted text */
 }
 
-/* dark overrides */
+/* dark theme overrides */
 @media (prefers-color-scheme: dark){
   :root{
     --bg: #0b1220;
@@ -42,11 +43,13 @@
 }
 
 /* Theme classes for toggling in JS if needed */
+/* These override the :root variables when applied to html or #app */
 .theme-light{ --bg: #f6f7fb; --card:#ffffff; --muted:#6b7280; --accent:#2563eb; --accent-2:#10b981; --glass: rgba(255,255,255,0.6); --shadow: 0 6px 18px rgba(16,24,40,0.08); --text-primary: #0f1724; --text-secondary: #6b7280; --accent-contrast: var(--accent); }
 .theme-dark{  --bg: #071025; --card:#071828; --muted:#9ca3af; --accent:#383838; --accent-2:#34d399; --glass: rgba(255,255,255,0.04); --shadow:0 6px 18px rgba(2,6,23,0.6); --text-primary: #e6edf3; --text-secondary: #9ca3af; --accent-contrast: #1f4ea3;}
 
 /* Page base */
 html,body{height:100%;}
+/* Body with gradient background */
 body{
   margin:0;
   font-family:var(--font-sans);
@@ -71,6 +74,7 @@ body{
   color: inherit;
 }
 
+/* Header */
 .header{
   display:flex;
   align-items:center;
@@ -78,6 +82,7 @@ body{
   gap:12px;
 }
 
+/* Brand/logo */
 .brand{
   display:flex;align-items:center;gap:12px;
 }
@@ -86,6 +91,7 @@ body{
 }
 .brand h1{margin:0;font-size:18px;color:var(--text-primary);} /* increased contrast for brand/title */
 
+/* Header controls */
 .controls{display:flex;gap:8px;align-items:center}
 
 /* Card */
@@ -96,7 +102,7 @@ body{
   box-shadow:var(--shadow);
 }
 
-/* HUD */
+/* Game HUD */
 .hud{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:14px}
 .hud .stat{
   background:var(--glass);
@@ -115,19 +121,23 @@ body{
   justify-content:center;
   flex-wrap:wrap;
 }
+/* Individual letter slots */
 .letter-slot{
   width:48px;height:60px;border-radius:10px;background:linear-gradient(180deg, color-mix(in srgb, var(--card) 96%, #0000), var(--card));display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;color:var(--accent);
   box-shadow:0 6px 20px rgba(16,24,40,0.06);
 }
+/* Hidden letter slots (not yet guessed) */
 .letter-slot.hidden{color:var(--muted);background:transparent;border:2px dashed color-mix(in srgb,var(--muted) 26%, var(--card));}
 
 /* Keyboard (alphabet buttons) */
 .keyboard{
   margin-top:18px;display:grid;grid-template-columns:repeat(8,1fr);gap:8px;align-items:center;justify-items:center
 }
+/* Individual letter key */
 .key{
   width:44px;height:44px;border-radius:10px;background:transparent;border:1px solid color-mix(in srgb,var(--muted) 20%, var(--card));display:flex;align-items:center;justify-content:center;cursor:pointer;user-select:none;transition:all 160ms ease; font-weight:700; color:var(--muted); font-size:16px;
 }
+/* Hover effect: filled accent background, elevated */
 .key:hover{
   background:linear-gradient(180deg,color-mix(in srgb,var(--accent) 12%, transparent), color-mix(in srgb,var(--accent) 6%, transparent));
   color:var(--card);
@@ -135,6 +145,7 @@ body{
   text-shadow:0 2px 8px rgba(0,0,0,0.35);
   box-shadow:0 10px 30px rgba(37,99,235,0.18);
 }
+/* Disabled keys (already guessed) */
 .key.disabled{
   opacity:0.28;cursor:not-allowed;transform:none;box-shadow:none;text-shadow:none
 }
@@ -184,11 +195,13 @@ body{
 .gallows-column{
   display:flex;align-items:center;justify-content:center;padding:12px;
 }
+/* Gallows structure and hangman figure */
 .gallows{
   width:260px;height:300px;position:relative;
   top: 80px;
   left: -100px;
 }
+/* Common styles for all gallows parts and hangman parts */
 .gallows .part{
   position:absolute;left:50%;background:var(--muted);border-radius:4px;opacity:0;transition:all 220ms ease, opacity 220ms ease;box-shadow:0 6px 14px rgba(2,6,23,0.12);
 }
@@ -218,30 +231,35 @@ body{
 .gallows .leg-right{top:249px;left:184px;height:6px;width:48px;border-radius:6px;background:var(--muted);transform-origin:left center;transform:translateX(10px) rotate(-50deg)}
 
 /* Hidden by default; revealed based on stage class on .gallows container */
-/*.gallows .gallow-base, .gallows .gallow-post, .gallows .gallow-support, .gallows .gallow-beam, .gallows .gallow-rope, .gallows .head, .gallows .body, .gallows .part.arm-left, .gallows .part.arm-right, .gallows .leg-left, .gallows .leg-right{opacity:0;transform:translateY(-8px) scale(0.98)}*/
 .gallows .gallow-base, .gallows .gallow-post, .gallows .gallow-support, .gallows .gallow-beam, .gallows .part.gallow-rope, .gallows .head, .gallows .body, .gallows .part.arm-left, .gallows .part.arm-right, .gallows .leg-left, .gallows .leg-right{opacity:0}
 
 /* Stage progression selectors */
+/* Each stage reveals additional parts of the gallows and hangman figure */
 .gallows.stage-1 .gallow-base { opacity: 1}
 
+/* Stage 2 adds the post */
 .gallows.stage-2 .gallow-base,
 .gallows.stage-2 .gallow-post { opacity: 1}
 
+/* Stage 3 adds the support */
 .gallows.stage-3 .gallow-base,
 .gallows.stage-3 .gallow-post,
 .gallows.stage-3 .gallow-support { opacity: 1}
 
+/* Stage 4 adds the beam */
 .gallows.stage-4 .gallow-base,
 .gallows.stage-4 .gallow-post,
 .gallows.stage-4 .gallow-support,
 .gallows.stage-4 .gallow-beam { opacity: 1}
 
+/* Stage 5 adds the rope */
 .gallows.stage-5 .gallow-base,
 .gallows.stage-5 .gallow-post,
 .gallows.stage-5 .gallow-support,
 .gallows.stage-5 .gallow-beam,
 .gallows.stage-5 .gallow-rope { opacity: 1}
 
+/* Stage 6 adds the head */
 .gallows.stage-6 .gallow-base,
 .gallows.stage-6 .gallow-post,
 .gallows.stage-6 .gallow-support,
@@ -249,6 +267,7 @@ body{
 .gallows.stage-6 .gallow-rope,
 .gallows.stage-6 .head { opacity: 1}
 
+/* Stage 7 adds the body */
 .gallows.stage-7 .gallow-base,
 .gallows.stage-7 .gallow-post,
 .gallows.stage-7 .gallow-support,
@@ -257,6 +276,7 @@ body{
 .gallows.stage-7 .head,
 .gallows.stage-7 .body { opacity: 1}
 
+/* Stage 8 adds the arms */
 .gallows.stage-8 .gallow-base,
 .gallows.stage-8 .gallow-post,
 .gallows.stage-8 .gallow-support,
@@ -267,6 +287,7 @@ body{
 .gallows.stage-8 .arm-left,
 .gallows.stage-8 .arm-right { opacity: 1}
 
+/* Stage 9 adds the legs - final stage */
 .gallows.stage-9 .gallow-base,
 .gallows.stage-9 .gallow-post,
 .gallows.stage-9 .gallow-support,
@@ -292,7 +313,7 @@ body{
   .gallows{width:200px;height:240px;margin:0 auto}
 }
 
-/* Responsive */
+/* Responsive adjustments for small screens */
 @media (max-width:640px){
   .app-shell{padding:12px}
   .keyboard{grid-template-columns:repeat(7,1fr)}
@@ -325,6 +346,7 @@ html.theme-light .theme-toggle-icon .moon{opacity:0 !important;transform:scale(0
 .theme-dark .theme-toggle-icon .sun{opacity:0 !important;transform:scale(0.8) rotate(10deg) !important;visibility:hidden !important;pointer-events:none !important}
 .theme-dark .theme-toggle-icon .moon{opacity:1 !important;transform:scale(1) rotate(0deg) !important;visibility:visible !important;pointer-events:auto !important}
 
+/* Light theme */
 .theme-light .theme-toggle-icon .sun{opacity:1 !important;transform:scale(1) rotate(0deg) !important;visibility:visible !important;pointer-events:auto !important}
 .theme-light .theme-toggle-icon .moon{opacity:0 !important;transform:scale(0.8) rotate(-10deg) !important;visibility:hidden !important;pointer-events:none !important}
 

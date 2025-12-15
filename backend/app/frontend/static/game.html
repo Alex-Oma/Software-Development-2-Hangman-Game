@@ -1,13 +1,16 @@
 <!doctype html>
 <html lang="en">
+<!-- Head section with meta tags and stylesheets -->
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Hangman — Game</title>
   <link rel="stylesheet" href="./css/layout.css" />
 </head>
+<!-- Body section with the main app structure -->
 <body>
   <div class="app-shell theme-light" id="app">
+      <!-- Header with branding and controls -->
     <div class="header">
       <div class="brand">
         <div class="logo">H</div>
@@ -17,13 +20,16 @@
         </div>
       </div>
 
+        <!-- Control buttons: Theme toggle and New Game -->
       <div class="controls">
         <button id="toggleTheme" class="btn secondary" type="button" aria-label="Toggle theme"></button>
         <button id="newGameBtn" class="btn">Start New Game</button>
       </div>
     </div>
 
+      <!-- Main game grid layout -->
     <div class="game-grid margin-top">
+        <!-- Gallows and hangman figure -->
       <div class="gallows-column">
         <div class="gallows stage-0" id="gallows">
           <div class="gallow-base part"></div>
@@ -42,6 +48,7 @@
       </div>
 
       <div>
+          <!-- Game card with HUD, word box, keyboard, and controls -->
         <div class="card">
           <div class="hud">
             <div class="stat">Score: <strong id="score">0</strong></div>
@@ -49,9 +56,11 @@
             <div class="stat hint-badge">Hints: <span id="hints">0</span></div>
           </div>
 
+            <!-- Controls row -->
           <div class="controls-row" style="margin-top:12px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
           </div>
 
+            <!-- Word box for displaying letter slots -->
           <div class="word-box" id="wordBox" style="margin-top:18px">
             <!-- letter slots will be rendered here -->
           </div>
@@ -62,15 +71,18 @@
             <div id="wordTopic" style="font-size:13px;color:var(--muted);margin-top:6px">Topic: </div>
           </div>
 
+            <!-- On-screen keyboard for letter selection -->
           <div class="keyboard" id="keyboard" style="margin-top:18px">
             <!-- alphabet buttons injected -->
           </div>
 
+            <!-- Hint button -->
           <div style="margin-top:14px;display:flex;gap:8px;justify-content:center;align-items:center">
             <button class="btn" id="hintBtn">Use Hint</button>
           </div>
         </div>
 
+          <!-- Footer section -->
         <div class="footer" style="margin-top:12px">
           <div>Good luck!</div>
           <div>Version 0.1</div>
@@ -79,6 +91,7 @@
     </div>
   </div>
 
+  <!-- JavaScript files -->
   <script src="./javascript/theme.js"></script>
   <script>
     // Authentication check - redirect if no token found
@@ -142,6 +155,7 @@
       }
     })();
   </script>
+  <!-- Main game logic script -->
   <script src="./javascript/game.js"></script>
 
   <!-- Resume modal (hidden by default) -->
