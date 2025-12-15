@@ -6,10 +6,8 @@ document.addEventListener('DOMContentLoaded', ()=>{
   const tokenType = localStorage.getItem('token_type') || 'Bearer';
 
   const newGameBtn = document.getElementById('newGameBtn');
-  const resumeBtn = document.getElementById('resumeBtn');
-  const loginBtn = document.getElementById('loginBtn');
-  const registerBtn = document.getElementById('registerBtn');
-  const saveBtn = document.getElementById('saveBtn');
+  // const resumeBtn = document.getElementById('resumeBtn');
+  // const saveBtn = document.getElementById('saveBtn');
 
   const wordBox = document.getElementById('wordBox');
   const keyboard = document.getElementById('keyboard');
@@ -39,11 +37,11 @@ document.addEventListener('DOMContentLoaded', ()=>{
         if(game){
           // Ask user with a styled accessible modal
           const choice = await showResumeModal();
-          // choice: 'resume' | 'new' | 'cancel'
+          // choice: 'resume' | 'cancel'
           if(choice === 'resume'){
             localStorage.setItem('current_game_id', game.id);
             loadGame(game);
-            saveBtn.style.display = 'inline-block';
+            // saveBtn.style.display = 'inline-block';
           } else if(choice === 'new'){
             // start fresh (do nothing here; user may press Start New Game)
           }
@@ -55,18 +53,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
     }
   }
 
-  function showResumeIfSaved(){
-    const id = localStorage.getItem('current_game_id');
-    if(id){
-      resumeBtn.style.display = 'inline-block';
-      resumeBtn.href = '#';
-      resumeBtn.addEventListener('click', (e)=>{ e.preventDefault(); resumeGame(id); });
-    } else {
-      resumeBtn.style.display = 'none';
-    }
-  }
-
-  async function startNewGame(){
+  async function startNewGame(difficulty = 'easy'){
     // Require authentication for starting a new game
     if(!localStorage.getItem('access_token')){
       // prompt user to sign in and redirect to login page
@@ -75,12 +62,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
       }
       return;
     }
-    // read difficulty safely; if the element is missing, log and fall back to 'easy'
-    const diffEl = document.getElementById('difficulty');
-    if(!diffEl){
-      console.error('Start New Game: difficulty selector (#difficulty) not found in DOM — falling back to "easy"');
-    }
-    const difficulty = diffEl ? diffEl.value : 'easy';
+
     newGameBtn.disabled = true; newGameBtn.textContent = 'Starting...';
     try{
       const resp = await fetch(API_BASE + '/new', {
@@ -102,8 +84,6 @@ document.addEventListener('DOMContentLoaded', ()=>{
       alert('Network error starting game');
     } finally{
       newGameBtn.disabled = false; newGameBtn.textContent = 'Start New Game';
-      showResumeIfSaved();
-      saveBtn.style.display = 'inline-block';
     }
   }
 
@@ -177,7 +157,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
       });
       if(!resp.ok){
         const err = await resp.json().catch(()=>({detail:resp.statusText}));
-        alert('Guess failed: ' + (err.detail || resp.status));
+        showMessage('Guess failed: ' + (err.detail || resp.status));
         return;
       }
       const updated = await resp.json();
@@ -189,15 +169,20 @@ document.addEventListener('DOMContentLoaded', ()=>{
     }
   }
 
-  function updateGallows(attemptsLeft){
-    // Map attemptsLeft to a stage between 0..9 (0 = nothing, 9 = full hangman with legs).
-    // We don't always know the initial attempts value from the server, but the Game model uses 6 by default.
+  function updateGallows(attemptsLeft, initialAttempts = 6) {
+    // Dynamically map wrong guesses to the available gallows stages (0-9).
     const MAX_STAGE = 9;
-    const INITIAL_ATTEMPTS = 6; // matches backend default in models.Game
-    const attempts = Number.isFinite(attemptsLeft) ? attemptsLeft : INITIAL_ATTEMPTS;
-    const wrong = Math.max(0, INITIAL_ATTEMPTS - attempts);
-    // scale wrong guesses proportionally to the available stages
-    const stage = Math.max(0, Math.min(MAX_STAGE, Math.round((wrong / INITIAL_ATTEMPTS) * MAX_STAGE)));
+    const wrongGuesses = Math.max(0, initialAttempts - attemptsLeft);
+
+    // If there are no attempts, show the full gallows.
+    if (initialAttempts === 0) {
+        gallows.className = 'gallows stage-' + MAX_STAGE;
+        return;
+    }
+
+    // Scale the number of wrong guesses to the available stages.
+    // This ensures that the final wrong guess always shows the full hangman.
+    const stage = Math.min(MAX_STAGE, Math.round((wrongGuesses / initialAttempts) * MAX_STAGE));
     gallows.className = 'gallows stage-' + stage;
   }
 
@@ -211,10 +196,10 @@ document.addEventListener('DOMContentLoaded', ()=>{
     if(game.guessed) guessed = (typeof game.guessed === 'string' ? game.guessed.split('') : game.guessed);
     // try to infer guessed from revealed + word
     renderKeyboard(guessed);
-    attemptsEl.textContent = game.attempts_left ?? '?';
+    attemptsEl.textContent = game.attempts_left ?? game.initial_attempts ?? '?';
     scoreEl.textContent = game.score ?? 0;
-    hintsEl.textContent = game.hints ?? 0;
-    updateGallows(game.attempts_left ?? 0);
+    hintsEl.textContent = game.hints_used ?? 0;
+    updateGallows(game.attempts_left ?? 0, game.initial_attempts ?? 6);
 
     // populate word metadata (clue and topic) if present
     const wordMetaEl = document.getElementById('wordMeta');
@@ -238,37 +223,56 @@ document.addEventListener('DOMContentLoaded', ()=>{
         if(game.word.topic) parts.push('topic: ' + game.word.topic);
         msg += ' Hint: ' + parts.join(' | ');
       }
-      alert(msg);
+      showMessage(msg, 'Game Over');
     } else if(game.state === 'won'){
-      alert('Congratulations — you won!');
+      showMessage('Congratulations — you won!', 'You Won!');
     }
   }
 
   // wire up new/resume/save
-  newGameBtn.addEventListener('click', (e)=>{ e.preventDefault(); startNewGame(); });
-  saveBtn.addEventListener('click', ()=>{ // just clear from localstorage and hide
-    if(currentGame) localStorage.setItem('current_game_id', currentGame.id);
-    // hide metadata when saved (we don't want to cache UI state separately)
-    const wordMetaEl = document.getElementById('wordMeta'); if(wordMetaEl) wordMetaEl.style.display = 'none';
-    alert('Game saved. You can resume later from this device.');
-  });
+  newGameBtn.addEventListener('click', (e)=>{ e.preventDefault(); showNewGameModal(); });
+
+  const hintBtn = document.getElementById('hintBtn');
+  if (hintBtn) {
+    hintBtn.addEventListener('click', async () => {
+      if (!currentGame) {
+        showMessage('You must start a game to use a hint.');
+        return;
+      }
+      if (currentGame.state !== 'active') {
+        showMessage('You can only use hints in an active game.');
+        return;
+      }
+
+      try {
+        const resp = await fetch(`${API_BASE}/${currentGame.id}/hint`, {
+          method: 'POST',
+          headers: authHeaders(),
+        });
+
+        if (!resp.ok) {
+          const err = await resp.json().catch(() => ({ detail: resp.statusText }));
+          showMessage('Hint failed: ' + (err.detail || resp.status));
+          return;
+        }
+
+        const updatedGame = await resp.json();
+        loadGame(updatedGame);
+      } catch (err) {
+        console.error(err);
+        showMessage('Network error using hint.');
+      }
+    });
+  }
 
   // on load, show resume if present
   // First, if user is logged in, check backend for an unfinished game and prompt to resume
-  checkForUnfinished().then(()=>{
-    // after checking with the backend, also present any local saved resume option
-    showResumeIfSaved();
-  });
-
+  checkForUnfinished()
   // build empty keyboard until a game is loaded
   renderKeyboard([]);
 
-  // if there is a saved id and user clicks resume, resumeGame will be called via showResumeIfSaved wiring
-
   // expose simple logout
   if(localStorage.getItem('access_token')){
-    loginBtn.style.display = 'none';
-    registerBtn.style.display = 'none';
     const out = document.createElement('button'); out.className = 'btn secondary'; out.textContent = 'Sign out';
     out.addEventListener('click', ()=>{ localStorage.removeItem('access_token'); localStorage.removeItem('current_game_id'); location.href = '/frontend/static/index.html'; });
     document.querySelector('.controls').appendChild(out);
@@ -295,7 +299,6 @@ document.addEventListener('DOMContentLoaded', ()=>{
     return new Promise((resolve)=>{
       const modal = document.getElementById('resumeModal');
       const resumeBtn = document.getElementById('resumeModalResume');
-      const newBtn = document.getElementById('resumeModalNew');
       const cancelBtn = document.getElementById('resumeModalCancel');
 
       // helper to find focusable elements inside modal
@@ -306,14 +309,12 @@ document.addEventListener('DOMContentLoaded', ()=>{
 
       function cleanup(){
         resumeBtn.removeEventListener('click', onResume);
-        newBtn.removeEventListener('click', onNew);
         cancelBtn.removeEventListener('click', onCancel);
         modal.querySelector('.modal-backdrop').removeEventListener('click', onCancel);
         document.removeEventListener('keydown', trapKeydown);
       }
 
       function onResume(e){ e.preventDefault(); hideModalElement(); cleanup(); resolve('resume'); }
-      function onNew(e){ e.preventDefault(); hideModalElement(); cleanup(); resolve('new'); }
       function onCancel(e){ e.preventDefault(); hideModalElement(); cleanup(); resolve('cancel'); }
 
       // Keydown handler to trap focus and handle Escape
@@ -340,7 +341,6 @@ document.addEventListener('DOMContentLoaded', ()=>{
       }
 
       resumeBtn.addEventListener('click', onResume);
-      newBtn.addEventListener('click', onNew);
       cancelBtn.addEventListener('click', onCancel);
       modal.querySelector('.modal-backdrop').addEventListener('click', onCancel);
 
@@ -350,4 +350,102 @@ document.addEventListener('DOMContentLoaded', ()=>{
     });
   }
 
+  function showNewGameModal() {
+    if (currentGame && currentGame.state !== 'won' && currentGame.state !== 'lost') {
+      const confirmModal = document.getElementById('confirmNewGameModal');
+      confirmModal.setAttribute('aria-hidden', 'false');
+
+      const yesBtn = document.getElementById('confirmNewGameYes');
+      const noBtn = document.getElementById('confirmNewGameNo');
+
+      function cleanup() {
+        yesBtn.removeEventListener('click', onYes);
+        noBtn.removeEventListener('click', onNo);
+        confirmModal.querySelector('.modal-backdrop').removeEventListener('click', onNo);
+      }
+
+      function onYes() {
+        cleanup();
+        confirmModal.setAttribute('aria-hidden', 'true');
+        _showDifficultyModal();
+      }
+
+      function onNo() {
+        cleanup();
+        confirmModal.setAttribute('aria-hidden', 'true');
+      }
+
+      yesBtn.addEventListener('click', onYes);
+      noBtn.addEventListener('click', onNo);
+      confirmModal.querySelector('.modal-backdrop').addEventListener('click', onNo);
+
+    } else {
+      _showDifficultyModal();
+    }
+  }
+
+  function _showDifficultyModal() {
+    const modal = document.getElementById('newGameModal');
+    modal.setAttribute('aria-hidden', 'false');
+
+    const difficultyButtons = document.getElementById('newGameDifficultyButtons');
+    const cancelBtn = document.getElementById('newGameCancel');
+
+    function cleanup() {
+      difficultyButtons.removeEventListener('click', onDifficultySelect);
+      cancelBtn.removeEventListener('click', onCancel);
+      modal.querySelector('.modal-backdrop').removeEventListener('click', onCancel);
+    }
+
+    function onDifficultySelect(e) {
+      if (e.target.tagName === 'BUTTON' && e.target.dataset.difficulty) {
+        const difficulty = e.target.dataset.difficulty;
+        hideModal();
+        startNewGame(difficulty);
+      }
+    }
+
+    function onCancel(e) {
+      e.preventDefault();
+      hideModal();
+    }
+
+    function hideModal() {
+      cleanup();
+      modal.setAttribute('aria-hidden', 'true');
+    }
+
+    difficultyButtons.addEventListener('click', onDifficultySelect);
+    cancelBtn.addEventListener('click', onCancel);
+    modal.querySelector('.modal-backdrop').addEventListener('click', onCancel);
+  }
+
+  function showMessage(message, title = 'Notification') {
+    const modal = document.getElementById('messageModal');
+    if (!modal) {
+      console.error('Message modal not found in DOM. Falling back to alert.');
+      alert(`${title}: ${message}`);
+      return;
+    }
+    const titleEl = document.getElementById('messageModalTitle');
+    const textEl = document.getElementById('messageModalText');
+    const okBtn = document.getElementById('messageModalOk');
+
+    if (titleEl) titleEl.textContent = title;
+    if (textEl) textEl.textContent = message;
+
+    modal.setAttribute('aria-hidden', 'false');
+    if (okBtn) okBtn.focus(); // For accessibility
+
+    function onOk() {
+      modal.setAttribute('aria-hidden', 'true');
+      if (okBtn) okBtn.removeEventListener('click', onOk);
+      const backdrop = modal.querySelector('.modal-backdrop');
+      if (backdrop) backdrop.removeEventListener('click', onOk);
+    }
+
+    if (okBtn) okBtn.addEventListener('click', onOk);
+    const backdrop = modal.querySelector('.modal-backdrop');
+    if (backdrop) backdrop.addEventListener('click', onOk);
+  }
 });

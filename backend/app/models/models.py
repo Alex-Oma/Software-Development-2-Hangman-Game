@@ -8,6 +8,7 @@ class User(SQLModel, table=True):
     '''
     User model representing a player in the Hangman game.
     '''
+    # User fields
     id: Optional[int] = Field(default=None, primary_key=True)
     username: str = Field(index=True, unique=True)
     email: Optional[str] = None
@@ -20,6 +21,7 @@ class Word(SQLModel, table=True):
     '''
     Word model representing a word to be guessed in the Hangman game.
     '''
+    # Word fields
     id: Optional[int] = Field(default=None, primary_key=True)
     text: str
     clue: Optional[str] = None
@@ -31,16 +33,17 @@ class Game(SQLModel, table=True):
     '''
     Game model representing a Hangman game session.
     '''
+    # Game fields
     id: Optional[int] = Field(default=None, primary_key=True)
     user_id: Optional[int] = Field(foreign_key="user.id")
     word_id: Optional[int] = Field(foreign_key="word.id")
     revealed: Optional[str] = Field(default=None)
-    # guessed letters stored as a compact lowercase string (e.g. 'aei')
     guessed: Optional[str] = Field(default='')
+    initial_attempts: int = Field(default=6)
     attempts_left: int = Field(default=6)
     score: int = Field(default=0)
+    hints_used: int = Field(default=0)
     state: str = Field(default="active")  # active/won/lost
     created_at: datetime = Field(default_factory=datetime.utcnow)
-
     user: Optional[User] = Relationship(back_populates="games")
     word: Optional[Word] = Relationship()

@@ -19,9 +19,7 @@
 
       <div class="controls">
         <button id="toggleTheme" class="btn secondary" type="button" aria-label="Toggle theme"></button>
-        <a id="resumeBtn" href="#" class="btn secondary" style="display:none">Resume</a>
-        <a id="loginBtn" href="/frontend/static/login.html" class="btn secondary">Login</a>
-        <a id="registerBtn" href="/frontend/static/register.html" class="btn">Register</a>
+        <button id="newGameBtn" class="btn">Start New Game</button>
       </div>
     </div>
 
@@ -52,15 +50,6 @@
           </div>
 
           <div class="controls-row" style="margin-top:12px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
-            <label for="difficulty">Difficulty</label>
-            <select id="difficulty">
-              <option value="easy">Easy</option>
-              <option value="medium">Medium</option>
-              <option value="hard">Hard</option>
-              <option value="insane">Insane</option>
-            </select>
-            <button id="newGameBtn" class="btn">Start New Game</button>
-            <button id="saveBtn" class="btn secondary" style="display:none">Save & Exit</button>
           </div>
 
           <div class="word-box" id="wordBox" style="margin-top:18px">
@@ -79,7 +68,6 @@
 
           <div style="margin-top:14px;display:flex;gap:8px;justify-content:center;align-items:center">
             <button class="btn" id="hintBtn">Use Hint</button>
-            <button class="btn secondary" id="guessWord">Guess Word</button>
           </div>
         </div>
 
@@ -92,6 +80,68 @@
   </div>
 
   <script src="./javascript/theme.js"></script>
+  <script>
+    // Authentication check - redirect if no token found
+    (function(){
+      'use strict';
+      try{
+        // check for access token in localStorage
+        const token = localStorage.getItem('access_token');
+        if(!token){
+          // build a centered notice with a 5s countdown and accessible buttons
+          const notice = document.createElement('div');
+          notice.id = 'authRedirectNotice';
+          notice.setAttribute('role','alertdialog');
+          notice.setAttribute('aria-live','assertive');
+          notice.style.cssText = 'position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.35);z-index:9999;padding:16px';
+
+          notice.innerHTML = `
+            <div style="width:100%;max-width:480px;background:var(--card-bg,#fff);color:var(--text,#111);padding:18px;border-radius:12px;box-shadow:var(--shadow);text-align:center">
+              <p style="margin:0 0 8px;font-size:18px;font-weight:700">You're not signed in</p>
+              <p id="authNoticeMsg" style="margin:0 0 12px;color:var(--muted)">You'll be redirected to the homepage in <span id="redirectCountdown">5</span> seconds.</p>
+              <div style="display:flex;gap:8px;justify-content:center;margin-top:6px">
+                <button id="redirectNow" class="btn" type="button">Go now</button>
+                <button id="redirectLogin" class="btn secondary" type="button">Go to Login</button>
+              </div>
+            </div>
+          `;
+
+          // append to body
+          document.body.appendChild(notice);
+
+          // Start countdown
+          let secs = 5;
+          const el = document.getElementById('redirectCountdown');
+          const tick = () => {
+            secs -= 1;
+            if(el) el.textContent = String(secs);
+            if(secs <= 0){
+              clearInterval(timer);
+              // final redirect to index
+              window.location.href = '/frontend/static/index.html';
+            }
+          };
+          // initial tick
+          const timer = setInterval(tick, 1000);
+
+          // Button handlers
+          const safeRemove = ()=>{ try{ const n = document.getElementById('authRedirectNotice'); if(n) n.remove(); }catch(e){}
+          };
+          // Redirect now button
+          document.getElementById('redirectNow').addEventListener('click', ()=>{
+            clearInterval(timer); window.location.href = '/frontend/static/index.html';
+          });
+          // Redirect to login button
+          document.getElementById('redirectLogin').addEventListener('click', ()=>{
+            clearInterval(timer); window.location.href = '/frontend/static/login.html';
+          });
+        }
+      }catch(e){
+        // don't block page if DOM/storage access fails
+        console.error('auth check failed', e);
+      }
+    })();
+  </script>
   <script src="./javascript/game.js"></script>
 
   <!-- Resume modal (hidden by default) -->
@@ -106,8 +156,59 @@
       </div>
       <footer class="modal-footer">
         <button id="resumeModalResume" class="btn">Resume</button>
-        <button id="resumeModalNew" class="btn secondary">Start new</button>
         <button id="resumeModalCancel" class="btn secondary">Cancel</button>
+      </footer>
+    </div>
+  </div>
+
+  <!-- New Game Modal -->
+  <div id="newGameModal" class="modal" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="newGameModalTitle">
+    <div class="modal-backdrop" data-dismiss="modal"></div>
+    <div class="modal-panel" role="document">
+      <header class="modal-header">
+        <h2 id="newGameModalTitle">Choose a difficulty</h2>
+      </header>
+      <div class="modal-body" id="newGameDifficultyButtons" style="display: flex; flex-direction: column; gap: 10px; padding: 10px 0;">
+        <button class="btn" data-difficulty="easy">Easy</button>
+        <button class="btn" data-difficulty="medium">Medium</button>
+        <button class="btn" data-difficulty="hard">Hard</button>
+        <button class="btn" data-difficulty="insane">Insane</button>
+      </div>
+      <footer class="modal-footer">
+        <button id="newGameCancel" class="btn secondary">Cancel</button>
+      </footer>
+    </div>
+  </div>
+
+  <!-- Confirm New Game Modal -->
+  <div id="confirmNewGameModal" class="modal" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="confirmNewGameModalTitle">
+    <div class="modal-backdrop" data-dismiss="modal"></div>
+    <div class="modal-panel" role="document">
+      <header class="modal-header">
+        <h2 id="confirmNewGameModalTitle">Start a new game?</h2>
+      </header>
+      <div class="modal-body">
+        <p>You haven't finished the current game. Would you like to cancel it and start a new one?</p>
+      </div>
+      <footer class="modal-footer">
+        <button id="confirmNewGameYes" class="btn">Yes</button>
+        <button id="confirmNewGameNo" class="btn secondary">No</button>
+      </footer>
+    </div>
+  </div>
+
+  <!-- Generic Message Modal -->
+  <div id="messageModal" class="modal" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="messageModalTitle">
+    <div class="modal-backdrop"></div>
+    <div class="modal-panel" role="document">
+      <header class="modal-header">
+        <h2 id="messageModalTitle">Notification</h2>
+      </header>
+      <div class="modal-body">
+        <p id="messageModalText"></p>
+      </div>
+      <footer class="modal-footer">
+        <button id="messageModalOk" class="btn">OK</button>
       </footer>
     </div>
   </div>

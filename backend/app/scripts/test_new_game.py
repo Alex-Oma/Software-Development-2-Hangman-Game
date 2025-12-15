@@ -1,3 +1,4 @@
+# A script to test the new_game function in the games router.
 from sqlmodel import Session, select
 from backend.app.database import engine
 from backend.app import models

@@ -12,6 +12,7 @@ def get_user_by_username(session: Session, username: str):
     :param username: str
     :return: User or None
     '''
+    # Query the database for the user with the given username
     return session.exec(select(models.User).where(models.User.username == username)).first()
 
 
@@ -24,26 +25,40 @@ def create_user(session: Session, username: str, email: str, password: str):
     :param password: str
     :return: User
     '''
+    # Hash the password before storing it
     hashed = security.get_password_hash(password)
+    # Create the user instance
     user = models.User(username=username, email=email, hashed_password=hashed)
+    # Add and commit the new user to the database
     session.add(user)
     session.commit()
     session.refresh(user)
+    # Return the created user
     return user
 
 
-def create_game(session: Session, user: models.User, word: models.Word):
+def create_game(session: Session, user: models.User, word: models.Word, initial_attempts: int = 6):
     '''
     Create a new game for the given user and word.
     :param session: Session
     :param user: models.User
     :param word: models.Word
+    :param initial_attempts: int
     :return: models.Game
     '''
-    game = models.Game(user_id=user.id, word_id=word.id, revealed="_" * len(word.text))
+    # Create the game instance
+    game = models.Game(
+        user_id=user.id,
+        word_id=word.id,
+        revealed="_" * len(word.text),
+        initial_attempts=initial_attempts,
+        attempts_left=initial_attempts
+    )
+    # Add and commit the new game to the database
     session.add(game)
     session.commit()
     session.refresh(game)
+    # Return the created game
     return game
 
 
@@ -61,7 +76,9 @@ def get_random_word(session: Session, topic: str = None, difficulty: str = None)
     logger = logging.getLogger(__name__)
     logger.info(f"Fetching random word with topic={topic} and difficulty={difficulty}")
 
+    # Build the base query
     q = select(models.Word)
+    # Apply filters if provided
     if topic:
         q = q.where(models.Word.topic == topic)
     if difficulty:
@@ -90,12 +107,14 @@ def get_count_of_words(session: Session, topic: str = None, difficulty: str = No
     :param difficulty: str
     :return: int
     '''
-
+    # Build the base query
     q = select(func.count(models.Word.id))
+    # Apply filters if provided
     if topic:
         q = q.where(models.Word.topic == topic)
     if difficulty:
         q = q.where(models.Word.difficulty == difficulty)
-
+    # Execute the query
     count = session.exec(q).one()
+    # Return the count
     return count

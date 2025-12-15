@@ -1,3 +1,4 @@
+# This script checks if the hangman database exists and lists its tables.
 import sqlite3, pathlib
 p = pathlib.Path('backend/app/database/hangman.db')
 print('exists', p.exists(), p)

@@ -43,7 +43,7 @@
 
 /* Theme classes for toggling in JS if needed */
 .theme-light{ --bg: #f6f7fb; --card:#ffffff; --muted:#6b7280; --accent:#2563eb; --accent-2:#10b981; --glass: rgba(255,255,255,0.6); --shadow: 0 6px 18px rgba(16,24,40,0.08); --text-primary: #0f1724; --text-secondary: #6b7280; --accent-contrast: var(--accent); }
-.theme-dark{  --bg: #071025; --card:#071828; --muted:#9ca3af; --accent:#60a5fa; --accent-2:#34d399; --glass: rgba(255,255,255,0.04); --shadow:0 6px 18px rgba(2,6,23,0.6); --text-primary: #e6edf3; --text-secondary: #9ca3af; --accent-contrast: #1f4ea3;}
+.theme-dark{  --bg: #071025; --card:#071828; --muted:#9ca3af; --accent:#383838; --accent-2:#34d399; --glass: rgba(255,255,255,0.04); --shadow:0 6px 18px rgba(2,6,23,0.6); --text-primary: #e6edf3; --text-secondary: #9ca3af; --accent-contrast: #1f4ea3;}
 
 /* Page base */
 html,body{height:100%;}
@@ -185,42 +185,99 @@ body{
   display:flex;align-items:center;justify-content:center;padding:12px;
 }
 .gallows{
-  width:260px;height:300px;position:relative;/* background: rgba(0,0,0,0.02); */
+  width:260px;height:300px;position:relative;
+  top: 80px;
+  left: -100px;
 }
 .gallows .part{
-  position:absolute;left:50%;transform:translateX(-50%);background:var(--muted);border-radius:4px;opacity:0;transition:all 220ms ease, opacity 220ms ease;box-shadow:0 6px 14px rgba(2,6,23,0.12);
+  position:absolute;left:50%;background:var(--muted);border-radius:4px;opacity:0;transition:all 220ms ease, opacity 220ms ease;box-shadow:0 6px 14px rgba(2,6,23,0.12);
 }
 
 /* Structure parts (positioned by top/height/width) */
-.gallow-base{bottom:8px;height:12px;width:220px;border-radius:6px;background:linear-gradient(90deg,color-mix(in srgb,var(--muted) 20%, transparent), color-mix(in srgb,var(--muted) 6%, transparent));left:50%;transform:translateX(-50%);}
-.gallow-post{bottom:20px;left:32px;transform:none;height:240px;width:12px;border-radius:6px;background:linear-gradient(180deg,var(--muted),color-mix(in srgb,var(--muted) 30%, transparent));}
-.gallow-beam{top:18px;left:32px;transform:none;height:12px;width:160px;border-radius:6px;background:linear-gradient(90deg,var(--muted),color-mix(in srgb,var(--muted) 30%, transparent));}
-.gallow-support{top:34px;left:64px;transform:none;height:10px;width:30px;border-radius:3px;background:var(--muted);transform:rotate(45deg);}
-.gallow-rope{top:34px;left:188px;transform:none;height:60px;width:4px;background:linear-gradient(180deg,var(--muted),color-mix(in srgb,var(--muted) 30%, transparent));border-radius:2px}
+.gallow-base{bottom:8px;height:12px;width:180px;border-radius:6px;background:linear-gradient(90deg,color-mix(in srgb,var(--muted) 20%, transparent), color-mix(in srgb,var(--muted) 6%, transparent))}
+.gallow-post{bottom:20px;left:42px;transform:none;height:180px;width:12px;border-radius:6px;background:linear-gradient(180deg,var(--muted),color-mix(in srgb,var(--muted) 30%, transparent));}
+.gallow-support{top:90px;left:24px;transform:none;height:10px;width:30px;border-radius:3px;background:var(--muted);}
+.gallow-beam{top:78px;left:32px;transform:none;height:12px;width:160px;border-radius:6px;background:linear-gradient(90deg,var(--muted),color-mix(in srgb,var(--muted) 30%, transparent));}
+.gallows .part.gallow-rope{
+    position: absolute;
+    top: 90px;
+    left: 224px;
+    height: 25px;
+    width: 3px;
+    border-radius: 4px;
+    background: var(--muted);
+}
+
 
 /* Human parts centered beneath rope */
-.head{top:94px;left:188px;height:44px;width:44px;border-radius:999px;background:var(--card);border:4px solid var(--muted);box-shadow:inset 0 2px 6px rgba(0,0,0,0.06);}
-.body{top:140px;left:188px;height:84px;width:6px;border-radius:4px;background:var(--muted);}
-.arm-left{top:160px;left:188px;height:6px;width:68px;border-radius:6px;background:var(--muted);transform-origin:left center;transform:translateX(-68px) rotate(-30deg)}
-.arm-right{top:160px;left:188px;height:6px;width:68px;border-radius:6px;background:var(--muted);transform-origin:left center;transform:translateX(6px) rotate(30deg)}
-.leg-left{top:220px;left:188px;height:6px;width:68px;border-radius:6px;background:var(--muted);transform-origin:left center;transform:translateX(-10px) rotate(40deg)}
-.leg-right{top:220px;left:188px;height:6px;width:68px;border-radius:6px;background:var(--muted);transform-origin:left center;transform:translateX(10px) rotate(-40deg)}
+.gallows .head{top:115px;left:208px;height:28px;width:28px;border-radius:999px;background:var(--card);border:4px solid var(--muted);box-shadow:inset 0 2px 6px rgba(0,0,0,0.06);}
+.gallows .body{top:151px;left:223px;height:66px;width:6px;border-radius:4px;background:var(--muted);}
+.gallows .arm-left{top:165px;left:185px;height:6px;width:38px;border-radius:6px;background:var(--muted);transform-origin:right center;transform:rotate(-45deg)}
+.gallows .arm-right{top:165px;left:229px;height:6px;width:38px;border-radius:6px;background:var(--muted);transform-origin:left center;transform:rotate(45deg)}
+.gallows .leg-left{top:212px;left:237px;height:6px;width:48px;border-radius:6px;background:var(--muted);transform-origin:left center;transform:translateX(-10px) rotate(50deg)}
+.gallows .leg-right{top:249px;left:184px;height:6px;width:48px;border-radius:6px;background:var(--muted);transform-origin:left center;transform:translateX(10px) rotate(-50deg)}
 
 /* Hidden by default; revealed based on stage class on .gallows container */
-.gallows .gallow-base, .gallows .gallow-post, .gallows .gallow-beam, .gallows .gallow-support, .gallows .gallow-rope, .gallows .head, .gallows .body, .gallows .arm-left, .gallows .arm-right, .gallows .leg-left, .gallows .leg-right{opacity:0;transform:translateY(-8px) scale(0.98)}
+/*.gallows .gallow-base, .gallows .gallow-post, .gallows .gallow-support, .gallows .gallow-beam, .gallows .gallow-rope, .gallows .head, .gallows .body, .gallows .part.arm-left, .gallows .part.arm-right, .gallows .leg-left, .gallows .leg-right{opacity:0;transform:translateY(-8px) scale(0.98)}*/
+.gallows .gallow-base, .gallows .gallow-post, .gallows .gallow-support, .gallows .gallow-beam, .gallows .part.gallow-rope, .gallows .head, .gallows .body, .gallows .part.arm-left, .gallows .part.arm-right, .gallows .leg-left, .gallows .leg-right{opacity:0}
 
 /* Stage progression selectors */
-.gallows.stage-1 .gallow-base{opacity:1;transform:none}
-.gallows.stage-2 .gallow-post{opacity:1;transform:none}
-.gallows.stage-3 .gallow-beam{opacity:1;transform:none}
-.gallows.stage-4 .gallow-support{opacity:1;transform:none}
-.gallows.stage-5 .gallow-rope{opacity:1;transform:none}
-.gallows.stage-6 .head{opacity:1;transform:none}
-.gallows.stage-7 .body{opacity:1;transform:none}
-.gallows.stage-8 .arm-left{opacity:1;transform:none}
-.gallows.stage-8 .arm-right{opacity:1;transform:none}
-.gallows.stage-9 .leg-left{opacity:1;transform:none}
-.gallows.stage-9 .leg-right{opacity:1;transform:none}
+.gallows.stage-1 .gallow-base { opacity: 1}
+
+.gallows.stage-2 .gallow-base,
+.gallows.stage-2 .gallow-post { opacity: 1}
+
+.gallows.stage-3 .gallow-base,
+.gallows.stage-3 .gallow-post,
+.gallows.stage-3 .gallow-support { opacity: 1}
+
+.gallows.stage-4 .gallow-base,
+.gallows.stage-4 .gallow-post,
+.gallows.stage-4 .gallow-support,
+.gallows.stage-4 .gallow-beam { opacity: 1}
+
+.gallows.stage-5 .gallow-base,
+.gallows.stage-5 .gallow-post,
+.gallows.stage-5 .gallow-support,
+.gallows.stage-5 .gallow-beam,
+.gallows.stage-5 .gallow-rope { opacity: 1}
+
+.gallows.stage-6 .gallow-base,
+.gallows.stage-6 .gallow-post,
+.gallows.stage-6 .gallow-support,
+.gallows.stage-6 .gallow-beam,
+.gallows.stage-6 .gallow-rope,
+.gallows.stage-6 .head { opacity: 1}
+
+.gallows.stage-7 .gallow-base,
+.gallows.stage-7 .gallow-post,
+.gallows.stage-7 .gallow-support,
+.gallows.stage-7 .gallow-beam,
+.gallows.stage-7 .gallow-rope,
+.gallows.stage-7 .head,
+.gallows.stage-7 .body { opacity: 1}
+
+.gallows.stage-8 .gallow-base,
+.gallows.stage-8 .gallow-post,
+.gallows.stage-8 .gallow-support,
+.gallows.stage-8 .gallow-beam,
+.gallows.stage-8 .gallow-rope,
+.gallows.stage-8 .head,
+.gallows.stage-8 .body,
+.gallows.stage-8 .arm-left,
+.gallows.stage-8 .arm-right { opacity: 1}
+
+.gallows.stage-9 .gallow-base,
+.gallows.stage-9 .gallow-post,
+.gallows.stage-9 .gallow-support,
+.gallows.stage-9 .gallow-beam,
+.gallows.stage-9 .gallow-rope,
+.gallows.stage-9 .head,
+.gallows.stage-9 .body,
+.gallows.stage-9 .arm-left,
+.gallows.stage-9 .arm-right,
+.gallows.stage-9 .leg-left,
+.gallows.stage-9 .leg-right { opacity: 1}
 
 /* small decorative shadow for finished hangman */
 .gallows.stage-9 .head{box-shadow:0 8px 24px rgba(0,0,0,0.22)}
