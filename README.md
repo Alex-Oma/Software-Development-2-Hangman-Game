@@ -1,9 +1,72 @@
 # Software-Development-2-Hangman-Game
-This repo is for the mobile Hangman game which is capable of running on mobile phones and tablets
+This repo is for the mobile Hangman game which is capable of running on mobile phones and tablets.
 
 # Project Hangman:
 
 Project Hangman is a mobile application that brings the classic word-guessing game, Hangman, to your fingertips. Designed for both phones and tablets, this app offers an engaging and interactive experience for users of all ages.
+In the game a player is presented with a series of blank spaces representing a hidden word. The player must guess letters one at a time, with each incorrect guess bringing them closer to "hanging" the stick figure. The objective is to reveal the entire word before running out of attempts.
+
+# Team Members:
+
+This project is done solo by one person:
+- Alex - Full stack developer / Project Manager / Documenter / quality assurance
+
+## Contribution from Alex
+
+### Activity 1 – Requirements and Creative Session
+1. Created overall specification based on user and system requirements
+2. Determined the project’s high-level ‘functional specifications’
+3. Identified and established software development strategy
+4. Created an overall test strategy for the project to include both manual and automated testing approaches plus performance testing of the frontend
+
+### Activity 2 - Design Analysis Session
+
+1. Created the initial specifications from Activity 1 to ensure the project scope is achievable within the time constraints and split the scope into MVP and nice-to-have Phase 2 features.
+2. Created the overall architecture design for the hangman game application to be comprised from backend and frontend parts communicating via REST API and enabling multiple players to play the game from mobile and tablet devices.
+3. Created the definition of game state management, game logic and scoring system designs for the hangman game application.
+4. Defined the core gameplay features such as new game, letters guessing, gallows rendering, hints usage etc.
+5. Identified the key technical must-haves such as user authentication, random word selection based on difficulty level, REST API endpoints, serialisation/de-serialisation of games, persistent storage of user data, words list and in-progress games into database to store state and allow players to continue games where thet left them.
+6. Generated the vocabulary of 365 words with clues split by difficulty levels to be used in the random word generation algorithm.
+
+### Activity 3 - Coding
+
+1. Implemented the backend part of the hangman game application using FastAPI Python framework, including backend app startup sequence, user authentication, game logic, scoring system and all REST API endpoints
+2. Developed all backend components including data models (models folder), schemas (schemas folder), REST API endpoints (routers folder), CRUD operations (crud folder), database connection and persistent storage (database folder) and main app startup (main.py)
+3. Developed game state management logic to track current score, hints made, attempts left etc.
+4. Implemented core gameplay features in the backend such as starting a new game, guessing a letter, using hints, changing score and revealing correctly guessed letters.
+5. Implemented the game over and game win logic to determine when the game ends.
+6. Implemented scoring system where points are awarded for correctly guessed letters and penalties are applied for hints being used.
+7. Created error handling mechanisms to handle invalid inputs, unauthenticated attempts to hit endpoints and either throw exceptions or return proper errors back to frontend e.g. attempt to guess a letter in a finished game returns 409 Conflict error.
+8. Fully documented the codebase with comments and docstrings to ensure maintainability and ease of understanding for future developers.
+9. Implemented user authentication system allowing players to create accounts, log in and have their scores and progress saved into the database.
+10. Developed the frontend part of the hangman game application using Progressive Web App (PWA) technology to ensure mobile and tablet compatibility.
+11. Created all frontend components including HTML structure (HTML files), CSS styling (CSS files) and JavaScript logic (JavaScript files) to provide an interactive user interface for the hangman game application.
+12. Implemented responsive design principles to ensure the frontend works seamlessly on various screen sizes and devices.
+13. Developed user interface elements such as main menu, game screen, score display, letter input system and feedback indicators.
+14. Integrated the frontend with the backend REST API endpoints to enable communication between the two parts of the hangman game application.
+15. Implemented client-side validation and error handling to provide immediate feedback to users for invalid inputs or actions.
+16. Fully documented the frontend codebase with comments to ensure maintainability and ease of understanding for future developers.
+
+### Activity 4 - Testing
+
+1. Created a set of automated tests (tests folder) to test the backend part of the hangman game application for REST API endpoints covering main requests and error handling
+2. Executed the automated tests to verify the correctness of the backend part of the hangman game application to ensure all REST API endpoints work as expected together with error handling and edge cases
+3. Fixed bugs found during automated testing of the backend part of the hangman game application
+4. Fixed bugs found during manual testing of the frontend part of the hangman game application
+6. Documented the test results of the automated tests performed on the backend part of the hangman game application
+7. Created a comprehensive manual testing plan for the frontend part of the hangman game application covering all key user interactions and scenarios
+8. Executed the manual testing plan to verify the correctness of the frontend part of the hangman game application to ensure all user interactions and scenarios work as expected
+9. Documented the test results of the manual tests performed on the frontend part of the hangman game application
+
+### Activity 5 – Activity Group Guidance – Project Design, Development, Deployment (Part A)
+
+1. Gathered and documented evidence from all of the project’s activities and outcomes
+2. Produced many screenshots and code snippets to illustrate the key parts of the project
+3. Contributed all of the content into the README.md file to document the project comprehensively
+4. Produced a cited review of the development strategy used to include advantages and disadvantages
+5. Produced References section citing all external sources used during the project
+6. Contributed to an evaluation of how well the project met each of the requirements together with a statement of the project’s overall success
+
 
 # Activity 1 – Requirements and Creative Session
 
@@ -22,12 +85,15 @@ Description: Multiple users can send simple, text messages to each other.
 
 I've reviewed all 3 available projects to chose from and having carried out some research, I've decided to go with the Hangman game project.
 I felt that the Hangman game would be a good fit for my project as it combines word guessing with a simple yet engaging gameplay mechanic.
+The game is easy to understand and can be enjoyed by players of all ages, making it a versatile choice.
+Additionally, the Hangman game allows for the implementation of various features such as scoring, hints, and difficulty levels, which can enhance the overall user experience.
 
 ## Task 2 – Primary Target Audience
 
 During the research, I've decided that my Hangman game targets **school kids aged 7–15**, mainly small kids who are just learning to read and spell and are learning vocabulary, as well as teenagers who enjoy word games and puzzles.
-They prefer something quick, clean, and rewarding that helps improve vocabulary and overall erudition while relaxing.
-This choice was made because this demographic is likely to appreciate the cognitive challenge of hangman while also valuing a polished user experience that fits into their education.
+They are likely to play the game on mobile devices such as smartphones and tablets, either during breaks at school or at home.
+This choice is based on the fact that Hangman is a classic word game that can help improve vocabulary and spelling skills, making it suitable for educational purposes as well as entertainment.
+
 
 ## Task 4 – User Profiles
 
@@ -43,7 +109,7 @@ I've created two user profiles representing my primary target audience:
 ### 👨‍💻 Nathan (13)
 - Secondary school student
 - Enjoys word games during breaks.
-- **Wants:** Challenging words and competitive scoring.
+- **Wants:** Challenging words and various difficulty levels.
 - **Needs:** Smooth gameplay and clear feedback.
 - **Frustrations:** Laggy performance or lack of variety in words.
 
@@ -52,21 +118,25 @@ I've created two user profiles representing my primary target audience:
 ### High level user requirements
 
 Based on my target audience and user profiles, I've developed the following preliminary high-level user requirements for my **Hangman game**.
-Depending on available time, some of these may be deprioritised to ensure I am capable of meeting the assignment deadline. The strict timeline means I must first focus on the **core gameplay features**, polish those, and only then add additional features.
+Depending on available time, some of these may be deprioritised to ensure I am capable of meeting the assignment deadline. 
+The strict timeline means I must first focus on the **core gameplay features**, polish those, and only then add additional features.
 I’ve therefore identified the **core (MVP)** features and **nice-to-have (Phase 2)** features.
 
 ---
 
 ## MVP Features (Must Have)
 
-1. **Main Menu**  
-   The game must have a main menu with options to start a new game, view scores, and access settings.  
+1. **Main page**  
+   The game must have a main page (index.html) with the game description, game logo and buttons to create an account or log in.
 
-2. **Game Win Screen**  
+2. **Main game page**  
+   The game must have a main game page with options to start a new game, main game layout and game controls.
+
+3. **Game Win Screen**  
    Displayed when the player successfully guesses the full word before running out of attempts.  
 
 3. **Game Over Screen**  
-   Displayed when the player runs out of allowed incorrect guesses.  
+   Displayed when the player runs out of allowed attempts.  
 
 4. **New Game Functionality**  
    Player must be able to start a new Hangman game at any time.  
@@ -75,25 +145,29 @@ I’ve therefore identified the **core (MVP)** features and **nice-to-have (Phas
    Each new Hangman round uses a random word from a wide range of topics (e.g., animals, countries, movies).  
 
 6. **Scoring System**  
-   Players earn points for correctly guessing letters or completing a word.  
+   Players earn points for correctly guessing letters or completing a word. 
+   Players lose points for using hints.
 
 7. **Heads-Up Display (HUD)**  
-   The HUD should display current score, word progress (revealed/hidden letters), remaining attempts, and guessed letters.  
+   The HUD should display current score, word progress (revealed/hidden letters), remaining attempts, hints used.  
 
 8. **Word Display**  
    The word must be shown as a series of blanks (“_”) that get filled as the player guesses correctly.  
 
 9. **Letter Input System**  
-   Player must be able to input a letter guess through keyboard or on-screen letter buttons.  
+   Player must be able to input a letter guess through on-screen letter buttons.  
 
 10. **Feedback on Guesses**  
-   The game must give immediate feedback for each guessed letter (correct or incorrect).  
+   The game must give immediate feedback for each guessed letter (correct or incorrect).
+    If a player correctly guesses a letter, it should be revealed in the word display.
+    If the guess is incorrect, the gallows graphic should progress to the next stage.
 
 11. **Hint Feature**  
    Player can use a limited number of hints to reveal a letter, but each hint deducts points.  
 
 12. **Full Word Guess Option**  
-   Player can attempt to guess the entire word at once. An incorrect full-word guess applies a large penalty or counts as multiple missed guesses.  
+   Player can attempt to guess the entire word at once. An incorrect full-word guess applies a large penalty or counts as multiple missed guesses.
+   **(Note: Descoped from Phase 1 and move to Phase 2)**
 
 13. **User Accounts and Login**  
    Players must be able to create an account and log in so that scores and progress can be saved.  
@@ -101,11 +175,8 @@ I’ve therefore identified the **core (MVP)** features and **nice-to-have (Phas
 14. **Intuitive User Interface**  
    The game must have a clear and easy-to-navigate interface for menus, gameplay, and viewing stats.  
 
-15. **Simple Scoring System**  
-   Points awarded for correct guesses, penalties for incorrect guesses and hints.  
-
 16. **Dynamic Word Generation**  
-   The game should draw words dynamically from a curated dictionary or API to ensure variety.  
+   The game should draw words dynamically from a curated dictionary.  
 
 ---
 
@@ -119,7 +190,8 @@ I’ve therefore identified the **core (MVP)** features and **nice-to-have (Phas
    Bonus points for streaks (e.g., multiple correct guesses in a row) or for finishing with remaining attempts.  
 
 3. **Accessibility Features**  
-   High-contrast color schemes, large font options, and full keyboard navigation.  
+   High-contrast color schemes, large font options, and full keyboard navigation.
+    **(Note: Completed in Phase 1)**
 
 4. **Leaderboard**  
    Display the top 10 players along with their scores and completion times.  
@@ -131,18 +203,25 @@ I’ve therefore identified the **core (MVP)** features and **nice-to-have (Phas
    Player can choose to enable or disable the game timer.  
 
 7. **Responsive Design**  
-   The game should adapt seamlessly to different screen sizes and devices (desktop, tablet, mobile).  
+   The game should adapt seamlessly to different screen sizes and devices (desktop, tablet, mobile).
+    **(Note: Completed in Phase 1)**
 
 8. **Progress Saving**  
    Player’s progress and scores should be saved locally or online to allow them to resume unfinished games.  
-   **(Note: Completed in Phase 1)**  
+   **(Note: Completed in Phase 1)** 
+
+9. **Sound Effects and Music**  
+   Background music and sound effects for correct/incorrect guesses, game win/loss, etc.
+
+10. **Light and Dark Themes**  
+    Player can switch between light and dark visual themes for better visibility in different lighting conditions.  
+    **(Note: Completed in Phase 1)**
 
 ---
 
 ## Hardware Requirements
 
 Players of the Hangman game will need a device capable of running a web browser—such as a desktop computer, laptop, tablet, or smartphone.  
-
 The device should have at least **2GB RAM** and a **modern processor** for smooth gameplay. No dedicated GPU is required, as the game is not graphically intensive.
 
 ---
@@ -161,13 +240,21 @@ The Hangman game is meant to be **mobile-ready** as per the requirements and com
 |----------------------------|---------------------------------------------------------------------------------------------------------------------------------------------|
 | **User Authentication**    | Players can create accounts and log in to save scores and progress.                                                                         |
 | **Game Interface**         | Intuitive UI for navigating menus, starting games, and viewing scores.                                                                      |
+| **Gameplay Mechanics**     | Core Hangman mechanics: guessing letters, revealing words, tracking attempts, and scoring.                                                  |
+| **Game state Management**   | Tracks current score, word progress, remaining attempts, and hints used.                                                                     |
+| **Dynamic Word Selection** | Randomly selects words from a curated dictionary for each new game.                                                                        |
+| **Feedback System**        | Immediate feedback on guesses, score updates, and game status (win/loss).                                                                |
+| **Hint System**            | Allows players to use hints to reveal letters at a score penalty.                                                                          |
+| **Responsive Design**      | Adapts to various screen sizes and devices for optimal user experience.                                                                    |
+| **Game HUD**            | Displays current score, word progress, remaining attempts, and hints used.                                                                  |
+| **Accessibility Options**   | High-contrast modes, large fonts, and keyboard navigation for inclusivity.                                                                 |
 
 
 ### AI in the game
 
 In my game, I am not planning to use AI features as part of the core gameplay experience.
-The only kind of 'AI' feature I am going to use is using an algorithm to generate crossword for a new game started by a user using random words from the vocabulary of clues.
-For this I am going to use a predefined list of words and clues, and the algorithm would randomly select words from this list to create unique crossword puzzles for each game session played by a user.
+The only kind of 'AI' feature I am going to use is using an algorithm to randomly select a word for a new game started by a user using the vocabulary of words with topic, clue and difficulty level.
+For this I am going to use a predefined list of words and the algorithm would randomly select word from this list for each game session played by a user.
 So, this is going to be a basic implementation and does not involve advanced AI techniques.
 
 ---
@@ -181,48 +268,195 @@ any non-player characters interact, etc.)
 The following list of functional requirements has been produced to cover the high-level user requirements from task 5 above.
 It has to be mentioned the list also has the acceptance criteria for each functional requirement to ensure that the requirement is testable and verifiable.
 
-| Functional requirement             | Type | Specification                                                                                                                                                                                          | Acceptance Criteria                                                                                                                                                                                                                                                                                                                            |
-|------------------------------------|------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Main menu when app starts          | UI   | The main menu is displayed with options to play a new game or check rules of the game how to play it.                                                                                                  | When the app starts, main menu is displayed with "Play" and "How to play" options visible and clickable.                                                                                                                                                                                                                                       |
+| Functional requirement             | Type | Specification                                                                                                                                                         | Acceptance Criteria                                                                                                                                                                                                                                                                                                                            |
+|------------------------------------|------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Main page when app starts          | UI   | The main page is displayed with game description, game logo, game rules and buttons to log in or create an account.                                                   | When the app starts, main page is displayed with game description, game logo, game rules and buttons to log in or create an account.                                                                                                                                                                                                           |
+| Game win screen when the user wins | UI   | When a player correctly guesses full word, a Game Win screen is displayed.                                                                                            | When whol word is guessed correctly, the Game Win screen appears.                                                                                                                                                                                                                                                                              |
+| Game over screen when user loses   | UI   | When a player runs out of allowed guess attempts, a Game Over screen is displayed.                                                                                    | When the player runs out of allowed guess attempts, the Game Over screen appears.                                                                                                                                                                                                                                                              |
+| Start new game                     | UX   | Player can start a new game from the main game layout.                                                                                                                | When user clicks "Start New Game" button on the main game layout, a new game is started with a new random word and game state is reset.                                                                                                                                                                      |
+| Random word for a new game         | Sys  | The game uses a set of words from different topics to select a random one for a new game started by a user.                                                           | When a new game is started, a random word is selected from the predefined list of words with topics, clues and difficulty levels.                                                                                                                                                                                                              |
+| Scoring system                     | Sys  | Player scores points when correct letter is guessed. The number of points scored equals to 10.                                                                        | When player guesses a letter correctly, score is increased by 10 points. Example: guess letter is 'A' and it exists in the word so player's score is increased by 10 points.                                                                                                                                                                   |
+| Scoring system                     | Sys  | Player scores penalty points when using a hint. The number of points subtracted equals to 10.                                                                         | When player uses a hint to reveal a letter, score is decreased by 10 points. Example: user uses a hint so player's total score for the game is reduced by 10 points.                                                                                                                                                                          |
+| HUD display                        | UI   | HUD shows current game state details like current score, attempts left, hints used.                                                                                   | During gameplay, HUD displays current score, attempts left and hints used.                                                                                                                                                                                                                                                                     |
+| Gameboard rendering                | UI   | Gameboard is rendered on screen with a word hidden and empty boxes shown for each letter plus alphabet is rendered and empty space where gallows is to be rendered.              | During gameplay, gameboard is displayed with hidden word represented as empty boxes, alphabet letters for guessing and gallows area.                                                                                                                                                                                                          |
+| Responsive design                  | UI   | The game is optimized for various screen sizes and devices.                                                                                                           | The game layout adjusts correctly on desktop, tablet, and mobile devices without loss of functionality.                                                                                                                                                                                                                                        |
+| User management                    | Sys  | Player can create an account so that their scores and progress can be saved.                                                                                          | Players can register with a username and password and optional email address.                                                                                                                                                                                                                                                                  |
+| User management                    | Sys  | Player can log in to the game so that their scores and progress can be saved.                                                                                         | Players log in with their previously registered username and password.                                                                                                                                                                                                                                                                         |
+| Letter input system               | UX   | Player can input a letter guess through on-screen letter buttons.                                                                                                    | When player clicks on a letter button, the letter is registered as a guess for the current game.                                                                                                                                                                                                                                             |
+| Feedback on guesses               | UX   | The game gives immediate feedback for each guessed letter (correct or incorrect). If correct, letter is revealed in the word display. If incorrect, gallows graphic progresses. | When player guesses a letter, if correct, the letter is revealed in the word display; if incorrect, the gallows graphic progresses to the next stage.                                                                                                                                                                                        |
+| Use hint                          | UX   | Player can use a limited number of hints to reveal a letter, but each hint deducts points.                                                                           | When player clicks "Use Hint" button, a letter is revealed in the word display and player's score is decreased by 10 points.                                                                                                                                                                                                                  |
+
 
 ---
 
 ## Task 6 – Non-Functional Specifications
 
-It is important to consider non-functional specifications as part of the overall specification for the crossword game.
-We've identified the following non-functional specifications to be important for our game:
+It is important to consider non-functional specifications as part of the overall specification for the Hangman game.
+I've identified the following non-functional specifications to be important for my Hangman game:
 
-| Category            | Specification                                           |
-|---------------------|---------------------------------------------------------|
-| **Aesthetic**       | Clean grid layout, minimal colours, modern typography.  |
-| **Usability**       | Simple controls and clear instructions.                 |
-| **Responsiveness**  | Works perfectly on desktop, tablet, and mobile.         |
-| **Feedback**        | Real-time indicators: green for correct, red for wrong. |
-| **Performance**     | Loads under 3 seconds, no noticeable lag.               |
-| **Reliability**     | Auto-saves progress locally in memory.                  |
-| **Maintainability** | Code modular and well-commented for easy updates.       |
+| Category            | Specification                                                          |
+|---------------------|------------------------------------------------------------------------|
+| **Usability**       | Simple controls and clear instructions.                                |
+| **Responsiveness**  | Works perfectly on desktop, tablet, and mobile.                        |
+| **Aesthetic**       | Clean game layout, minimal colours, modern typography.                 |
+| **Performance**     | Loads under 3 seconds, no noticeable lag.                              |
+| **Reliability**     | Auto-saves progress in the backend.                                    |
+| **Maintainability** | Code modular and well-commented and well-documented for easy updates.  |
+| **Scalability**     | Backend can handle multiple concurrent users without performance drop. |
+| **Accessibility**   | High-contrast mode, large fonts, keyboard navigation.                  |
+| **Security**        | Secure user authentication and data storage e.g. hashed passwords.     |
+| **Multi-device**   | Syncs progress across devices when logged in.                           |
 
 ---
 
 ## Task 9 - Identify and rank potential risks to the project’s success 
 
-During the brainstorming session, we identified the following potential risks to the project's success along with their mitigation strategies:
+I've identified the following potential risks to the project's success along with their mitigation strategies:
 
-| Category                                      | Description                                                                                                                                        | Mitigtion Strategy                                                                                                                                            |
-|-----------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Lack of Coding Knowledge                      | Some people in this project may have different coding experience                                                                                   | Pair programming, online tutorials, books from LRC, team knowledge sharing and helping each other when someone is stuck.                                      |
-| Scope creep                                   | The project may become too big to handle for the three of us if we keep adding more and more features to the scope.                                | The scope should be frozen to MVP features only to ensure it can be delievered by the deadline.                                                               |
+| Category                           | Description                                                                                                        | Mitigtion Strategy                                                                                                                                             |
+|------------------------------------|--------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Lack of Knowledge About frameworks | When dealing with new Python frameworks I may not know all of their core features and functionalities well enough. | Allocate time for learning and experimenting with the frameworks before starting development to build familiarity and confidence.                              |
+| Scope creep                        | The project may become too big to handle to be done solo if I keep adding more and more features to the scope.     | The scope should be frozen to MVP features only to ensure it can be delievered by the deadline and later additional features can be added if the time permits. |
+| Time management                    | I may underestimate the time required to complete certain tasks leading to delays.                                 | Create a detailed project plan with realistic time estimates and buffer time for unexpected delays.                                                          |
+| Technical challenges               | Unforeseen technical issues may arise during development.                                                          | Conduct thorough research and planning before implementation to identify potential challenges and solutions.                                                  |
 
 
 ---
 
 ## Task 10 - Software development strategy 
 
+I've compared three software development strategies Waterfall, Agile and Rapid Application Development (RAD) as the main three candidates to select from as a software development strategy for my Hangman game app.
+I've used the following sources [8] and [9] stated in the References section to help me with the comparison of the three strategies.
+
 ### Comparison of the three strategies
 
+Overall the three software development strategies can be summarised and compared as follows:
+
+| Criteria                 | Waterfall                        | Agile                               | Rapid Application Development (RAD)   |
+|--------------------------|----------------------------------|-------------------------------------|---------------------------------------|
+| Flexibility              | Low - rigid phases               | High - iterative and adaptive       | High - iterative protyping            |
+| Speed of Delivery        | Slow - sequential phases         | Fast - frequent releases            | Very Fast - rapid prototyping         |
+| User Involvement         | Low - mainly at start and end    | High - continuous feedback          | Very High - constant user feedback    |
+| Documentation            | Extensive upfront documentation  | Minimal - just enough               | Minimal - focus on working prototypes |
+| Risk Management          | High risk if requirements change | Low risk through constant feedback  | Low risk due to adaptability          |  
+| Team Size Suitability    | Large teams                      | Small to medium teams               | Small teams                           |
+| Project Size Suitability | Large projects                   | Medium projects                     | Small projects                        |
+| Outcome Focus            | Deliver complete product at end  | Deliver working software frequently | Deliver working prototypes quickly    |
+
+### Advantages and Disadvantages of Waterfall
+
+**Advantages:**
+1. Clear Structure: Waterfall provides a clear and structured approach to development with defined phases.
+2. Documentation: Extensive documentation is created upfront, which can be useful for future reference.
+3. Predictability: The sequential nature of Waterfall allows for better predictability in terms of timelines and deliverables.
+4. Easy to Manage: The linear approach makes it easier to manage and track progress.
+5. Well-suited for Stable Requirements: Waterfall works well when requirements are well-defined and unlikely to change.
+
+**Disadvantages:**
+1. Inflexibility: Waterfall is rigid and does not easily accommodate changes once a phase is completed.
+2. Delayed Testing: Testing is done at the end, which can lead to late discovery of issues.
+3. User Involvement: Limited user involvement during development can lead to a final product that does not meet user needs.
+4. Risk of Failure: If requirements change, the project may fail or require significant rework.
+5. Not Suitable for Complex Projects: Waterfall may not be effective for complex projects with evolving requirements.
+
+### Advantages and Disadvantages of Agile
+
+**Advantages:**
+1. Flexibility: Agile is highly adaptable to changes in requirements throughout the development process.
+2. Frequent Deliveries: Agile allows for frequent releases of working software, providing value to users early and often.
+3. User Involvement: Agile emphasizes continuous user feedback, ensuring the final product meets user needs.
+4. Risk Reduction: The iterative approach reduces the risk of project failure due to changing requirements.
+5. Collaboration: Agile promotes collaboration among team members and stakeholders.
+
+**Disadvantages:**
+1. Less Documentation: Agile often has less upfront documentation compared to Waterfall, which can lead to challenges in maintenance and future development.
+2. Resource Intensive: Agile can require significant resources such as skilled developers and active user involvement.
+3. Scope Creep: The flexibility of Agile can lead to scope creep if not managed properly.
+4. Not Suitable for Large Projects: In its original form Agile is typically better suited for small to medium-sized projects but for large projects it may require scaling frameworks.
+5. Requires Skilled Team: Agile requires a team with strong skills and experience to effectively manage the iterative process.
+
+### Advantages and Disadvantages of RAD
+
+**Advantages:**
+1. Speed: RAD allows for rapid development and quick turnaround times, making it ideal for projects with tight deadlines.
+2. Flexibility: The iterative nature of RAD allows for changes and adjustments based on user feedback throughout the development process.
+3. User Involvement: similar to Agile RAD emphasizes constant user feedback, ensuring that the final product meets user needs and expectations.
+4. Reduced Risk: The ability to adapt and pivot based on feedback reduces the risk of project failure due to changing requirements.
+5. Focus on Prototyping: RAD focuses on creating working prototypes quickly, allowing for early testing and validation of ideas.
+
+**Disadvantages:**
+1. Limited Documentation: similar to Agile RAD often results in minimal documentation, which can lead to challenges in maintenance and future development.
+2. Resource Intensive: like this is the case with Agile RAD can require significant resources in terms of a team of senior developers and increased user involvement, which may not be feasible for all projects.
+3. Scope Creep: The flexibility of RAD can also lead to scope creep if not managed properly, as users may continuously request changes and additions.
+4. Not Suitable for Large Projects: RAD is typically better suited for small to medium-sized projects, and may not be effective for large, complex projects.
+5. Requires Skilled Team: similar to Agile RAD requires a team with strong skills and experience to manage the rapid development process.
+
+### Reasons for choosing RAD for my project
+
+My thought process for choosing RAD as the software development strategy for my Hangman game project is as follows.
+I've rejected the Waterfall strategy because of its rigidity and inflexibility to changes which is not suitable for my project as I expect many smaller and bigger changes to happen during the development based on user feedback.
+I also rejected Agile because although it is flexible and adaptive, it may not provide the speed of delivery that I need for my project given the tight deadline. I also don't plan having many iterations and releases but rather focus on rapid prototyping and getting user feedback on those prototypes therefore many of the Agile advantages are not that relevant for my project.
+After checking the advantages and disadvantages of all three strategies, I've decided that RAD is the best fit for my project because it offers the speed of delivery and flexibility that I need to meet the project deadline while also allowing for constant user feedback and iteration.
+
+Several particular reasons contributed to my decision in favour of RAD are outlined below:
+1. My game project requires speed of delivery and flexibility which RAD perfectly provides.
+2. I expected minimum of upfront planning so waterfall with its rigid planning and significant planning overhead wouldn't work.
+3. Time sensitivity - as the delivery has to happen in about one month time the turnaround should be really fast to deliver the project as per the defined scope meeting the deadline.
+4. Process-wise - I aim to hit the ground running by prototyping features, testing them by users, getting feedback and iterating fast.
+5. Documentation-wise - RAD allows me to focus on working prototypes first and document them later when things settle down.
+6. With RAD the identified project risks are reduced through the constant user feedback so that pivoting can happen after each prototype say some new UX features to be added like dark vs light theme switching. 
+7. RAD works great for small teams and because I am doing the project solo RAD fits very well for this kind of one-man-orchestra setup.
+8. RAD is good for small projects and my project is small in scope and also has to happen within a short span of time.
+9. Outcome focus: deliver working prototype quickly and then iterate fast to implement all MVP features so that the game crystalises into its final version and become ready for the final submission.
 
 ---
 
+## Task 11 - Overall Test Plan
+
+### Overall test strategy
+
+The overall test strategy for the Hangman game involves a combination of manual testing and automated unit tests to ensure the game functions correctly and meets user requirements.
+Such combination of manual functional testing and unit tests covering the code allows to achieve high quality of the software being developed such as our crossword game.
+The manual testing will focus on the user interface, game state logic, and overall user experience to ensure that the game behaves as expected from a player's perspective.
+The unit tests will focus on the backend logic, including REST API endpoints, game mechanics, and scoring to ensure that the core functionality of the game is robust and reliable.
+
+#### Manual Testing
+
+Manual tests are going to be done on the frontend to test the user interface, game state logic like scoring, game over and overall user experience.
+For the manual testing a range of test cases will be created to cover all the main user flows and edge cases. 
+For frontend part the Dev Tools in the browser will be used to inspect the game state, network calls and console logs to verify the correctness of the game behaviour.
+
+The manual tests will cover the following areas:
+1. Game start and main game layout.
+2. Hidden word rendering and letter input.
+3. Letter guessing and validation.
+4. Scoring system and HUD updates.
+5. Hint functionality.
+6. Game win and game over screens.
+7. User account creation and login.
+8. Resume game feature when a user logs off and logins back again.
+9. Resume game feature when the browser is refreshed or when user log ins from another device.
+10. Responsive design on different screen sizes and devices.
+
+The detailed manual test cases will be documented as part of the Activity 4 below.
+
+#### Unit Tests
+
+Unit tests are to be done on the backend to test the REST API endpoints, game logic, scoring etc.
+pytest framework can be used for unit testing of the backend part.
+
+#### Performance Testing
+
+Given the scope and nature of the Hangman game, performance testing is not a primary focus.
+However, basic performance checks will be conducted to ensure that the game loads quickly and responds promptly to user actions.
+To achieve this, tools like Lighthouse part of the browser's Dev Tools can be used to measure page load times and responsiveness.
+
+#### Accessibility Testing
+
+Accessibility testing will be performed to ensure that the game is usable by players with disabilities.
+This includes testing for keyboard navigation and color contrast.
+
+---
 
 # Activity 3 – Coding
 
