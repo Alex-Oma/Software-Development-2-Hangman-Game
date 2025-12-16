@@ -1,10 +1,14 @@
 # Software-Development-2-Hangman-Game
 This repo is for the mobile Hangman game which is capable of running on mobile phones and tablets.
 
+---
+
 # Project Hangman:
 
 Project Hangman is a mobile application that brings the classic word-guessing game, Hangman, to your fingertips. Designed for both phones and tablets, this app offers an engaging and interactive experience for users of all ages.
 In the game a player is presented with a series of blank spaces representing a hidden word. The player must guess letters one at a time, with each incorrect guess bringing them closer to "hanging" the stick figure. The objective is to reveal the entire word before running out of attempts.
+
+---
 
 # Team Members:
 
@@ -67,6 +71,7 @@ This project is done solo by one person:
 5. Produced References section citing all external sources used during the project
 6. Contributed to an evaluation of how well the project met each of the requirements together with a statement of the project’s overall success
 
+---
 
 # Activity 1 – Requirements and Creative Session
 
@@ -419,6 +424,7 @@ The overall test strategy for the Hangman game involves a combination of manual 
 Such combination of manual functional testing and unit tests covering the code allows to achieve high quality of the software being developed such as our crossword game.
 The manual testing will focus on the user interface, game state logic, and overall user experience to ensure that the game behaves as expected from a player's perspective.
 The unit tests will focus on the backend logic, including REST API endpoints, game mechanics, and scoring to ensure that the core functionality of the game is robust and reliable.
+Also, performance testing and accessibility testing will be performed to ensure that the game loads quickly and is usable by players with disabilities.
 
 #### Manual Testing
 
@@ -458,6 +464,324 @@ This includes testing for keyboard navigation and color contrast.
 
 ---
 
+# Activity 2 - Design Analysis Session
+
+## Task 1 - Refining and improving 
+
+Task 1 – Refining and Improving
+
+After reviewing my initial specifications from Activity 1, I've refined the scope and simplified certain elements to make sure the Hangman game could be fully developed within the allocated timeframe.
+
+Improvements and Adjustments
+
+| Area                      | Original Idea                                        | Issue Identified                                                  | Improvement Implemented                                                                                                       |
+|---------------------------|------------------------------------------------------|-------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+| Difficulty Levels         | Multiple difficulty levels (easy/medium/hard/insane) | Decided to include this into the MVP scope on a best effort basis | Implemented four difficulty levels (easy, medium, hard, insane) based on word length and complexity                           |
+| Timer Feature             | Optional countdown and stopwatch                     | Not essential for the MVP hence stayed in Phase 2                 | Kept timer feature outside MVP to focus on core gameplay mechanics                                                            |
+| Scoring System            | Combo/streak bonuses and advanced logic              | Over-complicated for MVP                                          | Simplified to +10 points for each correctly guessed letter present in the hidden word                                         |
+| UI / UX Design            | Basic black-and-white layout                         | Degraded overall user experience                                  | Added elaborate CSS layout to improve visual appeal and user engagement                                                       |
+| Accessibility             | Minimal colour contrast only                         | Needed better readability and accessibility                       | Ensured high contrast ratio and added keyboard navigation support                                                             |
+| Testing Plan              | Only three manual tests                              | Limited coverage of key functions of my Hangman game app          | More manual tests for frontend part are to be done to test user flows, game logic etc as this is the key way to find any bugs |
+| Backend Persistence       | No backend persistence planned                         | Risk of losing user progress on refresh or logout                  | Added backend persistence to save user accounts, game states and scores into the database                                     |
+
+These refinements make the project **achievable, UX user-friendly, crossplatform and stable**, ensuring that the core gameplay experience is solid while still allowing for future enhancements.
+
+
+## Task 2 - agree project requirements and specifications
+
+After refining initial set of ideas, I identified the final set of requirements that are realistic to deliver within the deadline.
+The final requirements focus on delivering a polished and functional Hangman game that meets user needs while being feasible to implement within the project constraints.
+
+#### Final Functional Specifications
+1. Player can start a new game from the main game page after logging in.
+2. Player gets a random word from a predefined vocabulary of words with topics, clues and difficulty levels for each new game started.
+3. Simple scoring system whereas for each correctly guessed letter the player scores 10 points.
+4. Player is given real-time feedback on guesses made - correct guesses reveal letters in the hidden word and incorrect guesses progress the gallows graphic.
+5. Player can use hints to reveal letters in the hidden word at a penalty of 10 points per hint used.
+6. Game HUD displays current score, attempts left and hints used.
+7. Gameboard displays the hidden word as empty boxes, alphabet letters for guessing and gallows graphic.
+8. Game is responsive and works on desktop, tablet and mobile devices.
+9. Player can create an account and log in to save scores and progress.
+10. Player can resume an unfinished game when logging back in or refreshing the browser.
+11. Player wins the game when all letters in the hidden word are correctly guessed.
+12. Player loses the game when they run out of allowed guess attempts.
+13. Final game state (win/loss) is displayed.
+14. Backend persists user accounts, game states and scores into the database in order to allow resuming games and tracking scores.
+
+#### Final Non-Functional Specifications
+- Loads within 3 seconds.  
+- Works on mobile, tablet, desktop with mobile being the primary target.
+- Clean and modern UI design with appealing aesthetics.
+- High-contrast colours and readable fonts.
+- Keyboard navigation support for accessibility.
+- Modular code using Python, HTML, CSS and JavaScript.  
+- Deployed as a web app using FastAPI backend.
+
+Above requirements have been prioritised to focus on core gameplay mechanics, user experience and essential features that make the game enjoyable and functional.
+
+---
+
+## Task 3 - Psuedocode
+
+The pseudocode below outlines the main logic and gameplay flow for the Hangman game app.  
+It shows how the player interacts with the game, how answers are checked, and how the score is updated.
+
+```plaintext
+START GAME
+  DISPLAY main menu
+
+  IF user clicks "Start New Game"
+      LOAD hidden word
+      DISPLAY topic and clue
+      SET score = 0
+      SET attemptsLeft = maxAttempts
+      SET hintsUsed = 0
+
+      WHILE game not finished
+          WAIT for player input (letter guess or hint request)
+
+          IF input matches a letter present in hidden word
+              UPDATE hidden word display with guessed letter
+              INCREASE score by 10
+          ELSE
+              DISPLAY next gallows stage
+              DECREASE attemptsLeft by 1
+              DISABLE guessed letter button
+
+          IF player clicks "Use Hint"
+              REVEAL one random letter in selected word
+              DECREASE score by 10
+              INCREASE hintsUsed by 1
+
+          IF letters guessed == total letters in hidden word
+              DISPLAY "You Win!" message
+              EXIT LOOP
+          ELIF attemptsLeft == 0
+              DISPLAY "Game Over!" message
+              EXIT LOOP
+          END IF
+      END WHILE
+
+      SAVE progress into the database
+      DISPLAY final score
+  END IF
+
+END GAME
+```
+
+
+
+## Task 4 - UML Flowchart
+
+The UML flowchart below represents the overall game logic and user interaction flow for the Hangman game app.  
+It helps visualize how the game starts, how player input is processed, and how the program determines when the game is complete.
+
+#### Description of Flow
+
+1. The new game starts when the player clicks the **Start New Game** button on the main game page.
+2. Hidden word is loaded and displayed as empty boxes along with topic and clue.
+3. Alphabet is displayed for letter guessing.
+4. HUD is displayed showing current score, attempts left and hints used.
+5. Gallows area is displayed empty.
+6. Player inputs a letter guess or clicks **Use Hint**.
+7. The program checks if the guessed letter is in the hidden word.
+   - If correct → letter is revealed in the hidden word and score increases by 10 points.  
+   - If incorrect → gallows graphic progresses to next stage and attempts left decreases by 1.
+8. If player clicks **Use Hint** → one letter is revealed in the hidden word and score decreases by 10 points.
+9. The program checks if all letters in the hidden word are guessed.
+   - If yes → display **"You Win!"** message and final score.  
+   - If no → continue playing.
+   - If attempts left reaches 0 → display **"Game Over!"** message and final score.
+10. The player’s progress is saved into the database after each action done by a player.
+
+#### UML Flow (Text-Based Representation)
+
+```plaintext
+          ┌─────────────────────┐
+          │     START GAME      │
+          └─────────┬───────────┘
+                    │
+                    ▼
+        ┌──────────────────────┐
+        │ Display Game Page    │
+        └─────────┬────────────┘
+                  │
+         ┌────────▼────────┐
+         │ User clicks     │
+         │ "Start New Game"│
+         └────────┬────────┘
+                  │
+        ┌─────────▼───────────────┐
+        │ Load hidden word        │
+        │ & Display topic and clue│
+        └─────────┬───────────────┘
+                  │
+          ┌───────▼────────┐
+          │ Player Inputs  │
+          │ letter         │
+          └───────┬────────┘
+                  │
+     ┌────────────▼────────────┐
+     │ Is Letter Correct?      │
+     ├────────────┬────────────┤
+     │ Yes        │ No         │
+     ├────────────┼────────────┤
+     │ Update HUD │ Display    │
+     │ +10 Points │ next gallows│
+     │            │ stage and  │
+     │            │ -1 Attempt │
+     └──────┬─────┴────────────┘
+            │
+  ┌─────────▼──────────────┐
+  │ Player Clicks Use Hint │
+  ├────────────────────────┤
+  │ Reveal Letter and      │
+  │ -10 Pts                │  
+  └─────────┬──────────────┘
+            │
+    ┌───────▼─────────────┐
+    │ All letters guessed?│
+    ├─────────┬───────────┤
+    │ Yes     │ No        │
+    ├─────────┼───────────┤
+    │ Display │ Wait for  │
+    │ “You Win” │ Input   │
+    └───────┬─────────────┘
+            │
+    ┌───────▼─────────────┐
+    │ No more attempts?   │
+    ├─────────┬───────────┤
+    │ Yes     │ No        │
+    ├─────────┼───────────┤
+    │ Display │ Wait for  │
+    │ “You Lost” │ Input  │
+    └───────┬─────────────┘
+            │
+    ┌───────▼─────────┐
+    │ Save Progress   │
+    │ Update HUD      │
+    └───────┬─────────┘
+            │
+            ▼
+     ┌───────────────┐
+     │    END GAME    │
+     └───────────────┘
+```
+
+
+ ## Task 5 - Game State management
+
+This section defines how the game manages and tracks different states such as **Start**, **Win**, **Lose** as well as how these states are detected and updated during the gameplay.
+
+#### Game States
+1. **Start State** – The game begins when the player clicks the **Start New Game** button on the game page.  
+   - Hidden word is loaded and displayed as empty boxes along with topic and clue.
+   - Alphabet is displayed for letter guessing.
+   - HUD is displayed showing current score, attempts left and hints used.
+   - Gallows area is displayed empty.
+   - Game score, hints used are set to zero.
+
+2. **Active State** – The player is actively guessing letters and interacting with the on-screen alphabet and hint button.
+   The game remains in this state while there are still words to be guessed and the player has remaining guess attempts.
+   - the player selects a letter on the on-screen alphabet and licks on it this way submitting the guess to the backend to check if the letter guess is correct and gets response and updates the game state accordingly.
+   - if the player correctly guessed the letter then the letter is revealed in the hidden word on the grid and points are awarded to the game score.
+   - if the player incorrectly guessed the letter then the gallows graphic progresses to the next stage and remaining guess attempts are reduced by 1.
+   - if the player clicks **Use Hint** button then one random letter in the hidden word is revealed and penalty points are deducted from the game score.
+   - The game state like game score, attempts left, hints used is shown in the HUD.
+   - The game continues in this state until either all letters are guessed or the player runs out of guess attempts.
+
+3. **Completed State** – Triggered when all letters are correctly guessed or when the player runs out of guess attempts.
+   - When all letters are guessed the game detects this state by checking if all letters in the hidden word are revealed on the grid.
+   - When the player runs out of guess attempts the game detects this state by checking if remaining guess attempts reaches zero.
+   - The final game state like game score, guesses made, words solved etc is shown in the HUD.
+   - The game changes its state into 'completed' so that the player can't do any actions for it.
+
+5. **Lose State** – activated when the player runs out of guess attempts.  
+   - The player loses when they run out of guess attempts.
+   - A **“You Lose!”** message is displayed.
+   - The final game state like game score, hints used is shown in the HUD.
+   - The game changes its state into 'completed' so that the player can't do any actions for it.
+   - The gallows graphic is fully displayed showing the complete hangman.
+
+5. **Win State** – activated when the player correctly guesses all letters in the hidden word.
+   - The player wins when all letters in the hidden word are correctly guessed.
+   - A **“You Win!”** message is displayed.
+   - The final game state like game score, hints used etc is shown in the HUD.
+   - The game changes its state into 'completed' so that the player can't do any actions for it.
+
+
+#### Game Logic Overview
+
+- **Guess letter function:**  
+  - Compares the player’s input represented by the letter clicked on the on-screen alphabet with the hidden word.
+  - If the letter matches at least one letter in the hidden word → reveal the letter in the hidden word on the grid and award 10 points to the game score.
+  - If the letter does not match any letter in the hidden word → progress the gallows graphic to the next stage and reduce remaining guess attempts by 1.
+  - If the player runs out of guess attempts after an incorrect guess → trigger **Lose State**.
+  - If all letters are guessed after a correct guess → trigger **Win State**.
+
+- **Use Hint function**  
+  - Reveals one random letter in the selected word on the grid.
+  - Deducts 10 points from the game score.
+  - Increases hints used count by 1.
+  - If all letters are guessed after using a hint → trigger **Win State**.
+
+#### Win / Lose Conditions
+
+- **Win:** All letters in the hidden word are correctly guessed before running out of guess attempts.
+- **Lose:** Player runs out of guess attempts before guessing all letters in the hidden word.
+
+---
+
+This design ensures that the game effectively manages and tracks different states, providing a clear and engaging gameplay experience for the player.
+
+## Architecture Design
+
+### Technology stack and overall approach
+
+As per the assignment brief the platform should be mobile first.
+The stack is suggested as: JavaScript, CSS, HTML5, Python (FastAPI) and SQLite or similar lightweight database.
+To fulfil the mobile first requirement the app will be designed as a Progressive Web App (PWA) so that it can be installed on mobile devices and work offline.
+The backend will be built using FastAPI framework in Python which is lightweight and fast to develop REST APIs.
+The frontend will be built using standard web technologies - HTML5, CSS and JavaScript.
+For the database part I can use SQLite as a lightweight database to store user accounts, game states and scores.
+Overall this stack is well suited for building a mobile first web app with a Python backend and a JavaScript frontend.
+
+### Architecture design decisions
+
+After reviewing the technology stack I decided to go with the following architecture design for my Hangman game app.
+I am using a client-server architecture.
+I am going to have a FastAPI based backend server (controller) which will do the heavy lifting like handling the game logic, scoring etc.
+The backend will expose a REST API which the frontend (view) will call to start new game, get game state, submit guesses, use hints etc.
+The FastAPI backend also will serve the frontend which will be a PWA web app using JavaScript, HTML and CSS. They together will render the gameboard, gallows, HUD etc coming in the REST API responses from the backend.
+The JavaScript part of the frontend will call the backend REST API to get game state, submit guesses etc and then help rendering this dynamic data onto the HTML rendered by a browser to a player.
+The backend will use a SQLite database to store the game data (words, users, games etc.) This way the game data will be persisted across sessions and players can resume their games later.
+The FastAPI backend app from one side will be offering REST API endpoints to be called by the frontend and from the other side will be serving the frontend static files (HTML, CSS, JS). 
+I will use FastAPI's capability to serve static files for this purpose. This way my FastAPI backend represents a hybrid app which serves both as a REST API server and as a static files server for the frontend.
+This makes such architecture simple and easy to deploy as I will have a single FastAPI app to deploy which serves both the backend REST API and the frontend static files.
+Also, having REST API being offered by the FastAPI backend makes the architecture scalable and extensible as in future I can have multiple frontend clients (e.g. mobile Android or iPhone app, desktop app etc.) calling the same REST API endpoints to play the Hangman game.
+Most importantly, FastAPI is lightweight and fast to develop REST APIs which suits well the Rapid Application Development (RAD) strategy I am going to follow for this project.
+Having the backend in the form of FastAPI REST API server also allows to offer my Hangman game to many players concurrently as FastAPI is designed to handle multiple requests efficiently. 
+It also allows to easily extend the game in future by adding more features and endpoints to the REST API as needed.
+Implementing the frontend as a PWA web app allows to meet the mobile first requirement as PWAs can be installed on mobile devices and work offline so that I don't need to develop iOS or Android native apps but offer my Hangman game as a PWA which can be accessed from any modern mobile browser.
+
+The app architecture can be schematically represented on the following diagram shown below:
+
+[<img width="1024" height="468" alt="image" src="img/architecture.png" />](img/architecture.png)
+
+When a player opens the Hangman game in their browser the following sequence of interactions happens:
+1. The browser sends an HTTP GET request to the FastAPP backend server to load the main HTML page of the Hangman game.
+2. The FastAPI backend serves the static HTML, CSS and JS files to the browser.
+3. The browser renders the HTML page and executes the JavaScript code.
+4. The JavaScript code sends an HTTP request to the FastAPI backend REST API to start a new game.
+5. The FastAPI backend selects a random word, initializes the game state, persists it into the DB and sends back the game data in the REST API response.
+6. The JavaScript code processes the REST API response and renders the gameboard, gallows, HUD etc. on the HTML page.
+7. As the player interacts with the game (submits guesses, uses hints etc.) the JavaScript code sends further REST API requests to the FastAPI backend to update the game state and get responses.
+8. The FastAPI backend processes these requests, updates the game state, writes it into the DB and sends back the updated data in the REST API responses.
+9. The JavaScript code updates the HTML page based on the REST API responses to reflect the current game state.
+10. When the game ends (win/lose) the JavaScript code displays the final results to the player.
+
+---
+
 # Activity 3 – Coding
 
 ## Code Repository
@@ -475,8 +799,8 @@ I've decied to go with the following branch strategy on GitHub:
 - Regular commits and pull requests to maintain code quality.
 
 
-## Developer notes — Backend (FastAPI) + PWA skeleton
-To start with, I've created a simple FastAPI backend with a minimal PWA front-end skeleton. 
+## Development notes — Backend (FastAPI) + PWA skeleton
+To start with, I've created a simple FastAPI backend with a minimal PWA front-end skeleton as my kind of iteration 0. 
 
 Running the backend on Windows:
 
@@ -495,126 +819,42 @@ Running the backend on Windows:
 
 4. Open the PWA in the browser:
 
-   http://127.0.0.1:8000/index.html
+   http://127.0.0.1:8000/frontend/static/index.html
 
 PowerShell helper: `run_local.ps1` is provided which runs uvicorn for convenience.
 
-Unit tests can be run with:
+Unit tests can be run from the tests folder with:
 python -m pytest -q
 
+## Debugging notes
 
+To debug the FastAPI backend, I've used the built-in logging module to log important events and errors.
+This helps to trace the flow of execution and identify any issues that arise during runtime.
+For frontend debugging, I've utilized the browser's developer tools to inspect the HTML, CSS and JavaScript code.
+This allows me to see the DOM structure, CSS styles and JavaScript console logs to identify any issues with the UI or functionality.
+I've also used breakpoints in the JavaScript code to step through the code and observe variable values and program flow.
+Additionally, I've implemented error handling in both the backend and frontend to catch and log any exceptions that occur during execution.
+This helps to identify and resolve issues more effectively.
 
+## Development notes — Frontend (PWA)
 
+To develop the frontend of my Hangman game as a Progressive Web App (PWA), I've followed these steps:
+1. Set up the project structure: Created a folder structure for the PWA with separate folders for HTML, CSS, JavaScript and images.
+2. Created the main HTML file: Developed the main HTML file that serves as the entry point for the PWA. This file includes the necessary meta tags for PWA functionality and links to the CSS and JavaScript files.
+3. Designed the UI: Used CSS to style the PWA and create a visually appealing and user-friendly interface for the Hangman game.
+4. Implemented PWA features: Added a manifest file to define the PWA's name, icons and theme colors. Implemented a service worker to enable offline functionality and caching of assets.
+5. Developed the game logic: Used JavaScript to implement the game logic, including handling user input, updating the game state and rendering the game board.
+6. Integrated with the backend: Set up API calls to the FastAPI backend to fetch game data, submit guesses and update the game state.
+7. Tested the PWA: Tested the PWA on different devices and browsers to ensure compatibility and responsiveness.
+8. Deployed the PWA: Deployed the PWA as part of the FastAPI backend so that it can be accessed by users.
+
+---
 
 # Activity 4 – Testing
 
-## Testing Strategy
-
-For frontend testing, I've adopted a combination of manual and automated testing strategies to ensure comprehensive coverage of the application's functionality and user experience.
-For manual testing, I've focused on exploratory testing to identify any usability issues or unexpected behaviors that automated tests might miss.
-This involves navigating through the application, interacting with various UI elements, and verifying that the application behaves as expected.
-For automated testing, I am going to implement unit tests for individual components using a testing framework Jest.
-These tests focus on verifying the functionality of specific components, ensuring that they render correctly and handle user interactions as intended.
-Additionally, I will try setting up end-to-end (E2E) tests using a tool called Cypress to simulate real user scenarios and validate the overall workflow of the application from start to finish.
-This includes testing critical paths such as user login, gameplay interactions, and score tracking.
-
-For the backend testing, I've utilized pytest to create unit tests for the FastAPI endpoints.
-
-This way, I can ensure that both the frontend and backend components of the application are thoroughly tested, providing confidence in the application's reliability and user experience.
-
 ## Frontend Testing
 
-### Manual Testing Plan and Test Cases with Results
-
-Provided below is the manual testing plan and test cases for the frontend of the Hangman game and their results:
-
-| Test Case ID | Test Description                                                                                          | Expected result                                                                                                                                                                                                                                                                                                                                                                   | Actual result                                                                                                                                                                                                                                                                                                                     | Evidence               | Passed? |
-|------------|-----------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------|---------|
-| TC001      | Theme button to switch from light theme to dark theme.                                                    | When the button is clicked, the page is  expected to switch from light theme to dark theme.                                                                                                                                                                                                                                                                                       | When the button is clicked, the page switches from light theme to dark theme.                                                                                                                                                                                                                                                     | 1.png                  | Yes     |
-| TC002      | Theme button to switch from dark theme to light theme.                                                    | When the button is clicked, the page is expected to switch from dark theme to light theme.                                                                                                                                                                                                                                                                                        | When the button is clicked, the page switches from dark theme to light theme.                                                                                                                                                                                                                                                     | 2.png                  | Yes     | 
-| TC003      | Attempt to click “Create Account” with empty fields.                                                      | When attempted, a message should appear underneath the Username field and the message should say “Please fill in this field”.                                                                                                                                                                                                                                                     | When attempted, a message appears underneath the Username field and the message says “Please fill in this field”.                                                                                                                                                                                                                 | 3.png                  | Yes     |
-| TC004      | Navigating to home page by clicking “Home” button.                                                        | When the “Home” button is clicked, the app should navigate to the home page and display the home page to the user.                                                                                                                                                                                                                                                                | When the “Home” button is clicked, the app navigates to the home page and displays the home page to the user.                                                                                                                                                                                                                     | 4.png                  | Yes     |
-| TC005      | Navigating back to home page from Registration page by clicking “Cancel” button.                          | When the “Cancel” button is clicked. The app should navigate back to the home page from the registration page.                                                                                                                                                                                                                                                                    | When the “Cancel” button is clicked. The app navigates back to the home page from the registration page.                                                                                                                                                                                                                          | 4.png, 5.png           | Yes     |
-| TC006      | Attempt to create account with invalid email format.                                                      | The user fills in the details but enters email in invalid format and the user should get an error message saying “Please include an ‘@’ in the email address.”.                                                                                                                                                                                                                   | The user fills in the details but enters email in invalid format and the user gets an error message saying “Please include an ‘@’ in the email address.”.                                                                                                                                                                         | 6.png                  | Yes     |
-| TC007      | Creating account with valid credentials                                                                   | When the user enters all the valid credentials, it is expected that they will be transferred onto the game description page.                                                                                                                                                                                                                                                      | When the user enters all the valid credentials, they are transferred onto the game description page.                                                                                                                                                                                                                              | 7.png                  | Yes     |
-| TC008      | Attempt to create account with already existing username                                                  | When the user enters the credentials of an already existing account, they are supposed to get the error message “Username already exists”                                                                                                                                                                                                                                         | When the user enters the credentials of an already existing account, they get the error message “Username already exists”.                                                                                                                                                                                                        | 9.png                  | Yes     |
-| TC009      | Attempt to enter not matching passwords when creating new account                                         | When the user enters passwords that do not match when entering credentials of an already existing account, they are supposed to get the error message “Password and confirmation do not match”.                                                                                                                                                                                   | When the user enters passwords that do not match when entering credentials of an already existing account, they get the error message “Password and confirmation do not match”.                                                                                                                                                   | 10.png                 | Yes     |
-| TC010      | Login page when the user enters their username and password                                               | When the user enters their correct username and password, they should be signed in successfully and transferred to the game page.                                                                                                                                                                                                                                                 | When the user enters their correct username and password, they are signed in successfully and are transferred to the game page.                                                                                                                                                                                                   | 16.png                 | Yes     |
-| TC011      | User enters one wrong password                                                                            | When the user enters the wrong password, they should get an error “Invalid credentials”.                                                                                                                                                                                                                                                                                          | When the user enters the wrong password, they get an error “Invalid credentials”.                                                                                                                                                                                                                                                 | 11.png                 | Yes     |
-| TC012      | User enters the wrong username.                                                                           | When the user enters the wrong username, they should get an error “Invalid credentials”.                                                                                                                                                                                                                                                                                          | When the user enters the wrong username, they get an error “Invalid credentials”.                                                                                                                                                                                                                                                 | 12.png                 | Yes     |
-| TC013      | User enters both incorrect credentials.                                                                   | When the user enters the wrong username and password, they should get an error “Invalid credentials”.                                                                                                                                                                                                                                                                             | When the user enters the wrong username and password, they get an error “Invalid credentials”.                                                                                                                                                                                                                                    | 13.png                 | Yes     |
-| TC014      | Theme button to switch from light theme to dark theme.                                                    | When the button is clicked, the page is  expected to switch from light theme to dark theme.                                                                                                                                                                                                                                                                                       | When the button is clicked, the page switches from light theme to dark theme.                                                                                                                                                                                                                                                     | 14.png                 | Yes     |
-| TC015      | Theme button to switch from dark theme to light theme.                                                    | When the button is clicked, the page is expected to switch from dark theme to light theme.                                                                                                                                                                                                                                                                                        | When the button is clicked, the page switches from dark theme to light theme.                                                                                                                                                                                                                                                     | 15.png                 | Yes     |
-| TC016      | Navigating to home page by clicking “Home” button.                                                        | When the “Home” button is clicked, the app should navigate to the home page and display the home page to the user.                                                                                                                                                                                                                                                                | When the “Home” button is clicked, the app navigates to the home page and displays the home page to the user.                                                                                                                                                                                                                     | 4.png                  | Yes     |
-| TC017      | Attempt to click “Create Account”.                                                                        | When attempted, the user should be transferred to the Registration page.                                                                                                                                                                                                                                                                                                          | When attempted, the user is transferred to the Registration page.                                                                                                                                                                                                                                                                 | 17.png                 | Yes     |
-| TC018      | Clicking “Resume Game” when signed in.                                                                    | The user is signed in at the moment and when the user clicks the “Resume Game” button, they should be transferred to the game screen.                                                                                                                                                                                                                                             | The user is signed in at the moment and when the user clicks the “Resume Game” button, they are transferred to the game screen.                                                                                                                                                                                                   | 16.png                 | Yes     |
-| TC019      | Theme button to switch from light theme to dark theme.                                                    | When the button is clicked, the page is  expected to switch from light theme to dark theme.                                                                                                                                                                                                                                                                                       | When the button is clicked, the page switches from light theme to dark theme.                                                                                                                                                                                                                                                     | 18.png                 | Yes     |
-| TC020      | Theme button to switch from dark theme to light theme.                                                    | When the button is clicked, the page is expected to switch from dark theme to light theme.                                                                                                                                                                                                                                                                                        | When the button is clicked, the page switches from dark theme to light theme.                                                                                                                                                                                                                                                     | 19.png                 | Yes     |
-| TC021      | Clicking “Sign out” button.                                                                               | Upon clicking “Sign out”, the screen should remain the same, but the options should change from “Resume Game” and “Sign out” to “Sign in” and “Create account” to show that the user has been signed out.                                                                                                                                                                         | Upon clicking “Sign out”, the screen remains the same, but the options change from “Resume Game” and “Sign out” to “Sign in” and “Create account” to show that the user has been signed out.                                                                                                                                      | 20.png                 | Yes     |
-| TC022      | Clicking “Sign in” button on index page                                                                   | Upon clicking the “Sign in” button, the user should be transferred to the login page.                                                                                                                                                                                                                                                                                             | Upon clicking the “Sign in” button, the user is transferred to the login page.                                                                                                                                                                                                                                                    | 21.png                 | Yes     |
-| TC023      | Clicking “Create account” button on index page                                                            | Upon clicking the “Sign in” button, the user should be transferred to the registration page.                                                                                                                                                                                                                                                                                      | Upon clicking the “Sign in” button, the user is transferred to the registration page.                                                                                                                                                                                                                                             | 17.png                 | Yes     |
-| TC024      | game.html page is loaded and game layout is being rendered when user logs into the game.                  | When user logs in to the  game, the game.html page is supposed to be loaded and game layout is supposed to be rendered.                                                                                                                                                                                                                                                           | When user logs in to the game, the game.html page is loaded and game layout is being rendered.                                                                                                                                                                                                                                    | 16.png                 | Yes     |
-| TC025      | Theme button to switch from light theme to dark theme.                                                    | When the button is clicked, the page is  expected to switch from light theme to dark theme.                                                                                                                                                                                                                                                                                       | When the button is clicked, the page switches from light theme to dark theme.                                                                                                                                                                                                                                                     | 22.png                 | Yes     |
-| TC026      | Theme button to switch from dark theme to light theme.                                                    | When the button is clicked, the page is expected to switch from dark theme to light theme.                                                                                                                                                                                                                                                                                        | When the button is clicked, the page switches from dark theme to light theme.                                                                                                                                                                                                                                                     | 23.png                 | Yes     |
-| TC027      | Clicking “Sign out” option to transfer back to index.html page from game.html page.                       | When the user clicks on the “Sign out” button, they should be transferred to the index.html page.                                                                                                                                                                                                                                                                                 | When the user clicks on the “Sign out” button, they are transferred to the index.html page.                                                                                                                                                                                                                                       | 24.png                 | Yes     |
-| TC028      | Clicking “Start New Game”                                                                                 | When the user clicks “Start New Game”, they are supposed to get a dropdown menu of game difficulty options.                                                                                                                                                                                                                                                                       | When the user clicks “Start New Game”, they get a dropdown menu of game difficulty options.                                                                                                                                                                                                                                       | 25.png                 | Yes     |
-| TC029      | Clicking “Cancel” button in the bottom right corner of the game difficulty menu.                          | When the user clicks the “Cancel” button, the game difficulty menu is supposed to close and the user is supposed to see the game screen again.                                                                                                                                                                                                                                    | When the user clicks the “Cancel” button, the game difficulty menu closes and the user sees the game screen again.                                                                                                                                                                                                                | 26.png, 16.png         | Yes     |
-| TC030      | Testing that game starts based on the difficulty the user has chosen                                      | The user selects “Medium” game difficulty in the game difficulty menu options. After the user selects the game difficulty, the game is supposed to start where the user should be able to see the letters, the empty spaces for the letters to be filled into, the buttons “Use Hint” and “Guess Word” and should be able to see the labels “Score”, “Attempts left” and “Hints”. | The user selects “Medium” game difficulty in the game difficulty menu options. After the user selects the game difficulty, the game starts where the user sees the letters, the empty spaces for the letters to be filled into, the buttons “Use Hint” and “Guess Word” and sees the labels “Score”, “Attempts left” and “Hints”. | 27.png                 | Yes     |
-| TC031      | Clicking “Start New Game” when current game is in progress.                                               | When the user clicks “Start New Game” while the current game is in progress, they should get a message with a question “Start a new game?” and a message “You haven't finished the current game. Would you like to cancel it and start a new one?” and have a yes and a no option                                                                                                 | When the user clicks “Start New Game” while the current game is in progress, they get a message with a question “Start a new game?” and a message “You haven't finished the current game. Would you like to cancel it and start a new one?” and have a yes and a no option                                                        | 28.png                 | Yes     |
-| TC032      | Clicking “No” to return to the current game.                                                              | When the user clicks “No”, they should be able to continue with the current game.                                                                                                                                                                                                                                                                                                 | When the user clicks “No”, they are able to continue with the current game.                                                                                                                                                                                                                                                       | 29.png, 30.png         | Yes     |
-| TC033      | Clicking “Yes” to start new game                                                                          | When the user clicks “Yes” to start new game, they should get a drop down menu of the game difficulty options and after selecting they should be able to start a new game.                                                                                                                                                                                                        | When the user clicks “Yes” to start new game, they get a drop down menu of the game difficulty options and after selecting they are able to start a new game.                                                                                                                                                                     | 31.png, 32.png, 33.png | Yes     |
-| TC034      | The user guess the word correctly and get a congratulations message.                                      | When the user guesses the word correctly, they are supposed to get this message "You Won! Congratulations — you won!"                                                                                                                                                                                                                                                             | When the user guesses the word correctly, they are get this message "You Won! Congratulations — you won!"                                                                                                                                                                                                                         | 34.png                 | Yes     |
-| TC035      | The user does not guess the word and loses and gets a game lost message                                   | The user fails to guess the word and they lose the game and they should get this message “Game Over Game over — you lost. Hint: hint, topic: topic”                                                                                                                                                                                                                               | The user fails to guess the word and they lose the game and they get this message “Game Over Game over — you lost. Hint:  topic: ”.                                                                                                                                                                                               | 35.png, 36.png         | Yes     |
-| TC036      | User getting the option to resume game when signing back in                                               | When the user signs back in, they should get a message saying “Resume previous game? You have an unfinished game. Would you like to resume it? ” and that gives them a choice to resume the current game or no.                                                                                                                                                                   | When the user signs back in, they get a message saying “Resume previous game? You have an unfinished game. Would you like to resume it? ” and that gives them a choice to resume the current game or no.                                                                                                                          | 37.png, 38.png, 39.png | Yes     |
-| TC037      | User clicks “Cancel” to not resume current game.                                                          | When the user clicks “Cancel”, the current game does not resume and they should be able to start a new game.                                                                                                                                                                                                                                                                      | When the user clicks “Cancel”, the current game does not resume and they are able to start a new game.                                                                                                                                                                                                                            | 40.png, 41.png         | Yes     |
-| TC038      | User clicks “Resume” to resume the current game.                                                          | When the user clicks “Resume”, they should be able to continue with the current game.                                                                                                                                                                                                                                                                                             | When the user clicks “Resume”, they are able to continue with the current game.                                                                                                                                                                                                                                                   | 42.png, 43.png         | Yes     |
-| TC039      | Testing to ensure that the already guessed letters are not clickable.                                     | When the user has attempted to guess any letters, they should become unclickable.                                                                                                                                                                                                                                                                                                 | When the user has attempted to guess any letters, they become unclickable.                                                                                                                                                                                                                                                        | 44.png                 | Yes     | 
-| TC040      | Testing to ensure that letter placeholders are rendered correctly when the user starts a new game.        | When the user starts a new game, the letter placeholders should be rendered correctly neatly in one line.                                                                                                                                                                                                                                                                         | When the user starts a new game, the letter placeholders are rendered correctly neatly in one line.                                                                                                                                                                                                                               | 45.png                 | Yes     |
-| TC041      | Testing to ensure that when new game is started, the alphabet is rendered correctly in the correct order. | When the user starts a new game,the alphabet should be rendered correctly in the correct order.                                                                                                                                                                                                                                                                                   | When the user starts a new game,the alphabet is rendered correctly in the correct order.                                                                                                                                                                                                                                          | 46.png                 | Yes     |
-| TC042      | Testing to ensure that when wrong guess is made, the number of attempts left decreases by one each time.  | When the user makes a wrong guess, the number of attempts left should decrease by 1 each time.                                                                                                                                                                                                                                                                                    | When the user makes a wrong guess, the number of attempts left decreases by 1 each time.                                                                                                                                                                                                                                          | 47.png, 48.png         | yes     |
-| TC043      | Testing to ensure that 10 points is earned after correct guess  is made                                   | When the user makes a correct guess, they should earn 10 points for each correct guess.                                                                                                                                                                                                                                                                                           | When the user makes a correct guess, they earn 10 points for each correct guess.                                                                                                                                                                                                                                                  | 49.png                 | Yes     |
-| TC044      | Testing to ensure that when new game s started, Clue and Topic panel are rendered correctly.              | When the user starts a new game, the clue and topic panel should be rendered correctly under the letter placeholders.                                                                                                                                                                                                                                                             | When the user starts a new game, the clue and topic panel are rendered correctly under the letter placeholders.                                                                                                                                                                                                                   | 50.png                 | Yes     |
-
-
-### Automated Testing Plan and Test Cases
-
-Provided below is the automated testing plan and test cases for the frontend of the Hangman game:
-
-| Test Case ID | Test Description                        | Steps to Reproduce                                                                 | Expected Result                                               | Actual Result | Pass/Fail |
-|--------------|-----------------------------------------|-----------------------------------------------------------------------------------|---------------------------------------------------------------|---------------|-----------|
-| ATC001       | Verify main menu component renders      | 1. Render MainMenu component<br>2. Check for presence of "Play" and "How to play" buttons | | Both buttons are present in the DOM | Buttons render correctly |       |
-| ATC002       | Test letter input functionality         | 1. Render Game component<br>2. Simulate letter input<br>3. Check if letter appears in word display | | Letter appears in the word display | Letter input works correctly |       |
-| ATC003       | Test hint functionality                 | | 1. Render Game component<br>2. Simulate clicking "Hint" button<br>3. Check if a letter is revealed and score decreases | | Letter is revealed and score updates | | Hint functionality works correctly |       |
-
-
-## Backend Testing
-
-### Unit Testing Plan and Test Cases
-
-Provided below is the unit testing plan and test cases for the backend of the Hangman game:
-
-| Test Case ID | Test Description                        | Steps to Reproduce                                                                 | Expected Result                                               | Actual Result | Pass/Fail |
-|--------------|-----------------------------------------|-----------------------------------------------------------------------------------|---------------------------------------------------------------|---------------|-----------|
-| BTC001       | Test user registration endpoint         | 1. Send POST request to /register with valid user data<br>2. Check response status and body | | Response status is 201 and user data is returned | User registration works correctly |       |
-| BTC002       | Test user login endpoint                | 1. Send POST request to /login with valid credentials<br> 2. Check response status and body | | Response status is 200 and token is returned | User login works correctly |       |       |
-| BTC003       | Test start new game endpoint            | 1. Send POST request to /start_game with valid user token<br>2. Check response status and body | | Response status is 200 and game data is returned | Start new game works correctly |       |
-| BTC004       | Test submit guess endpoint              | 1. Send POST request to /submit_guess with valid game ID and letter<br>2. Check response status and body | | Response status is 200 and updated game state is returned | Submit guess works correctly |       |
-| BTC005       | Test get game state endpoint            | 1. Send GET request to /game_state with valid game ID<br>2. Check response status and body | | Response status is 200 and current game state is returned | Get game state works correctly |       |
-| BTC006       | Test scoring system                     | 1. Simulate correct and incorrect guesses<br>2. Check if score updates correctly | | Score updates as expected after each guess | Scoring system works correctly |       |
-| BTC007       | Test hint functionality                 | 1. Send POST request to /use_hint with valid game ID<br>2. Check response status and body | | Response status is 200 and a letter is revealed with score deduction | Hint functionality works correctly |       |
-| BTC008       | Test full word guess functionality      | 1. Send POST request to /guess_word with valid game ID and word<br>2. Check response status and body | | Response status is 200 and game state updates accordingly | Full word guess works correctly |       |
-| BTC009       | Test user authentication middleware     | 1. Send requests with and without valid tokens<br>2. Check if access is granted or denied appropriately | | Requests with valid tokens are granted access; invalid tokens are denied | Authentication middleware works correctly |       |
-| BTC010       | Test error handling                     | 1. Send invalid requests to various endpoints<br>2. Check if appropriate error responses are returned | | Appropriate error messages and status codes are returned for invalid requests | Error handling works correctly |       |
-| BTC011       | Test data persistence                   | 1. Create a new user and start a game<br>2. Restart the server and retrieve user/game data<br>3. Check if data persists correctly | | User and game data persist correctly after server restart | Data persistence works correctly |       |
-| BTC012       | Test performance under load             | 1. Simulate multiple concurrent requests to key endpoints<br>2. Measure response times and server stability | | Server handles load without significant performance degradation | Performance under load is acceptable |       |
-
-
-## Test Results
-
-### Frontend Test Results
-
-
-CSS layout smoke test: Pass
+### CSS layout smoke test: Pass
 
 Very first basic smoke test to ensure that the CSS layout is loading correctly without any major issues.
 
@@ -623,3 +863,290 @@ Light mode screenshot:
 
 Dark mode screenshot:
 [<img alt="image" src="img/testing/frontend/initial_ui_layout_test_dark.png" />](img/testing/frontend/initial_ui_layout_test_dark.png)
+
+### Manual Testing Plan and Test Cases with Results
+
+Provided below is the manual testing plan and test cases for the frontend of the Hangman game and their test results with test evidence.
+
+| Test Case ID | Test Description                                                                                          | Expected result                                                                                                                                                                                                                                                                                                                                                                   | Actual result                                                                                                                                                                                                                                                                                                                     | Evidence                                                                                                                                                                                                                                                          | Passed? |
+|--------------|-----------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------|
+| TC001        | Theme button to switch from light theme to dark theme.                                                    | When the button is clicked, the page is  expected to switch from light theme to dark theme.                                                                                                                                                                                                                                                                                       | When the button is clicked, the page switches from light theme to dark theme.                                                                                                                                                                                                                                                     | [<img alt="image" src="img/testing/frontend/1.png" />](img/testing/frontend/1.png)                                                                                                                                                                                | Yes     |
+| TC002        | Theme button to switch from dark theme to light theme.                                                    | When the button is clicked, the page is expected to switch from dark theme to light theme.                                                                                                                                                                                                                                                                                        | When the button is clicked, the page switches from dark theme to light theme.                                                                                                                                                                                                                                                     | [<img alt="image" src="img/testing/frontend/2.png" />](img/testing/frontend/2.png)                                                                                                                                                                                | Yes     | 
+| TC003        | Attempt to click “Create Account” with empty fields.                                                      | When attempted, a message should appear underneath the Username field and the message should say “Please fill in this field”.                                                                                                                                                                                                                                                     | When attempted, a message appears underneath the Username field and the message says “Please fill in this field”.                                                                                                                                                                                                                 | [<img alt="image" src="img/testing/frontend/3.png" />](img/testing/frontend/3.png)                                                                                                                                                                                | Yes     |
+| TC004        | Navigating to home page by clicking “Home” button.                                                        | When the “Home” button is clicked, the app should navigate to the home page and display the home page to the user.                                                                                                                                                                                                                                                                | When the “Home” button is clicked, the app navigates to the home page and displays the home page to the user.                                                                                                                                                                                                                     | [<img alt="image" src="img/testing/frontend/4.png" />](img/testing/frontend/4.png)                                                                                                                                                                                | Yes     |
+| TC005        | Navigating back to home page from Registration page by clicking “Cancel” button.                          | When the “Cancel” button is clicked. The app should navigate back to the home page from the registration page.                                                                                                                                                                                                                                                                    | When the “Cancel” button is clicked. The app navigates back to the home page from the registration page.                                                                                                                                                                                                                          | [<img alt="image" src="img/testing/frontend/4.png" />](img/testing/frontend/4.png), [<img alt="image" src="img/testing/frontend/5.png" />](img/testing/frontend/5.png)                                                                                            | Yes     |
+| TC006        | Attempt to create account with invalid email format.                                                      | The user fills in the details but enters email in invalid format and the user should get an error message saying “Please include an ‘@’ in the email address.”.                                                                                                                                                                                                                   | The user fills in the details but enters email in invalid format and the user gets an error message saying “Please include an ‘@’ in the email address.”.                                                                                                                                                                         | [<img alt="image" src="img/testing/frontend/6.png" />](img/testing/frontend/6.png)                                                                                                                                                                                | Yes     |
+| TC007        | Creating account with valid credentials                                                                   | When the user enters all the valid credentials, it is expected that they will be transferred onto the game description page.                                                                                                                                                                                                                                                      | When the user enters all the valid credentials, they are transferred onto the game description page.                                                                                                                                                                                                                              | [<img alt="image" src="img/testing/frontend/7.png" />](img/testing/frontend/7.png)                                                                                                                                                                                | Yes     |
+| TC008        | Attempt to create account with already existing username                                                  | When the user enters the credentials of an already existing account, they are supposed to get the error message “Username already exists”                                                                                                                                                                                                                                         | When the user enters the credentials of an already existing account, they get the error message “Username already exists”.                                                                                                                                                                                                        | [<img alt="image" src="img/testing/frontend/9.png" />](img/testing/frontend/9.png)                                                                                                                                                                                | Yes     |
+| TC009        | Attempt to enter not matching passwords when creating new account                                         | When the user enters passwords that do not match when entering credentials of an already existing account, they are supposed to get the error message “Password and confirmation do not match”.                                                                                                                                                                                   | When the user enters passwords that do not match when entering credentials of an already existing account, they get the error message “Password and confirmation do not match”.                                                                                                                                                   | [<img alt="image" src="img/testing/frontend/10.png" />](img/testing/frontend/10.png)                                                                                                                                                                              | Yes     |
+| TC010        | Login page when the user enters their username and password                                               | When the user enters their correct username and password, they should be signed in successfully and transferred to the game page.                                                                                                                                                                                                                                                 | When the user enters their correct username and password, they are signed in successfully and are transferred to the game page.                                                                                                                                                                                                   | [<img alt="image" src="img/testing/frontend/16.png" />](img/testing/frontend/16.png)                                                                                                                                                                              | Yes     |
+| TC011        | User enters one wrong password                                                                            | When the user enters the wrong password, they should get an error “Invalid credentials”.                                                                                                                                                                                                                                                                                          | When the user enters the wrong password, they get an error “Invalid credentials”.                                                                                                                                                                                                                                                 | [<img alt="image" src="img/testing/frontend/11.png" />](img/testing/frontend/11.png)                                                                                                                                                                              | Yes     |
+| TC012        | User enters the wrong username.                                                                           | When the user enters the wrong username, they should get an error “Invalid credentials”.                                                                                                                                                                                                                                                                                          | When the user enters the wrong username, they get an error “Invalid credentials”.                                                                                                                                                                                                                                                 | [<img alt="image" src="img/testing/frontend/12.png" />](img/testing/frontend/12.png)                                                                                                                                                                              | Yes     |
+| TC013        | User enters both incorrect credentials.                                                                   | When the user enters the wrong username and password, they should get an error “Invalid credentials”.                                                                                                                                                                                                                                                                             | When the user enters the wrong username and password, they get an error “Invalid credentials”.                                                                                                                                                                                                                                    | [<img alt="image" src="img/testing/frontend/13.png" />](img/testing/frontend/13.png)                                                                                                                                                                              | Yes     |
+| TC014        | Theme button to switch from light theme to dark theme.                                                    | When the button is clicked, the page is  expected to switch from light theme to dark theme.                                                                                                                                                                                                                                                                                       | When the button is clicked, the page switches from light theme to dark theme.                                                                                                                                                                                                                                                     | [<img alt="image" src="img/testing/frontend/14.png" />](img/testing/frontend/14.png)                                                                                                                                                                              | Yes     |
+| TC015        | Theme button to switch from dark theme to light theme.                                                    | When the button is clicked, the page is expected to switch from dark theme to light theme.                                                                                                                                                                                                                                                                                        | When the button is clicked, the page switches from dark theme to light theme.                                                                                                                                                                                                                                                     | [<img alt="image" src="img/testing/frontend/15.png" />](img/testing/frontend/15.png)                                                                                                                                                                              | Yes     |
+| TC016        | Navigating to home page by clicking “Home” button.                                                        | When the “Home” button is clicked, the app should navigate to the home page and display the home page to the user.                                                                                                                                                                                                                                                                | When the “Home” button is clicked, the app navigates to the home page and displays the home page to the user.                                                                                                                                                                                                                     | [<img alt="image" src="img/testing/frontend/4.png" />](img/testing/frontend/4.png)                                                                                                                                                                                | Yes     |
+| TC017        | Attempt to click “Create Account”.                                                                        | When attempted, the user should be transferred to the Registration page.                                                                                                                                                                                                                                                                                                          | When attempted, the user is transferred to the Registration page.                                                                                                                                                                                                                                                                 | [<img alt="image" src="img/testing/frontend/17.png" />](img/testing/frontend/17.png)                                                                                                                                                                              | Yes     |
+| TC018        | Clicking “Resume Game” when signed in.                                                                    | The user is signed in at the moment and when the user clicks the “Resume Game” button, they should be transferred to the game screen.                                                                                                                                                                                                                                             | The user is signed in at the moment and when the user clicks the “Resume Game” button, they are transferred to the game screen.                                                                                                                                                                                                   | [<img alt="image" src="img/testing/frontend/16.png" />](img/testing/frontend/16.png)                                                                                                                                                                              | Yes     |
+| TC019        | Theme button to switch from light theme to dark theme.                                                    | When the button is clicked, the page is  expected to switch from light theme to dark theme.                                                                                                                                                                                                                                                                                       | When the button is clicked, the page switches from light theme to dark theme.                                                                                                                                                                                                                                                     | [<img alt="image" src="img/testing/frontend/18.png" />](img/testing/frontend/18.png)                                                                                                                                                                              | Yes     |
+| TC020        | Theme button to switch from dark theme to light theme.                                                    | When the button is clicked, the page is expected to switch from dark theme to light theme.                                                                                                                                                                                                                                                                                        | When the button is clicked, the page switches from dark theme to light theme.                                                                                                                                                                                                                                                     | [<img alt="image" src="img/testing/frontend/19.png" />](img/testing/frontend/19.png)                                                                                                                                                                              | Yes     |
+| TC021        | Clicking “Sign out” button.                                                                               | Upon clicking “Sign out”, the screen should remain the same, but the options should change from “Resume Game” and “Sign out” to “Sign in” and “Create account” to show that the user has been signed out.                                                                                                                                                                         | Upon clicking “Sign out”, the screen remains the same, but the options change from “Resume Game” and “Sign out” to “Sign in” and “Create account” to show that the user has been signed out.                                                                                                                                      | [<img alt="image" src="img/testing/frontend/20.png" />](img/testing/frontend/20.png)                                                                                                                                                                              | Yes     |
+| TC022        | Clicking “Sign in” button on index page                                                                   | Upon clicking the “Sign in” button, the user should be transferred to the login page.                                                                                                                                                                                                                                                                                             | Upon clicking the “Sign in” button, the user is transferred to the login page.                                                                                                                                                                                                                                                    | [<img alt="image" src="img/testing/frontend/21.png" />](img/testing/frontend/21.png)                                                                                                                                                                              | Yes     |
+| TC023        | Clicking “Create account” button on index page                                                            | Upon clicking the “Sign in” button, the user should be transferred to the registration page.                                                                                                                                                                                                                                                                                      | Upon clicking the “Sign in” button, the user is transferred to the registration page.                                                                                                                                                                                                                                             | [<img alt="image" src="img/testing/frontend/17.png" />](img/testing/frontend/17.png)                                                                                                                                                                              | Yes     |
+| TC024        | game.html page is loaded and game layout is being rendered when user logs into the game.                  | When user logs in to the  game, the game.html page is supposed to be loaded and game layout is supposed to be rendered.                                                                                                                                                                                                                                                           | When user logs in to the game, the game.html page is loaded and game layout is being rendered.                                                                                                                                                                                                                                    | [<img alt="image" src="img/testing/frontend/16.png" />](img/testing/frontend/16.png)                                                                                                                                                                              | Yes     |
+| TC025        | Theme button to switch from light theme to dark theme.                                                    | When the button is clicked, the page is  expected to switch from light theme to dark theme.                                                                                                                                                                                                                                                                                       | When the button is clicked, the page switches from light theme to dark theme.                                                                                                                                                                                                                                                     | [<img alt="image" src="img/testing/frontend/22.png" />](img/testing/frontend/22.png)                                                                                                                                                                              | Yes     |
+| TC026        | Theme button to switch from dark theme to light theme.                                                    | When the button is clicked, the page is expected to switch from dark theme to light theme.                                                                                                                                                                                                                                                                                        | When the button is clicked, the page switches from dark theme to light theme.                                                                                                                                                                                                                                                     | [<img alt="image" src="img/testing/frontend/23.png" />](img/testing/frontend/23.png)                                                                                                                                                                              | Yes     |
+| TC027        | Clicking “Sign out” option to transfer back to index.html page from game.html page.                       | When the user clicks on the “Sign out” button, they should be transferred to the index.html page.                                                                                                                                                                                                                                                                                 | When the user clicks on the “Sign out” button, they are transferred to the index.html page.                                                                                                                                                                                                                                       | [<img alt="image" src="img/testing/frontend/24.png" />](img/testing/frontend/24.png)                                                                                                                                                                              | Yes     |
+| TC028        | Clicking “Start New Game”                                                                                 | When the user clicks “Start New Game”, they are supposed to get a dropdown menu of game difficulty options.                                                                                                                                                                                                                                                                       | When the user clicks “Start New Game”, they get a dropdown menu of game difficulty options.                                                                                                                                                                                                                                       | [<img alt="image" src="img/testing/frontend/25.png" />](img/testing/frontend/25.png)                                                                                                                                                                              | Yes     |
+| TC029        | Clicking “Cancel” button in the bottom right corner of the game difficulty menu.                          | When the user clicks the “Cancel” button, the game difficulty menu is supposed to close and the user is supposed to see the game screen again.                                                                                                                                                                                                                                    | When the user clicks the “Cancel” button, the game difficulty menu closes and the user sees the game screen again.                                                                                                                                                                                                                | [<img alt="image" src="img/testing/frontend/26.png" />](img/testing/frontend/26.png), [<img alt="image" src="img/testing/frontend/16.png" />](img/testing/frontend/16.png)                                                                                        | Yes     |
+| TC030        | Testing that game starts based on the difficulty the user has chosen                                      | The user selects “Medium” game difficulty in the game difficulty menu options. After the user selects the game difficulty, the game is supposed to start where the user should be able to see the letters, the empty spaces for the letters to be filled into, the buttons “Use Hint” and “Guess Word” and should be able to see the labels “Score”, “Attempts left” and “Hints”. | The user selects “Medium” game difficulty in the game difficulty menu options. After the user selects the game difficulty, the game starts where the user sees the letters, the empty spaces for the letters to be filled into, the buttons “Use Hint” and “Guess Word” and sees the labels “Score”, “Attempts left” and “Hints”. | [<img alt="image" src="img/testing/frontend/27.png" />](img/testing/frontend/27.png)                                                                                                                                                                              | Yes     |
+| TC031        | Clicking “Start New Game” when current game is in progress.                                               | When the user clicks “Start New Game” while the current game is in progress, they should get a message with a question “Start a new game?” and a message “You haven't finished the current game. Would you like to cancel it and start a new one?” and have a yes and a no option                                                                                                 | When the user clicks “Start New Game” while the current game is in progress, they get a message with a question “Start a new game?” and a message “You haven't finished the current game. Would you like to cancel it and start a new one?” and have a yes and a no option                                                        | [<img alt="image" src="img/testing/frontend/28.png" />](img/testing/frontend/28.png)                                                                                                                                                                              | Yes     |
+| TC032        | Clicking “No” to return to the current game.                                                              | When the user clicks “No”, they should be able to continue with the current game.                                                                                                                                                                                                                                                                                                 | When the user clicks “No”, they are able to continue with the current game.                                                                                                                                                                                                                                                       | [<img alt="image" src="img/testing/frontend/29.png" />](img/testing/frontend/29.png), [<img alt="image" src="img/testing/frontend/30.png" />](img/testing/frontend/30.png)                                                                                        | Yes     |
+| TC033        | Clicking “Yes” to start new game                                                                          | When the user clicks “Yes” to start new game, they should get a drop down menu of the game difficulty options and after selecting they should be able to start a new game.                                                                                                                                                                                                        | When the user clicks “Yes” to start new game, they get a drop down menu of the game difficulty options and after selecting they are able to start a new game.                                                                                                                                                                     | [<img alt="image" src="img/testing/frontend/31.png" />](img/testing/frontend/31.png), [<img alt="image" src="img/testing/frontend/32.png" />](img/testing/frontend/32.png), [<img alt="image" src="img/testing/frontend/33.png" />](img/testing/frontend/33.png)  | Yes     |
+| TC034        | The user guess the word correctly and get a congratulations message.                                      | When the user guesses the word correctly, they are supposed to get this message "You Won! Congratulations — you won!"                                                                                                                                                                                                                                                             | When the user guesses the word correctly, they are get this message "You Won! Congratulations — you won!"                                                                                                                                                                                                                         | [<img alt="image" src="img/testing/frontend/34.png" />](img/testing/frontend/34.png)                                                                                                                                                                              | Yes     |
+| TC035        | The user does not guess the word and loses and gets a game lost message                                   | The user fails to guess the word and they lose the game and they should get this message “Game Over Game over — you lost. Hint: hint, topic: topic”                                                                                                                                                                                                                               | The user fails to guess the word and they lose the game and they get this message “Game Over Game over — you lost. Hint:  topic: ”.                                                                                                                                                                                               | [<img alt="image" src="img/testing/frontend/35.png" />](img/testing/frontend/35.png), [<img alt="image" src="img/testing/frontend/36.png" />](img/testing/frontend/36.png)                                                                                        | Yes     |
+| TC036        | User getting the option to resume game when signing back in                                               | When the user signs back in, they should get a message saying “Resume previous game? You have an unfinished game. Would you like to resume it? ” and that gives them a choice to resume the current game or no.                                                                                                                                                                   | When the user signs back in, they get a message saying “Resume previous game? You have an unfinished game. Would you like to resume it? ” and that gives them a choice to resume the current game or no.                                                                                                                          | [<img alt="image" src="img/testing/frontend/37.png" />](img/testing/frontend/37.png), [<img alt="image" src="img/testing/frontend/38.png" />](img/testing/frontend/238.png), [<img alt="image" src="img/testing/frontend/39.png" />](img/testing/frontend/39.png) | Yes     |
+| TC037        | User clicks “Cancel” to not resume current game.                                                          | When the user clicks “Cancel”, the current game does not resume and they should be able to start a new game.                                                                                                                                                                                                                                                                      | When the user clicks “Cancel”, the current game does not resume and they are able to start a new game.                                                                                                                                                                                                                            | [<img alt="image" src="img/testing/frontend/40.png" />](img/testing/frontend/40.png), [<img alt="image" src="img/testing/frontend/41.png" />](img/testing/frontend/41.png)                                                                                        | Yes     |
+| TC038        | User clicks “Resume” to resume the current game.                                                          | When the user clicks “Resume”, they should be able to continue with the current game.                                                                                                                                                                                                                                                                                             | When the user clicks “Resume”, they are able to continue with the current game.                                                                                                                                                                                                                                                   | [<img alt="image" src="img/testing/frontend/42.png" />](img/testing/frontend/42.png), [<img alt="image" src="img/testing/frontend/43.png" />](img/testing/frontend/43.png)                                                                                        | Yes     |
+| TC039        | Testing to ensure that the already guessed letters are not clickable.                                     | When the user has attempted to guess any letters, they should become unclickable.                                                                                                                                                                                                                                                                                                 | When the user has attempted to guess any letters, they become unclickable.                                                                                                                                                                                                                                                        | [<img alt="image" src="img/testing/frontend/44.png" />](img/testing/frontend/44.png)                                                                                                                                                                              | Yes     | 
+| TC040        | Testing to ensure that letter placeholders are rendered correctly when the user starts a new game.        | When the user starts a new game, the letter placeholders should be rendered correctly neatly in one line.                                                                                                                                                                                                                                                                         | When the user starts a new game, the letter placeholders are rendered correctly neatly in one line.                                                                                                                                                                                                                               | [<img alt="image" src="img/testing/frontend/45.png" />](img/testing/frontend/45.png)                                                                                                                                                                              | Yes     |
+| TC041        | Testing to ensure that when new game is started, the alphabet is rendered correctly in the correct order. | When the user starts a new game,the alphabet should be rendered correctly in the correct order.                                                                                                                                                                                                                                                                                   | When the user starts a new game,the alphabet is rendered correctly in the correct order.                                                                                                                                                                                                                                          | [<img alt="image" src="img/testing/frontend/46.png" />](img/testing/frontend/46.png)                                                                                                                                                                              | Yes     |
+| TC042        | Testing to ensure that when wrong guess is made, the number of attempts left decreases by one each time.  | When the user makes a wrong guess, the number of attempts left should decrease by 1 each time.                                                                                                                                                                                                                                                                                    | When the user makes a wrong guess, the number of attempts left decreases by 1 each time.                                                                                                                                                                                                                                          | [<img alt="image" src="img/testing/frontend/47.png" />](img/testing/frontend/47.png), [<img alt="image" src="img/testing/frontend/48.png" />](img/testing/frontend/48.png)                                                                                        | yes     |
+| TC043        | Testing to ensure that 10 points is earned after correct guess  is made                                   | When the user makes a correct guess, they should earn 10 points for each correct guess.                                                                                                                                                                                                                                                                                           | When the user makes a correct guess, they earn 10 points for each correct guess.                                                                                                                                                                                                                                                  | [<img alt="image" src="img/testing/frontend/49.png" />](img/testing/frontend/49.png)                                                                                                                                                                              | Yes     |
+| TC044        | Testing to ensure that when new game s started, Clue and Topic panel are rendered correctly.              | When the user starts a new game, the clue and topic panel should be rendered correctly under the letter placeholders.                                                                                                                                                                                                                                                             | When the user starts a new game, the clue and topic panel are rendered correctly under the letter placeholders.                                                                                                                                                                                                                   | [<img alt="image" src="img/testing/frontend/50.png" />](img/testing/frontend/50.png)                                                                                                                                                                              | Yes     |
+| TC045        | Clicking “Use Hint” button when user is signed in but no active game.                                     | When the user is signed in and attempts to click the “Use Hint” button when there is no active game, the user is supposed to receive the message “Notification - You must start a game to use a hint.”.                                                                                                                                                                           | When the user is signed in and attempts to click the “Use Hint” button when there is no active game, the user receives the message “Notification - You must start a game to use a hint.”.                                                                                                                                         | [<img alt="image" src="img/testing/frontend/51.png" />](img/testing/frontend/51.png)                                                                                                                                                                              | Yes     |
+| TC046        | Clicking “Use Hint” when the game is over.                                                                | When the game is over and the word has been fully guessed and the user still attempts to click “Use Hint” button, they are supposed to get this message “Notification - You can only use hints in an active game.”                                                                                                                                                                | When the game is over and the word has been fully guessed and the user still attempts to click “Use Hint” button, they get this message “Notification - You can only use hints in an active game.”.                                                                                                                               | [<img alt="image" src="img/testing/frontend/52.png" />](img/testing/frontend/52.png), [<img alt="image" src="img/testing/frontend/53.png" />](img/testing/frontend/53.png)                                                                                        | Yes     |
+| TC047        | Testing the use of “Use Hint” button in the game.                                                         | When the game is active and the user clicks “Use Hint”, a letter is supposed to be revealed, the score is supposed to be decreased by 10, Hints is supposed to increase by 1.                                                                                                                                                                                                     | When the game is active and the user clicks “Use Hint”, a letter revealed, the score is decreased by 10, Hints is increased by 1.                                                                                                                                                                                                 | [<img alt="image" src="img/testing/frontend/54.png" />](img/testing/frontend/54.png)                                                                                                                                                                              | Yes     |
+
+
+## Backend Testing
+
+### Unit Testing Plan and Test Cases
+
+Provided below is the unit testing plan and test cases for the backend of the Hangman game:
+
+| Test Case ID | Test Description                        | Steps to Reproduce                                                                 | Expected Result                                               | Actual Result                                                                | Pass/Fail |
+|--------------|-----------------------------------------|-----------------------------------------------------------------------------------|---------------------------------------------------------------|------------------------------------------------------------------------------|-----------|
+| BTC001       | Test user registration endpoint         | 1. Send POST request to /register with valid user data<br>2. Check response status and body | Response status is 200 and user data is returned                              | User registration works correctly | Passed    |
+| BTC002       | Test user login endpoint                | 1. Send POST request to /login with valid credentials<br> 2. Check response status and body | Response status is 200 and token is returned                                 | User login works correctly | Passed    |
+| BTC003       | Test start new game endpoint            | 1. Send POST request to /start_game with valid user token<br>2. Check response status and body | Response status is 200 and game data is returned                             | Start new game works correctly            | Passed    |
+| BTC004       | Test submit guess endpoint              | 1. Send POST request to /submit_guess with valid game ID and letter<br>2. Check response status and body | Response status is 200 and updated game state is returned                    | Submit guess works correctly              | Passed    |
+| BTC005       | Test get game state endpoint            | 1. Send GET request to /game_state with valid game ID<br>2. Check response status and body | Response status is 200 and current game state is returned                    | Get game state works correctly            | Passed    |
+| BTC006       | Test scoring system                     | 1. Simulate correct and incorrect guesses<br>2. Check if score updates correctly | Score updates as expected after each guess                                   | Scoring system works correctly            | Passed    |
+| BTC007       | Test hint functionality                 | 1. Send POST request to /use_hint with valid game ID<br>2. Check response status and body | Response status is 200 and a letter is revealed with score deduction         | Hint functionality works correctly        | Passed    |
+| BTC008       | Test user authentication middleware     | 1. Send requests with and without valid tokens<br>2. Check if access is granted or denied appropriately | Requests with valid tokens are granted access; invalid tokens are denied     | Authentication middleware works correctly | Passed    |
+| BTC009       | Test error handling                     | 1. Send invalid requests to various endpoints<br>2. Check if appropriate error responses are returned | Appropriate error messages and status codes are returned for invalid requests | Error handling works correctly            | Passed    |
+
+### Unit Test Results
+
+The unit tests for the backend of the Hangman game were executed using the pytest framework.
+The tests covered various functionalities including user registration, login, game state management, scoring, and hint functionality.
+All test cases passed successfully, indicating that the backend components are functioning as expected.
+
+**Test evidence screenshots:**
+
+Authentication flow test:
+
+[<img alt="image" src="img/testing/backend/auth_flow.png" />](img/testing/backend/auth_flow.png)
+
+CRUD operations test:
+
+[<img alt="image" src="img/testing/backend/crud_testing.png" />](img/testing/backend/crud_testing.png)
+
+Game endpoints test:
+
+[<img alt="image" src="img/testing/backend/endpoints_testing.png" />](img/testing/backend/endpoints_testing.png)
+
+
+## Accessibility Testing
+
+The accessibility testing for the Hangman game was conducted using the contrast_check.py script in the scripts folder.
+This script checks the color contrast ratios of various elements in the application to ensure they meet accessibility standards.
+The test results indicate that all color combinations used in the application meet the required contrast ratios for both normal text and large text.
+[<img alt="image" src="img/testing/accessibility/test_result.png" />](img/testing/accessibility/test_result.png)
+
+
+## Performance Testing
+
+### index.html
+
+It can be seen the loading time for `index.html` is quite fast as it loads in under 1 second:
+[<img alt="image" src="img/testing/performance/perf0.png" />](img/testing/performance/perf0.png)
+
+### login.html
+
+The loading time for `login.html` is also quite fast as it loads in under 1 second:
+[<img alt="image" src="img/testing/performance/perf2.png" />](img/testing/performance/perf2.png)
+
+### register.html
+
+The loading time for `register.html` is also fast as it loads in under 1 second:
+[<img alt="image" src="img/testing/performance/perf3.png" />](img/testing/performance/perf3.png)
+
+### game.html
+
+This is the most content-heavy page and its loading time is around 330 ms which is still perfectly acceptable:
+[<img alt="image" src="img/testing/performance/perf1.png" />](img/testing/performance/perf1.png)
+
+Summary: Overall, the performance testing indicates that all pages of the Hangman game load quickly and efficiently, providing a smooth user experience.
+
+## Example Bug Fixes
+
+### Bug 1: Schema Migration Issue When Adding 'hints_used' Column
+
+**Issue**: When adding a new column `hints_used` to the existing `games` table, the backend REST API responses haven't been updated to include this new column hence schema validation failed.
+
+**Fix**: Updated the models, CRUD operations and backend responses to include the `hints_used` field. Also, ensured that the database migration script correctly adds the new column to the existing table without data loss.
+
+**Solution**: After updating the models, CRUD operations and backend responses, the schema validation passed successfully and the API responses included the new `hints_used` field as expected.
+
+Example log output showing the exception being raised before the fix:
+
+INFO:     127.0.0.1:58114 - "POST /api/games/new HTTP/1.1" 500 Internal Server Error
+ERROR:    Exception in ASGI application
+Traceback (most recent call last):
+  File "C:\Users\Alex\.conda\envs\python312\Lib\site-packages\uvicorn\protocols\http\httptools_impl.py", line 409, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Alex\.conda\envs\python312\Lib\site-packages\uvicorn\middleware\proxy_headers.py", line 60, in __call__
+    return await self.app(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Alex\.conda\envs\python312\Lib\site-packages\fastapi\applications.py", line 1134, in __call__
+    await super().__call__(scope, receive, send)
+  File "C:\Users\Alex\.conda\envs\python312\Lib\site-packages\starlette\applications.py", line 113, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\Alex\.conda\envs\python312\Lib\site-packages\starlette\middleware\errors.py", line 186, in __call__
+    raise exc
+  File "C:\Users\Alex\.conda\envs\python312\Lib\site-packages\starlette\middleware\errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\Alex\.conda\envs\python312\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\Alex\.conda\envs\python312\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\Alex\.conda\envs\python312\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\Alex\.conda\envs\python312\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\Alex\.conda\envs\python312\Lib\site-packages\starlette\routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\Alex\.conda\envs\python312\Lib\site-packages\starlette\routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\Alex\.conda\envs\python312\Lib\site-packages\starlette\routing.py", line 290, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\Alex\.conda\envs\python312\Lib\site-packages\fastapi\routing.py", line 125, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\Alex\.conda\envs\python312\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\Alex\.conda\envs\python312\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\Alex\.conda\envs\python312\Lib\site-packages\fastapi\routing.py", line 111, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\Alex\.conda\envs\python312\Lib\site-packages\fastapi\routing.py", line 413, in app
+    content = await serialize_response(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Alex\.conda\envs\python312\Lib\site-packages\fastapi\routing.py", line 254, in serialize_response
+    raise ResponseValidationError(
+fastapi.exceptions.ResponseValidationError: 1 validation errors:
+  {'type': 'missing', 'loc': ('response', 'hints_used'), 'msg': 'Field required', 'input': {'id': 64, 'revealed': '________', 'initial_attempts': 7, 'attempts_left': 7, 'score': 0, 'state': 'active', 'guessed': '', 'word': {'id': 248, 'clue': 'Reusable block of code', 'topic': 'tech', 'difficulty': 'medium'}}}
+
+### Bug 2: One letter being guessed correctly and then clicked again and again leads to score being adding up more and more:
+
+**Issue**: When a letter is guessed correctly, the score increases by 10 points. However, if the user clicks the same letter multiple times after it has already been guessed correctly, the score continues to increase by 10 points each time.
+
+**Fix**: Added a check to see if the letter has already been guessed before updating the score. If the letter has already been guessed, the score is not updated again. Also updated the frontend to disable letters that have already been guessed to prevent further clicks.
+
+**Solution**: After implementing the fix, the score only increases by 10 points the first time a letter is guessed correctly. Subsequent clicks on the same letter do not affect the score. Also, the frontend disables letters that have already been guessed to prevent further clicks.
+
+Issue screenshot before the fix reproducing the bug:
+
+[<img alt="image" src="img/testing/bugfixes/bug1_before.png" />](img/testing/bugfixes/bug1_before.png)
+
+### Bug 3: When clicking Resume button the backend doesn’t check game state and just returns even the game which is already won/lost:
+
+**Issue**: When the user clicks the "Resume" button to continue a previous game, the backend does not check the current state of the game. As a result, it returns the game data even if the game has already been won or lost.
+
+**Fix**: Updated the backend logic to check the game state before returning the game data. If the game state is "won" or "lost", the backend now returns an appropriate message indicating that the game cannot be resumed.
+
+**Solution**: After implementing the fix, when the user clicks the "Resume" button, the backend checks the game state. If the game has already been won or lost, the user receives a message indicating that the game cannot be resumed.
+
+Issue screenshot before the fix reproducing the bug:
+
+[<img alt="image" src="img/testing/bugfixes/bug2_before.png" />](img/testing/bugfixes/bug2_before.png)
+
+### Bug 4: When clicking Resume button some previously won game is returned back by frontend and the word is shown and then immediately game is lost
+
+**Issue**: When the user clicks the "Resume" button, sometimes a previously won game is returned by the frontend. The word is displayed, and then immediately the game is marked as lost.
+
+**Fix**: Investigated the issue and found that the frontend was not properly handling the game state returned by the backend. Updated the frontend logic to correctly interpret the game state and prevent displaying a previously won game as active.
+
+**Solution**: After implementing the fix, when the user clicks the "Resume" button, the frontend correctly handles the game state. If the game has already been won, it does not display the word or mark the game as lost.
+
+Issue screenshot before the fix reproducing the bug:
+
+[<img alt="image" src="img/testing/bugfixes/bug3_before.png" />](img/testing/bugfixes/bug3_before.png)
+
+---
+
+# Deployment Instructions
+
+Because the application consists of both a backend (FastAPI) and a frontend (HTML, CSS, JS), the deployment involves setting up a web server to host the FastAPI app and serve the static frontend files.
+Above means our app can't be deployed on GitHub Pages as it only serves static files.
+
+I've decided to deploy my Hangman game app using Render.com which offers free hosting for web apps with easy deployment from GitHub repositories.
+Here are the steps to deploy the application on Render.com:
+1. **Create a Render.com Account**: Sign up for a free account on Render.com if you don't have one already. You can also sign in using GitHub credentials.
+2. **Connect GitHub Repository**: Link your Render.com account to your GitHub account and select the repository containing your crossword game code.
+3. **Create a New Web Service**:
+   - Click on "New" and select "Web Service".
+   - Choose the repository and branch you want to deploy.
+4. **Configure Build Settings**:
+   - Set the build command to install dependencies, e.g. `pip install -r requirements.txt`.
+   - Set the start command to run the FastAPI app, e.g. `uvicorn backend.app.main:app` (assuming your FastAPI app is in `main.py`).
+5. **Set Environment Variables**: If your app requires any environment variables (e.g. for secret keys), set them in the Render.com dashboard.
+6. **Deploy**: Click "Create Web Service" to start the deployment process. Render.com will build and deploy your app.
+7. **Access Your App**: Once deployed, Render.com will provide you with a URL where your crossword game can be accessed.
+
+I've followed the above steps and successfully deployed my Hangman game app on Render.com under the following URL:
+[https://hangman-game-project.onrender.com/](https://hangman-game-project.onrender.com/)
+
+Because I use free hosting plan on Render.com there might be some delay (a few seconds) when accessing the app for the first time after a period of inactivity as the server might go to sleep mode.
+
+Here is how the deployment looks like on Render.com when the web service is deployed successfully:
+
+[<img alt="image" src="img/render.png" />](img/render.png)
+
+As the frontend is served as static files by FastAPI, there is no separate deployment step for the frontend.
+
+--- 
+
+# Instructions to install the Hangman Game as Progressive Web App (PWA) on mobile and tablet devices
+
+To install Progressive Web App (PWA) version of the Hangman game on your device, follow these steps:
+1. **Open the Hangman Game in a Supported Browser**: Use a modern web browser that supports PWA installation, such as Google Chrome, Microsoft Edge, or Firefox. Navigate to the URL of the Hangman game (e.g., ``).
+
+[<img alt="image" src="img/pwa/pwa_opened.jpg" />](img/pwa/pwa_opened.jpg)
+
+2. **Look for the Install Prompt**: Depending on your browser, you may see an install prompt in the address bar or a pop-up asking if you want to install the app. In Chrome, this is usually represented by a "+" icon in the address bar.
+
+[<img alt="image" src="img/pwa/pwa_add_home_screen.jpg" />](img/pwa/pwa_add_home_screen.jpg)
+
+3. **Click the Install Button**: Click on the install prompt or the "+" icon. This will open a dialog box asking for confirmation to install the app.
+
+[<img alt="image" src="img/pwa/pwa_add_app.jpg" />](img/pwa/pwa_add_app.jpg)
+
+4. **Confirm Installation**: Click "Install" or "Add" in the dialog box to confirm the installation. The Hangman game will be installed on your device.
+
+[<img alt="image" src="img/pwa/pwa_adding_conf.jpg" />](img/pwa/pwa_adding_conf.jpg)
+
+5. **Access the Installed App**: Once installed, you can access the Hangman game from your device's home screen (on mobile devices) or from the applications menu (on desktop).
+
+[<img alt="image" src="img/pwa/pwa_installed.jpg" />](img/pwa/pwa_installed.jpg)
+
+
+--- 
+
+# References
+
+
+
