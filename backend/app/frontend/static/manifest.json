@@ -1,7 +1,22 @@
 {
   "name": "Hangman Game",
   "short_name": "Hangman",
-  "start_url": "/static/index.html",
-  "display": "standalone"
+  "start_url": "/frontend/static/index.html",
+  "display": "standalone",
+  "background_color": "#181c20",
+  "theme_color": "#2563eb",
+  "description": "A fun and educational Hangman game. Play, learn, and compete!",
+  "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
 }
 
