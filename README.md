@@ -1185,6 +1185,35 @@ To install Progressive Web App (PWA) version of the Hangman game on your device,
 
 --- 
 
+# An evaluation of how well my project met each of the requirements together with a statement of the project’s overall success and/or failure
+
+## Evaluation of Project Requirements
+
+The main project requirement for the Hangman game as per the assignment specification was to create a mobile friendly game.
+I've chosen to implement the Hangman game app.
+Here is an evaluation of how well my project met each of the requirements:
+1. I've successfully accomplished all of the project activities covering requirements/creative session, design and analysis session, coding, testing and final report writing in the form of this README.md file.
+2. The Hangman game app is fully functional and meets the core requirements of the game including user registration, login, gameplay, game state management, scoring, and hint functionality.
+3. The frontend is designed to be mobile-friendly and responsive, ensuring a good user experience across different devices.
+4. The backend is implemented using FastAPI, providing a robust and scalable architecture for the game.
+5. Comprehensive testing has been conducted including frontend testing, backend unit testing, accessibility testing, and performance testing.
+6. The project has been successfully deployed on Render.com, making it accessible to users online.
+7. The project documentation includes detailed deployment instructions, PWA installation guide, and an evaluation of the project requirements.
+8. As per Activity 5 I've gathered and documented evidence from ALL of my project’s activities and outcomes in this README.md file.
+
+## Overall Success of the Project
+
+Overall, I consider the Hangman game project to be a success.
+The project met all the specified requirements and delivered a fully functional and engaging game experience. 
+It has to be mentioned that on top of successfully delivering all of the MVP features I've also implemented some additional features from Phase 2 backlog being: difficulty levels, accessibility features, responsive design, progress saving, light and dark themes.
+The mobile-friendly design ensures that users can enjoy the game on various devices, and the backend implementation using FastAPI framework provides a solid foundation for future enhancements.
+The comprehensive testing and documentation further contribute to the project's success, ensuring that it is well-prepared for deployment and user access.
+While there were some challenges encountered during development, such as bug fixes and schema migrations, these were effectively addressed, resulting in a polished and well tested and stable final game app.
+The successful deployment on Render.com demonstrates the project's readiness for real-world use, and the PWA installation guide adds value for users who wish to install the game on their devices.
+In conclusion, the Hangman game app development project has achieved its objectives in full.
+
+---
+
 # References
 
 
