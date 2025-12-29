@@ -1141,7 +1141,7 @@ Here are the steps to deploy the application on Render.com:
    - Choose the repository and branch you want to deploy.
 4. **Configure Build Settings**:
    - Set the build command to install dependencies, e.g. `pip install -r requirements.txt`.
-   - Set the start command to run the FastAPI app, e.g. `uvicorn backend.app.main:app --host 0.0.0.0` (assuming your FastAPI app is in `main.py`).
+   - Set the start command to run the FastAPI app, e.g. `uvicorn backend.app.main:app --host 0.0.0.0 --port 8000` (assuming your FastAPI app is in `main.py`).
 5. **Set Environment Variables**: If your app requires any environment variables (e.g. for secret keys), set them in the Render.com dashboard.
 6. **Deploy**: Click "Create Web Service" to start the deployment process. Render.com will build and deploy your app.
 7. **Access Your App**: Once deployed, Render.com will provide you with a URL where your crossword game can be accessed.
@@ -1153,7 +1153,7 @@ Because I use free hosting plan on Render.com there might be some delay (a few s
 
 Here is how the deployment looks like on Render.com when the web service is deployed successfully:
 
-[<img alt="image" src="img/render.png" />](img/render.png)
+[<img alt="image" src="img/deployment/render_deployment.png" />](img/deployment/render_deployment.png)
 
 As the frontend is served as static files by FastAPI, there is no separate deployment step for the frontend.
 
