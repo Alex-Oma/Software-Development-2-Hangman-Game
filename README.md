@@ -1141,13 +1141,13 @@ Here are the steps to deploy the application on Render.com:
    - Choose the repository and branch you want to deploy.
 4. **Configure Build Settings**:
    - Set the build command to install dependencies, e.g. `pip install -r requirements.txt`.
-   - Set the start command to run the FastAPI app, e.g. `uvicorn backend.app.main:app` (assuming your FastAPI app is in `main.py`).
+   - Set the start command to run the FastAPI app, e.g. `uvicorn backend.app.main:app --host 0.0.0.0` (assuming your FastAPI app is in `main.py`).
 5. **Set Environment Variables**: If your app requires any environment variables (e.g. for secret keys), set them in the Render.com dashboard.
 6. **Deploy**: Click "Create Web Service" to start the deployment process. Render.com will build and deploy your app.
 7. **Access Your App**: Once deployed, Render.com will provide you with a URL where your crossword game can be accessed.
 
 I've followed the above steps and successfully deployed my Hangman game app on Render.com under the following URL:
-[https://hangman-game-project.onrender.com/](https://hangman-game-project.onrender.com/)
+[https://software-development-2-hangman-game.onrender.com](https://software-development-2-hangman-game.onrender.com)
 
 Because I use free hosting plan on Render.com there might be some delay (a few seconds) when accessing the app for the first time after a period of inactivity as the server might go to sleep mode.
 
